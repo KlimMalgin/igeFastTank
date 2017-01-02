@@ -32,7 +32,7 @@ var Client = IgeClass.extend({
 			// Ask the engine to start
 			ige.start(function (success) {
 				// Check if the engine started successfully
-				debugger;
+
 				if (success) {
 
 					// Create the scene
@@ -50,8 +50,8 @@ var Client = IgeClass.extend({
 					// Create the texture maps and load their map data
 					self.backgroundLayer1 = new IgeTextureMap()
 						.depth(0)
-						.tileWidth(40)
-						.tileHeight(40)
+						.tileWidth(60)
+						.tileHeight(60)
 						.translateTo(0, 0, 0)
 						//.drawGrid(10)
 						.drawBounds(false)
@@ -79,6 +79,9 @@ var Client = IgeClass.extend({
 						// Load the base scene data
 						ige.addGraph('IgeBaseScene');
 					});*/
+
+					// Смещение для стартовой камеры
+					self.vp1.camera.panTo(new IgePoint3d(350, 250));
 				}
 			});
 		//});
