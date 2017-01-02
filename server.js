@@ -3,6 +3,29 @@ var Server = IgeClass.extend({
 	Server: true,
 
 	init: function (options) {
+		// Start the network server
+		ige.addComponent(IgeSocketIoComponent);
+		ige.network.start();
+
+		// Start the game engine
+		ige.start(function (success) {
+			// Check if the engine started successfully
+			if (success) {
+				// Accept incoming connections
+				ige.network.acceptConnections(true);
+			}
+		});
+	}
+});
+
+if (typeof(module) !== 'undefined' && typeof(module.exports) !== 'undefined') { module.exports = Server; }
+
+
+/*var Server = IgeClass.extend({
+	classId: 'Server',
+	Server: true,
+
+	init: function (options) {
 		var self = this;
 
 		// Add the networking component
@@ -25,16 +48,12 @@ var Server = IgeClass.extend({
 						ige.network.acceptConnections(true);
 
 						// Load the base scene data
-						ige.addGraph('IgeBaseScene');
+						//ige.addGraph('IgeBaseScene');
 
-						new ExampleEntity()
-							.id('exent')
-							.streamMode(1)
-							.mount(ige.$('baseScene'));
 					}
 				});
 			});
 	}
 });
 
-if (typeof(module) !== 'undefined' && typeof(module.exports) !== 'undefined') { module.exports = Server; }
+if (typeof(module) !== 'undefined' && typeof(module.exports) !== 'undefined') { module.exports = Server; }*/
