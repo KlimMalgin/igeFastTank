@@ -59,6 +59,40 @@ var Client = IgeClass.extend({
 						.loadMap(BackgroundLayer1)
 						.mount(self.scene1);
 
+					// Create a new character, add the player component
+					// and then set the type (setType() is defined in
+					// gameClasses/Character.js) so that the entity has
+					// defined animation sequences to use.
+					self.player1 = new Character()
+						.addComponent(PlayerComponent)
+						.box2dBody({
+							type: 'dynamic',
+							linearDamping: 0.0,
+							angularDamping: 0.1,
+							allowSleep: true,
+							bullet: true,
+							gravitic: true,
+							fixedRotation: true,
+							fixtures: [{
+								density: 1.0,
+								friction: 0.5,
+								restitution: 0.2,
+								shape: {
+									type: 'polygon',
+									data: new IgePoly2d()
+										.addPoint(-0.5, 0.2)
+										.addPoint(0.5, 0.2)
+										.addPoint(0.5, 0.8)
+										.addPoint(-0.5, 0.8)
+								}
+							}]
+						})
+						.id('player1')
+						.setType(0)
+						.translateTo(480, 300, 0)
+						.drawBounds(false)
+						.mount(self.scene1);
+
 
 					// Start the networking (you can do this elsewhere if it
 					// makes sense to connect to the server later on rather
@@ -81,7 +115,10 @@ var Client = IgeClass.extend({
 					});*/
 
 					// Смещение для стартовой камеры
-					self.vp1.camera.panTo(new IgePoint3d(350, 250));
+					//self.vp1.camera.panTo(new IgePoint3d(350, 250));
+					self.vp1.camera.lookAt(self.player1);
+					self.vp1.camera.trackTranslate(self.player1, 20);
+
 				}
 			});
 		//});
