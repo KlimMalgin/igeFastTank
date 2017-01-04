@@ -57,18 +57,6 @@ var Server = IgeClass.extend({
 							.drawBounds(true)
 							.mount(ige);
 
-						// Create the texture maps and load their map data
-						/*self.backgroundLayer1 = new IgeTextureMap()
-							.depth(0)
-							.tileWidth(60)
-							.tileHeight(60)
-							.translateTo(0, 0, 0)
-							//.drawGrid(10)
-							.drawBounds(false)
-							.autoSection(20)
-							.loadMap(BackgroundLayer1)
-							.mount(self.scene1);*/
-
 					}
 				});
 			});

@@ -27,6 +27,12 @@ var ServerNetworkEvents = {
     _onPlayerEntity: function (data, clientId) {
         if (!ige.server.players[clientId]) {
             ige.server.players[clientId] = new Character(clientId)
+
+            ige.server.players[clientId]
+                .width(60)
+                .height(60);
+
+            ige.server.players[clientId]
                 .addComponent(PlayerComponent)
                 .streamMode(1)
                 .mount(ige.server.scene1);
@@ -38,6 +44,7 @@ var ServerNetworkEvents = {
 
     _onPlayerLeftDown: function (data, clientId) {
         ige.server.players[clientId].playerControl.controls.left = true;
+        ige.server.players[clientId].rotate().z((Math.PI / 2) * -1);
     },
 
     _onPlayerLeftUp: function (data, clientId) {
@@ -46,6 +53,7 @@ var ServerNetworkEvents = {
 
     _onPlayerRightDown: function (data, clientId) {
         ige.server.players[clientId].playerControl.controls.right = true;
+        ige.server.players[clientId].rotate().z((Math.PI / 2) * 1);
     },
 
     _onPlayerRightUp: function (data, clientId) {
@@ -54,6 +62,7 @@ var ServerNetworkEvents = {
 
     _onPlayerUpDown: function (data, clientId) {
         ige.server.players[clientId].playerControl.controls.up = true;
+        ige.server.players[clientId].rotate().z(0);
     },
 
     _onPlayerUpUp: function (data, clientId) {
@@ -62,6 +71,7 @@ var ServerNetworkEvents = {
 
     _onPlayerDownDown: function (data, clientId) {
         ige.server.players[clientId].playerControl.controls.down = true;
+        ige.server.players[clientId].rotate().z((Math.PI / 2) * -2);
     },
 
     _onPlayerDownUp: function (data, clientId) {

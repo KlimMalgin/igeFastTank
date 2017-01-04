@@ -22,7 +22,7 @@ var PlayerComponent = IgeClass.extend({
             down: false
         };
 
-        this._speed = 0.3;
+        this._speed = 0.2;
 
         // Setup the control system
         ige.input.mapAction('left', ige.input.key.left);
@@ -42,7 +42,7 @@ var PlayerComponent = IgeClass.extend({
             // Change the character
             this._entity._characterType++;
 
-            if (this._entity._characterType > 7) {
+            if (this._entity._characterType > 1) {
                 this._entity._characterType = 0;
             }
 
