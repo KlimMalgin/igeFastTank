@@ -313,7 +313,7 @@ var BackgroundLayer1 = {
             [0, 1]
         ]
     ],
-    textures: ["new IgeCellSheet('./assets/tanks2.sprite.png', 8, 4).id('3b9d569741e64a0');"]
+    textures: ["new IgeCellSheet('./assets/tanks.transparent.png', 8, 4).id('3b9d569741e64a0');"]
 };
 
 if (typeof(module) !== 'undefined' && typeof(module.exports) !== 'undefined') {

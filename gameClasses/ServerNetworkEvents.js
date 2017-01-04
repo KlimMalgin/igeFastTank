@@ -29,8 +29,7 @@ var ServerNetworkEvents = {
             ige.server.players[clientId] = new Character(clientId)
 
             ige.server.players[clientId]
-                .width(60)
-                .height(60);
+                .scale().x(0.7).y(0.7);
 
             ige.server.players[clientId]
                 .addComponent(PlayerComponent)
