@@ -42,6 +42,7 @@ var ServerNetworkEvents = {
     },
 
     _onPlayerLeftDown: function (data, clientId) {
+        _allArrowsUp(clientId);
         ige.server.players[clientId].playerControl.controls.left = true;
         ige.server.players[clientId].rotate().z((Math.PI / 2) * -1);
     },
@@ -51,6 +52,7 @@ var ServerNetworkEvents = {
     },
 
     _onPlayerRightDown: function (data, clientId) {
+        _allArrowsUp(clientId);
         ige.server.players[clientId].playerControl.controls.right = true;
         ige.server.players[clientId].rotate().z((Math.PI / 2) * 1);
     },
@@ -60,6 +62,7 @@ var ServerNetworkEvents = {
     },
 
     _onPlayerUpDown: function (data, clientId) {
+        _allArrowsUp(clientId);
         ige.server.players[clientId].playerControl.controls.up = true;
         ige.server.players[clientId].rotate().z(0);
     },
@@ -69,6 +72,7 @@ var ServerNetworkEvents = {
     },
 
     _onPlayerDownDown: function (data, clientId) {
+        _allArrowsUp(clientId);
         ige.server.players[clientId].playerControl.controls.down = true;
         ige.server.players[clientId].rotate().z((Math.PI / 2) * -2);
     },
@@ -78,5 +82,12 @@ var ServerNetworkEvents = {
     }
 
 };
+
+    function _allArrowsUp (clientId) {
+        ige.server.players[clientId].playerControl.controls.left = false;
+        ige.server.players[clientId].playerControl.controls.right = false;
+        ige.server.players[clientId].playerControl.controls.up = false;
+        ige.server.players[clientId].playerControl.controls.down = false;
+    }
 
 if (typeof(module) !== 'undefined' && typeof(module.exports) !== 'undefined') { module.exports = ServerNetworkEvents; }
