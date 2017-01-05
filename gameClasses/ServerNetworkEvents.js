@@ -36,7 +36,6 @@ var ServerNetworkEvents = {
                     angularDamping: 1.0,
                     allowSleep: false,
                     bullet: false,
-
                     gravitic: false,
                     fixedRotation: false,
                     fixtures: [{
@@ -65,14 +64,10 @@ var ServerNetworkEvents = {
         }
     },
 
-    /*_onBuildCreate: function () {
-
-    },*/
-
     _onPlayerLeftDown: function (data, clientId) {
         _allArrowsUp(clientId);
         ige.server.players[clientId].playerControl.controls.left = true;
-        //ige.server.players[clientId].rotateLeft();
+        ige.server.players[clientId]._lastDirection = 'left';
     },
 
     _onPlayerLeftUp: function (data, clientId) {
@@ -82,7 +77,7 @@ var ServerNetworkEvents = {
     _onPlayerRightDown: function (data, clientId) {
         _allArrowsUp(clientId);
         ige.server.players[clientId].playerControl.controls.right = true;
-        //ige.server.players[clientId].rotateRight();
+        ige.server.players[clientId]._lastDirection = 'right';
     },
 
     _onPlayerRightUp: function (data, clientId) {
@@ -92,7 +87,7 @@ var ServerNetworkEvents = {
     _onPlayerUpDown: function (data, clientId) {
         _allArrowsUp(clientId);
         ige.server.players[clientId].playerControl.controls.up = true;
-        //ige.server.players[clientId].rotateUp();
+        ige.server.players[clientId]._lastDirection = 'up';
     },
 
     _onPlayerUpUp: function (data, clientId) {
@@ -102,7 +97,7 @@ var ServerNetworkEvents = {
     _onPlayerDownDown: function (data, clientId) {
         _allArrowsUp(clientId);
         ige.server.players[clientId].playerControl.controls.down = true;
-        //ige.server.players[clientId].rotateDown();
+        ige.server.players[clientId]._lastDirection = 'down';
     },
 
     _onPlayerDownUp: function (data, clientId) {

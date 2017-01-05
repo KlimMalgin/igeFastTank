@@ -76,7 +76,6 @@ var Client = IgeClass.extend({
 							.tileWidth(60)
 							.tileHeight(60)
 							.translateTo(0, 0, 0)
-							//.drawGrid(10)
 							.drawBounds(false)
 							.autoSection(20)
 							.loadMap(BackgroundLayer1)
@@ -99,43 +98,6 @@ var Client = IgeClass.extend({
 				                }]
 				            })
 				            .depth(10);
-
-
-
-						// Create a new character, add the player component
-						// and then set the type (setType() is defined in
-						// gameClasses/Character.js) so that the entity has
-						// defined animation sequences to use.
-						/*self.player1 = new Character()
-							.addComponent(PlayerComponent)
-							.box2dBody({
-								type: 'dynamic',
-								linearDamping: 0.0,
-								angularDamping: 0.1,
-								allowSleep: true,
-								bullet: true,
-								gravitic: true,
-								fixedRotation: true,
-								fixtures: [{
-									density: 1.0,
-									friction: 0.5,
-									restitution: 0.2,
-									shape: {
-										type: 'polygon',
-										data: new IgePoly2d()
-											.addPoint(-0.5, 0.2)
-											.addPoint(0.5, 0.2)
-											.addPoint(0.5, 0.8)
-											.addPoint(-0.5, 0.8)
-									}
-								}]
-							})
-							.id('player1')
-							.setType(0)
-							.translateTo(480, 300, 0)
-							.drawBounds(false)
-							.mount(self.scene1);*/
-
 
 						// Ask the server to create an entity for us
 						ige.network.send('playerEntity');

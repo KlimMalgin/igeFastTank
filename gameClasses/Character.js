@@ -10,10 +10,8 @@ var Character = IgeEntityBox2d.extend({
             this.addComponent(IgeVelocityComponent);
         }
 
-        // Setup the entity
-        /*self.addComponent(IgeAnimationComponent)
-            .addComponent(IgeVelocityComponent)
-            .depth(1);*/
+        this._lastDirection = 'up';
+        this.__tempLastDirection = '';
 
         // Load the character texture file
         if (ige.isClient) {
@@ -121,30 +119,39 @@ var Character = IgeEntityBox2d.extend({
 
                 this.animation.select(this.selectedAnimation);
             }
-
-            // Set the depth to the y co-ordinate which basically
-            // makes the entity appear further in the foreground
-            // the closer they become to the bottom of the screen
-            //this.depth(this._translate.y);
         }
 
         IgeEntityBox2d.prototype.update.call(this, ctx, tickDelta);
     },
 
-    rotateRight: function () {
-        this.rotate().z((Math.PI / 2) * 1);
+    customRotate: function function_name(direction) {
+        switch (direction) {
+            case 'up':
+                this.rotate().z(0);
+                break;
+            case 'down':
+                this.rotate().z((Math.PI / 2) * -2);
+                break;
+            case 'left':
+                this.rotate().z((Math.PI / 2) * -1);
+                break;
+            case 'right':
+                this.rotate().z((Math.PI / 2) * 1);
+                break;
+        }
     },
 
-    rotateLeft: function () {
-        this.rotate().z((Math.PI / 2) * -1);
-    },
+    tick: function (ctx) {
+        this.customRotate(this._lastDirection);
 
-    rotateUp: function () {
-        this.rotate().z(0);
-    },
+        //if (ige.isServer) {
+            if (this._lastDirection != this.__tempLastDirection) {
+                this.__tempLastDirection = this._lastDirection;
+                console.log('_lastDirection: ', this._lastDirection);
+            }
+        //}
 
-    rotateDown: function () {
-        this.rotate().z((Math.PI / 2) * -2);
+        IgeEntityBox2d.prototype.tick.call(this, ctx);
     },
 
     destroy: function () {

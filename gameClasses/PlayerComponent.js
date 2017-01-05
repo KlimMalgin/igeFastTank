@@ -60,20 +60,16 @@ var PlayerComponent = IgeClass.extend({
         if (ige.isServer) {
             if (this.playerControl.controls.left) {
                 this.velocity.x(-this.playerControl._speed);
-                this.rotateLeft();
             } else if (this.playerControl.controls.right) {
                 this.velocity.x(this.playerControl._speed);
-                this.rotateRight();
             } else {
                 this.velocity.x(0);
             }
 
             if (this.playerControl.controls.up) {
                 this.velocity.y(-this.playerControl._speed);
-                this.rotateUp();
             } else if (this.playerControl.controls.down) {
                 this.velocity.y(this.playerControl._speed);
-                this.rotateDown();
             } else {
                 this.velocity.y(0);
             }
@@ -85,9 +81,7 @@ var PlayerComponent = IgeClass.extend({
                 if (!this.playerControl.controls.left) {
                     // Record the new state
                     this.playerControl.controls.left = true;
-
-                    this.rotateLeft();
-
+                    this._lastDirection = 'left';
                     // Tell the server about our control change
                     ige.network.send('playerControlLeftDown');
                 }
@@ -105,9 +99,7 @@ var PlayerComponent = IgeClass.extend({
                 if (!this.playerControl.controls.right) {
                     // Record the new state
                     this.playerControl.controls.right = true;
-
-                    this.rotateRight();
-
+                    this._lastDirection = 'right';
                     // Tell the server about our control change
                     ige.network.send('playerControlRightDown');
                 }
@@ -125,9 +117,7 @@ var PlayerComponent = IgeClass.extend({
                 if (!this.playerControl.controls.up) {
                     // Record the new state
                     this.playerControl.controls.up = true;
-
-                    this.rotateUp();
-
+                    this._lastDirection = 'up';
                     // Tell the server about our control change
                     ige.network.send('playerControlUpDown');
                 }
@@ -145,9 +135,7 @@ var PlayerComponent = IgeClass.extend({
                 if (!this.playerControl.controls.down) {
                     // Record the new state
                     this.playerControl.controls.down = true;
-
-                    this.rotateDown();
-
+                    this._lastDirection = 'down';
                     // Tell the server about our control change
                     ige.network.send('playerControlDownDown');
                 }
