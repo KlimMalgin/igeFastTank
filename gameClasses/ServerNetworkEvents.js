@@ -29,7 +29,31 @@ var ServerNetworkEvents = {
             ige.server.players[clientId] = new Character(clientId)
 
             ige.server.players[clientId]
-                .scale().x(0.7).y(0.7);
+                .scale().x(0.7).y(0.7)
+                .box2dBody({
+                    type: 'dynamic',
+                    linearDamping: 1.0,
+                    angularDamping: 1.0,
+                    allowSleep: false,
+                    bullet: false,
+
+                    gravitic: false,
+                    fixedRotation: false,
+                    fixtures: [{
+                        density: 1.0,
+                        friction: 0,
+                        restitution: 1.0,
+                        //shape: 'polygon',
+                        shape: {
+                            type: 'polygon',
+                            data: new IgePoly2d()
+                                .addPoint(-1.0, -1)
+                                .addPoint(1.0, -1)
+                                .addPoint(1.0, 1.0)
+                                .addPoint(-1.0, 1.0)
+                        }
+                    }]
+                });
 
             ige.server.players[clientId]
                 .addComponent(PlayerComponent)
@@ -41,10 +65,14 @@ var ServerNetworkEvents = {
         }
     },
 
+    /*_onBuildCreate: function () {
+
+    },*/
+
     _onPlayerLeftDown: function (data, clientId) {
         _allArrowsUp(clientId);
         ige.server.players[clientId].playerControl.controls.left = true;
-        ige.server.players[clientId].rotate().z((Math.PI / 2) * -1);
+        //ige.server.players[clientId].rotateLeft();
     },
 
     _onPlayerLeftUp: function (data, clientId) {
@@ -54,7 +82,7 @@ var ServerNetworkEvents = {
     _onPlayerRightDown: function (data, clientId) {
         _allArrowsUp(clientId);
         ige.server.players[clientId].playerControl.controls.right = true;
-        ige.server.players[clientId].rotate().z((Math.PI / 2) * 1);
+        //ige.server.players[clientId].rotateRight();
     },
 
     _onPlayerRightUp: function (data, clientId) {
@@ -64,7 +92,7 @@ var ServerNetworkEvents = {
     _onPlayerUpDown: function (data, clientId) {
         _allArrowsUp(clientId);
         ige.server.players[clientId].playerControl.controls.up = true;
-        ige.server.players[clientId].rotate().z(0);
+        //ige.server.players[clientId].rotateUp();
     },
 
     _onPlayerUpUp: function (data, clientId) {
@@ -74,7 +102,7 @@ var ServerNetworkEvents = {
     _onPlayerDownDown: function (data, clientId) {
         _allArrowsUp(clientId);
         ige.server.players[clientId].playerControl.controls.down = true;
-        ige.server.players[clientId].rotate().z((Math.PI / 2) * -2);
+        //ige.server.players[clientId].rotateDown();
     },
 
     _onPlayerDownUp: function (data, clientId) {

@@ -131,6 +131,22 @@ var Character = IgeEntityBox2d.extend({
         IgeEntityBox2d.prototype.update.call(this, ctx, tickDelta);
     },
 
+    rotateRight: function () {
+        this.rotate().z((Math.PI / 2) * 1);
+    },
+
+    rotateLeft: function () {
+        this.rotate().z((Math.PI / 2) * -1);
+    },
+
+    rotateUp: function () {
+        this.rotate().z(0);
+    },
+
+    rotateDown: function () {
+        this.rotate().z((Math.PI / 2) * -2);
+    },
+
     destroy: function () {
         // Destroy the texture object
         if (this._characterTexture) {

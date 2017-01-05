@@ -9,8 +9,17 @@ var Server = IgeClass.extend({
 		// Define an object to hold references to our player entities
 		this.players = {};
 
+		this.buildings = {};
+
 		// Add the server-side game methods / event handlers
 		this.implement(ServerNetworkEvents);
+
+		// Add physics and setup physics world
+		ige.addComponent(IgeBox2dComponent)
+			.box2d.sleep(true)
+			.box2d.gravity(0, 0)
+			.box2d.createWorld()
+			.box2d.start();
 
 		// Add the networking component
 		ige.addComponent(IgeNetIoComponent)
@@ -56,6 +65,47 @@ var Server = IgeClass.extend({
 							.scene(self.scene1)
 							.drawBounds(true)
 							.mount(ige);
+
+
+						var wall = new IgeEntityBox2d()
+				            .translateTo(20, 50, 0)
+				            .width(880)
+				            .height(20)
+				            .drawBounds(false)
+				            .mount(self.scene1)
+				            .box2dBody({
+				                type: 'static',
+				                allowSleep: true,
+				                fixtures: [{
+				                    shape: {
+				                        type: 'rectangle'
+				                    }
+				                }]
+				            })
+				            .depth(10);
+
+						/*ige.box2d.contactListener(
+							// Listen for when contact's begin
+							function (contact) {
+								console.log('Contact begins between', contact.igeEntityA()._id, 'and', contact.igeEntityB()._id);
+								//ige.network.send('playerEntity', ige.server.players[clientId].id(), clientId);
+							},
+							// Listen for when contact's end
+							function (contact) {
+								console.log('Contact ends between', contact.igeEntityA()._id, 'and', contact.igeEntityB()._id);
+							},
+							// Handle pre-solver events
+							function (contact) {
+								// For fun, lets allow ball1 and square2 to pass through each other
+								if (contact.igeEitherId('ball1') && contact.igeEitherId('square2')) {
+									// Cancel the contact
+									contact.SetEnabled(false);
+								}
+
+								// You can also check an entity by it's category using igeEitherCategory('categoryName')
+							}
+						);*/
+
 
 					}
 				});

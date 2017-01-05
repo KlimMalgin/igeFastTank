@@ -82,6 +82,26 @@ var Client = IgeClass.extend({
 							.loadMap(BackgroundLayer1)
 							.mount(self.scene1);
 
+
+						var wall = new IgeEntityBox2d()
+				            .translateTo(20, 50, 0)
+				            .width(880)
+				            .height(20)
+				            .drawBounds(true)
+				            .mount(self.scene1)
+				            .box2dBody({
+				                type: 'static',
+				                allowSleep: true,
+				                fixtures: [{
+				                    shape: {
+				                        type: 'rectangle'
+				                    }
+				                }]
+				            })
+				            .depth(10);
+
+
+
 						// Create a new character, add the player component
 						// and then set the type (setType() is defined in
 						// gameClasses/Character.js) so that the entity has
@@ -124,6 +144,11 @@ var Client = IgeClass.extend({
 						// are created server-side and then streamed to the clients. If an entity
 						// is streamed to a client and the client doesn't have the entity in
 						// memory, the entity is automatically created. Woohoo!
+
+
+						// Add the box2d debug painter entity to the
+						// scene to show the box2d body outlines
+						ige.box2d.enableDebug(self.scene1);
 
 					});
 
