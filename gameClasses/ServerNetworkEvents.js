@@ -30,6 +30,7 @@ var ServerNetworkEvents = {
 
             ige.server.players[clientId]
                 .scale().x(0.7).y(0.7)
+                .translateTo(100, 100, 0)
                 .box2dBody({
                     type: 'dynamic',
                     linearDamping: 1.0,

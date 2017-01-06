@@ -45,7 +45,10 @@ var Server = IgeClass.extend({
 						ige.network.define('playerControlDownUp', self._onPlayerDownUp);
 
 						ige.network.define('levelData', function (data, clientId, requestId) {
-							ige.network.response(requestId, self.builderData.getSurface());
+							ige.network.response(requestId, {
+								level: self.builderData.getSurface(),
+								params: self.builderData.params()
+							});
 						});
 
 						ige.network.on('connect', self._onPlayerConnect); // Defined in ./gameClasses/ServerNetworkEvents.js
@@ -60,40 +63,10 @@ var Server = IgeClass.extend({
 						// Accept incoming network connections
 						ige.network.acceptConnections(true);
 
-						// Create the scene
-						/*self.scene1 = new IgeScene2d()
-							.id('scene1');
-
-						// Create the main viewport
-						self.vp1 = new IgeViewport()
-							.id('vp1')
-							.autoSize(true)
-							.scene(self.scene1)
-							.drawBounds(true)
-							.mount(ige);*/
-
 						self.renderer = new MapRenderer()
 							.createScenes()
-							.createViewport();
-
-						//this.gameScene = self.renderer.gameScene;
-
-						/*var wall = new IgeEntityBox2d()
-				            .translateTo(20, 50, 0)
-				            .width(880)
-				            .height(20)
-				            .drawBounds(false)
-				            .mount(self.gameScene)
-				            .box2dBody({
-				                type: 'static',
-				                allowSleep: true,
-				                fixtures: [{
-				                    shape: {
-				                        type: 'rectangle'
-				                    }
-				                }]
-				            })
-				            .depth(10);*/
+							.createViewport()
+							.createMapBorders(self.builderData.params().width, self.builderData.params().height);
 
 						/*ige.box2d.contactListener(
 							// Listen for when contact's begin

@@ -46,11 +46,40 @@ var MapRenderer = IgeClass.extend({
         return this;
     },
 
-    createMapBorders: function () {
+    createMapBorders: function (width, height) {
+        console.log('width, height : ', width, height);
 
+        // top border
+        _wallCreator(width, 20, width / 2, -10).mount(this.gameScene);
+        // bottom border
+        _wallCreator(width, 20, width / 2, height + 10).mount(this.gameScene);
+        // left border
+        _wallCreator(20, height, -10, height / 2).mount(this.gameScene);
+        // right border
+        _wallCreator(20, height, width + 10, height / 2).mount(this.gameScene);
+
+
+        return this;
     }
 
-
 });
+
+function _wallCreator(width, height, x, y) {
+    return new IgeEntityBox2d()
+        .translateTo(x, y, 0)
+        .width(width)
+        .height(height)
+        .drawBounds(false)
+        .box2dBody({
+            type: 'static',
+            allowSleep: true,
+            fixtures: [{
+                shape: {
+                    type: 'rectangle'
+                }
+            }]
+        })
+        .depth(10);
+}
 
 if (typeof(module) !== 'undefined' && typeof(module.exports) !== 'undefined') { module.exports = MapRenderer; }

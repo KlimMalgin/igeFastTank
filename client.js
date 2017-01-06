@@ -28,7 +28,6 @@ var Client = IgeClass.extend({
 			.box2d.createWorld()
 			.box2d.start();
 
-
 		// Load the textures we want to use
 		/*this.textures = {
 			ship: new IgeTexture('./assets/PlayerTexture.js'),
@@ -59,35 +58,10 @@ var Client = IgeClass.extend({
 								self.log('Stream entity created with ID: ' + entity.id());
 							});
 
-						// Create the scene
-						/*self.scene1 = new IgeScene2d()
-							.id('scene1');
-
-						// Create the main viewport
-						self.vp1 = new IgeViewport()
-							.id('vp1')
-							.autoSize(true)
-							.scene(self.scene1)
-							.drawBounds(false)
-							.mount(ige);
-
-						// Create the texture maps and load their map data
-						self.surface = new IgeTextureMap()
-							.depth(0)
-							.tileWidth(60)
-							.tileHeight(60)
-							.translateTo(0, 0, 0)
-							.drawBounds(false)
-							.autoSection(20)
-							//.loadMap(BackgroundLayer1)
-							.mount(self.scene1);*/
-
 						self.renderer = new MapRenderer()
 							.createScenes()
 							.createViewport()
 							.renderSurface();
-
-						//self.surface = self.renderer.surface;
 
 						/*var wall = new IgeEntityBox2d()
 				            .translateTo(20, 50, 0)
@@ -111,8 +85,8 @@ var Client = IgeClass.extend({
 						ige.network.request('levelData', {}, function (commandName, data) {
 							console.log(' >>> levelData response :: ', data);
 
-							self.renderer.surface.loadMap(data);
-
+							self.renderer.surface.loadMap(data.level);
+							self.renderer.createMapBorders(data.params.width, data.params.height);
 							// Now set the texture map's cache data to dirty so it will
 							// be redrawn
 							self.renderer.surface.cacheDirty(true);

@@ -4,16 +4,6 @@
 var Builder = IgeClass.extend({
     classId: 'Builder',
 
-    /**
-     * Создает стандартные значения для разных типов покрытия
-     */
-    defaults: function () {
-        this.default = {
-            surface: [0, 1],
-            build: null
-        };
-    },
-
     init: function (levelData) {
         /**
          * Исходные данные для уровня
@@ -43,6 +33,28 @@ var Builder = IgeClass.extend({
 
         this.defaults();
         this.build();
+    },
+
+    /**
+     * Создает стандартные значения для разных типов покрытия
+     */
+    defaults: function () {
+        this.default = {
+            surface: [0, 1],
+            build: null
+        };
+    },
+
+    /**
+     * Вернет параметры текущей карты
+     * @return {Object} Объект с параметрами карты
+     */
+    params: function () {
+        //return this.levelData;
+        return {
+            width: this.levelData.width * this.levelData.tileSize,
+            height: this.levelData.height * this.levelData.tileSize
+        };
     },
 
     build: function () {
