@@ -11,6 +11,8 @@ var Server = IgeClass.extend({
 
 		this.buildings = {};
 
+		this.builderData = new Builder(level1Data);
+
 		// Add the server-side game methods / event handlers
 		this.implement(ServerNetworkEvents);
 
@@ -41,6 +43,10 @@ var Server = IgeClass.extend({
 						ige.network.define('playerControlRightUp', self._onPlayerRightUp);
 						ige.network.define('playerControlUpUp', self._onPlayerUpUp);
 						ige.network.define('playerControlDownUp', self._onPlayerDownUp);
+
+						ige.network.define('levelData', function (data, clientId, requestId) {
+							ige.network.response(requestId, self.builderData.getSurface());
+						});
 
 						ige.network.on('connect', self._onPlayerConnect); // Defined in ./gameClasses/ServerNetworkEvents.js
 						ige.network.on('disconnect', self._onPlayerDisconnect); // Defined in ./gameClasses/ServerNetworkEvents.js

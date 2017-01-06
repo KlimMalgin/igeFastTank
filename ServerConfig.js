@@ -4,7 +4,11 @@ var config = {
         //{name: 'ExampleEntity', path: './gameClasses/ExampleEntity'},
         {name: 'ServerNetworkEvents', path: './gameClasses/ServerNetworkEvents'},
         {name: 'Character', path: './gameClasses/Character'},
-        {name: 'PlayerComponent', path: './gameClasses/PlayerComponent'}
+        {name: 'PlayerComponent', path: './gameClasses/PlayerComponent'},
+
+        // --
+        {name: 'level1Data', path: './levels/level1/data'},
+        {name: 'Builder', path: './levels/Builder/Builder'}
 	]
 };
 

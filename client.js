@@ -31,7 +31,8 @@ var Client = IgeClass.extend({
 
 		// Load the textures we want to use
 		/*this.textures = {
-			ship: new IgeTexture('./assets/PlayerTexture.js')
+			ship: new IgeTexture('./assets/PlayerTexture.js'),
+			bg: new IgeCellSheet('./assets/tanks.transparent.png', 8, 4)
 		};*/
 
 		//ige.on('texturesLoaded', function () {
@@ -67,20 +68,19 @@ var Client = IgeClass.extend({
 							.id('vp1')
 							.autoSize(true)
 							.scene(self.scene1)
-							.drawBounds(true)
+							.drawBounds(false)
 							.mount(ige);
 
 						// Create the texture maps and load their map data
-						self.backgroundLayer1 = new IgeTextureMap()
+						self.surface = new IgeTextureMap()
 							.depth(0)
 							.tileWidth(60)
 							.tileHeight(60)
 							.translateTo(0, 0, 0)
 							.drawBounds(false)
 							.autoSection(20)
-							.loadMap(BackgroundLayer1)
+							//.loadMap(BackgroundLayer1)
 							.mount(self.scene1);
-
 
 						var wall = new IgeEntityBox2d()
 				            .translateTo(20, 50, 0)
@@ -99,14 +99,35 @@ var Client = IgeClass.extend({
 				            })
 				            .depth(10);
 
-						// Ask the server to create an entity for us
-						ige.network.send('playerEntity');
+
+						// Ask the server to send us the tile data
+						ige.network.request('levelData', {}, function (commandName, data) {
+							console.log(' >>> levelData response :: ', data);
+
+							// Paint the texture map based on the data sent from the server
+							/*var x, y, tileData;
+							for (x = 0; x < data.length; x++) {
+								for (y = 0; y < data[x].length; y++) {
+									tileData = data[x][y];
+									self.surface.paintTile(x, y, tileData[0], tileData[1]);
+								}
+							}*/
+
+							self.surface.loadMap(data);
+
+							// Now set the texture map's cache data to dirty so it will
+							// be redrawn
+							self.surface.cacheDirty(true);
+						});
+
 
 						// We don't create any entities here because in this example the entities
 						// are created server-side and then streamed to the clients. If an entity
 						// is streamed to a client and the client doesn't have the entity in
 						// memory, the entity is automatically created. Woohoo!
 
+						// Ask the server to create an entity for us
+						ige.network.send('playerEntity');
 
 						// Add the box2d debug painter entity to the
 						// scene to show the box2d body outlines
