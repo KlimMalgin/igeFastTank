@@ -60,7 +60,7 @@ var Client = IgeClass.extend({
 							});
 
 						// Create the scene
-						self.scene1 = new IgeScene2d()
+						/*self.scene1 = new IgeScene2d()
 							.id('scene1');
 
 						// Create the main viewport
@@ -80,9 +80,16 @@ var Client = IgeClass.extend({
 							.drawBounds(false)
 							.autoSection(20)
 							//.loadMap(BackgroundLayer1)
-							.mount(self.scene1);
+							.mount(self.scene1);*/
 
-						var wall = new IgeEntityBox2d()
+						self.renderer = new MapRenderer()
+							.createScenes()
+							.createViewport()
+							.renderSurface();
+
+						//self.surface = self.renderer.surface;
+
+						/*var wall = new IgeEntityBox2d()
 				            .translateTo(20, 50, 0)
 				            .width(880)
 				            .height(20)
@@ -97,27 +104,18 @@ var Client = IgeClass.extend({
 				                    }
 				                }]
 				            })
-				            .depth(10);
+				            .depth(10);*/
 
 
 						// Ask the server to send us the tile data
 						ige.network.request('levelData', {}, function (commandName, data) {
 							console.log(' >>> levelData response :: ', data);
 
-							// Paint the texture map based on the data sent from the server
-							/*var x, y, tileData;
-							for (x = 0; x < data.length; x++) {
-								for (y = 0; y < data[x].length; y++) {
-									tileData = data[x][y];
-									self.surface.paintTile(x, y, tileData[0], tileData[1]);
-								}
-							}*/
-
-							self.surface.loadMap(data);
+							self.renderer.surface.loadMap(data);
 
 							// Now set the texture map's cache data to dirty so it will
 							// be redrawn
-							self.surface.cacheDirty(true);
+							self.renderer.surface.cacheDirty(true);
 						});
 
 
@@ -131,7 +129,7 @@ var Client = IgeClass.extend({
 
 						// Add the box2d debug painter entity to the
 						// scene to show the box2d body outlines
-						ige.box2d.enableDebug(self.scene1);
+						ige.box2d.enableDebug(self.renderer.gameScene);
 
 					});
 

@@ -57,7 +57,7 @@ var ServerNetworkEvents = {
             ige.server.players[clientId]
                 .addComponent(PlayerComponent)
                 .streamMode(1)
-                .mount(ige.server.scene1);
+                .mount(ige.server.renderer.gameScene);
 
             // Tell the client to track their player entity
             ige.network.send('playerEntity', ige.server.players[clientId].id(), clientId);

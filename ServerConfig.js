@@ -8,7 +8,8 @@ var config = {
 
         // --
         {name: 'level1Data', path: './levels/level1/data'},
-        {name: 'Builder', path: './levels/Builder/Builder'}
+        {name: 'Builder', path: './gameClasses/map/Builder'},
+        {name: 'MapRenderer', path: './gameClasses/map/MapRenderer'}
 	]
 };
 

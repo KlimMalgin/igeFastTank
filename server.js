@@ -61,7 +61,7 @@ var Server = IgeClass.extend({
 						ige.network.acceptConnections(true);
 
 						// Create the scene
-						self.scene1 = new IgeScene2d()
+						/*self.scene1 = new IgeScene2d()
 							.id('scene1');
 
 						// Create the main viewport
@@ -70,15 +70,20 @@ var Server = IgeClass.extend({
 							.autoSize(true)
 							.scene(self.scene1)
 							.drawBounds(true)
-							.mount(ige);
+							.mount(ige);*/
 
+						self.renderer = new MapRenderer()
+							.createScenes()
+							.createViewport();
 
-						var wall = new IgeEntityBox2d()
+						//this.gameScene = self.renderer.gameScene;
+
+						/*var wall = new IgeEntityBox2d()
 				            .translateTo(20, 50, 0)
 				            .width(880)
 				            .height(20)
 				            .drawBounds(false)
-				            .mount(self.scene1)
+				            .mount(self.gameScene)
 				            .box2dBody({
 				                type: 'static',
 				                allowSleep: true,
@@ -88,7 +93,7 @@ var Server = IgeClass.extend({
 				                    }
 				                }]
 				            })
-				            .depth(10);
+				            .depth(10);*/
 
 						/*ige.box2d.contactListener(
 							// Listen for when contact's begin
