@@ -117,7 +117,9 @@ var Character = IgeEntityBox2d.extend({
                     }
                 }
 
-                this.animation.select(this.selectedAnimation);
+                if (this.animation.defined(this.selectedAnimation)) {
+                    this.animation.select(this.selectedAnimation);
+                }
             }
         }
 

@@ -18,6 +18,20 @@ var Builder = IgeClass.extend({
         this.surface = [];
 
         /**
+         * Массив с координатами статических объектов на карте
+         * @type {Array}
+         */
+        this.staticItems = [
+            /*
+             * Пример объекта с координатами
+             *
+            {
+                x: 5,
+                y: 8
+            }*/
+        ];
+
+        /**
          * Результат сборки уровня
          * @type {Object}
          */
@@ -72,8 +86,17 @@ var Builder = IgeClass.extend({
                 }
 
                 if (map[y] && map[y][x]) {
+                    // Сохраняем информацию о поверхности карты для текущих координат
                     if (map[y][x].surface) {
                         this.surface[y].push(spriteHash[map[y][x].surface]);
+                    }
+
+                    // Сохраняем информацию о статическом объекте для текущих координат
+                    if (map[y][x].static) {
+                        this.staticItems.push({
+                            x: x * tileSize + tileSize / 2,
+                            y: y * tileSize + tileSize / 2
+                        });
                     }
                 } else {
                     this.surface[y].push(this.default.surface);

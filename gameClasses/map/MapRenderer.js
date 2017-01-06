@@ -15,6 +15,10 @@ var MapRenderer = IgeClass.extend({
         this.gameScene = new IgeScene2d()
             .id('gameScene');
 
+        // Сцена для статических box2d-объектов
+        this.staticScene = new IgeScene2d()
+            .id('staticScene');
+
         return this;
     },
 
@@ -35,6 +39,7 @@ var MapRenderer = IgeClass.extend({
         if (ige.isClient) {
             this.surface = new IgeTextureMap()
                 .depth(0)
+                // TODO: magic numbers
                 .tileWidth(60)
                 .tileHeight(60)
                 .translateTo(0, 0, 0)
@@ -46,8 +51,21 @@ var MapRenderer = IgeClass.extend({
         return this;
     },
 
+    createStaticItems: function (staticItems) {
+        var ln = staticItems.length,
+            // TODO: magic numbers
+            tileSize = 60;
+
+        for (var i = 0; i < ln; i++) {
+            _wallCreator(tileSize, tileSize, staticItems[i].x, staticItems[i].y).mount(this.staticScene);
+        }
+
+        return this;
+    },
+
     createMapBorders: function (width, height) {
         console.log('width, height : ', width, height);
+        // TODO: magic numbers
 
         // top border
         _wallCreator(width, 20, width / 2, -10).mount(this.gameScene);

@@ -1,7 +1,7 @@
 var level1Data = {
 
-    width: 10,
-    height: 6,
+    width: 15,
+    height: 11,
     tileSize: 60,
     spriteHash: {
         ground: [0, 1],
@@ -19,19 +19,120 @@ var level1Data = {
                 surface: 'ground'
             },
             {
-                surface: 'wall'
-            },
-            {
-                surface: 'wall'
-            },
-            {
-                surface: 'wall'
-            },
-            {
-                surface: 'wall'
+                surface: 'ground'
             },
             {
                 surface: 'ground'
+            },
+            {
+                surface: 'ground'
+            },
+            {
+                surface: 'wall',
+                static: true
+            },
+            {
+                surface: 'ground'
+            },
+        ],
+        [
+            {
+                surface: 'ground'
+            },
+            {
+                surface: 'wall',
+                static: true
+            },
+            {
+                surface: 'wall',
+                static: true
+            },
+            {
+                surface: 'wall',
+                static: true
+            },
+            {
+                surface: 'wall',
+                static: true
+            },
+            {
+                surface: 'ground'
+            },
+            {
+                surface: 'wall',
+                static: true
+            },
+            {
+                surface: 'ground'
+            },
+            {
+                surface: 'wall',
+                static: true
+            },
+        ],
+        [
+            {
+                surface: 'ground'
+            },
+            {
+                surface: 'wall',
+                static: true
+            },
+            {
+                surface: 'ground'
+            },
+            {
+                surface: 'ground'
+            },
+            {
+                surface: 'wall',
+                static: true
+            },
+            {
+                surface: 'ground'
+            },
+            {
+                surface: 'wall',
+                static: true
+            },
+            {
+                surface: 'ground'
+            },
+            {
+                surface: 'wall',
+                static: true
+            },
+        ],
+        [
+            {
+                surface: 'ground'
+            },
+            {
+                surface: 'wall',
+                static: true
+            },
+            {
+                surface: 'ground'
+            },
+            {
+                surface: 'ground'
+            },
+            {
+                surface: 'wall',
+                static: true
+            },
+            {
+                surface: 'ground'
+            },
+            {
+                surface: 'ground'
+            },
+            {
+                surface: 'ground'
+            },
+            {
+                surface: 'wall',
+                static: true
             },
         ],
         [
@@ -48,42 +149,24 @@ var level1Data = {
                 surface: 'ground'
             },
             {
-                surface: 'wall'
+                surface: 'wall',
+                static: true
             },
             {
-                surface: 'ground'
+                surface: 'wall',
+                static: true
             },
             {
-                surface: 'wall'
+                surface: 'wall',
+                static: true
             },
             {
-                surface: 'ground'
-            },
-        ],
-        [
-            {
-                surface: 'ground'
+                surface: 'wall',
+                static: true
             },
             {
-                surface: 'ground'
-            },
-            {
-                surface: 'ground'
-            },
-            {
-                surface: 'ground'
-            },
-            {
-                surface: 'wall'
-            },
-            {
-                surface: 'ground'
-            },
-            {
-                surface: 'wall'
-            },
-            {
-                surface: 'ground'
+                surface: 'wall',
+                static: true
             },
         ]
     ]

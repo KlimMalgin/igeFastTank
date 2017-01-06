@@ -63,30 +63,14 @@ var Client = IgeClass.extend({
 							.createViewport()
 							.renderSurface();
 
-						/*var wall = new IgeEntityBox2d()
-				            .translateTo(20, 50, 0)
-				            .width(880)
-				            .height(20)
-				            .drawBounds(true)
-				            .mount(self.scene1)
-				            .box2dBody({
-				                type: 'static',
-				                allowSleep: true,
-				                fixtures: [{
-				                    shape: {
-				                        type: 'rectangle'
-				                    }
-				                }]
-				            })
-				            .depth(10);*/
-
-
 						// Ask the server to send us the tile data
 						ige.network.request('levelData', {}, function (commandName, data) {
 							console.log(' >>> levelData response :: ', data);
 
 							self.renderer.surface.loadMap(data.level);
 							self.renderer.createMapBorders(data.params.width, data.params.height);
+							self.renderer.createStaticItems(data.staticItems);
+
 							// Now set the texture map's cache data to dirty so it will
 							// be redrawn
 							self.renderer.surface.cacheDirty(true);

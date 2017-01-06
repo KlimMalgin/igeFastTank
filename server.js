@@ -47,7 +47,8 @@ var Server = IgeClass.extend({
 						ige.network.define('levelData', function (data, clientId, requestId) {
 							ige.network.response(requestId, {
 								level: self.builderData.getSurface(),
-								params: self.builderData.params()
+								params: self.builderData.params(),
+								staticItems: self.builderData.staticItems
 							});
 						});
 
@@ -66,7 +67,8 @@ var Server = IgeClass.extend({
 						self.renderer = new MapRenderer()
 							.createScenes()
 							.createViewport()
-							.createMapBorders(self.builderData.params().width, self.builderData.params().height);
+							.createMapBorders(self.builderData.params().width, self.builderData.params().height)
+							.createStaticItems(self.builderData.staticItems);
 
 						/*ige.box2d.contactListener(
 							// Listen for when contact's begin

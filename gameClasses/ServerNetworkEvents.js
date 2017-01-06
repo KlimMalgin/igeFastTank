@@ -29,8 +29,8 @@ var ServerNetworkEvents = {
             ige.server.players[clientId] = new Character(clientId)
 
             ige.server.players[clientId]
-                .scale().x(0.7).y(0.7)
-                .translateTo(100, 100, 0)
+                .scale().x(0.6).y(0.6)
+                .translateTo(150, 150, 0)
                 .box2dBody({
                     type: 'dynamic',
                     linearDamping: 1.0,
@@ -47,10 +47,10 @@ var ServerNetworkEvents = {
                         shape: {
                             type: 'polygon',
                             data: new IgePoly2d()
-                                .addPoint(-1.0, -1)
-                                .addPoint(1.0, -1)
-                                .addPoint(1.0, 1.0)
-                                .addPoint(-1.0, 1.0)
+                                .addPoint(-0.9, -0.9)
+                                .addPoint(0.9, -0.9)
+                                .addPoint(0.9, 0.9)
+                                .addPoint(-0.9, 0.9)
                         }
                     }]
                 });
