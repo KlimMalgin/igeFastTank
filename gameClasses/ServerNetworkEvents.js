@@ -69,40 +69,56 @@ var ServerNetworkEvents = {
         _allArrowsUp(clientId);
         ige.server.players[clientId].playerControl.controls.left = true;
         ige.server.players[clientId]._lastDirection = 'left';
+        //ige.server.players[clientId].playerControl.keyboard.press('left');
+        console.log('left Press');
     },
 
     _onPlayerLeftUp: function (data, clientId) {
         ige.server.players[clientId].playerControl.controls.left = false;
+        //ige.server.players[clientId].playerControl.keyboard.release('left');
+        console.log('left Release');
     },
 
     _onPlayerRightDown: function (data, clientId) {
         _allArrowsUp(clientId);
         ige.server.players[clientId].playerControl.controls.right = true;
+        //ige.server.players[clientId].playerControl.keyboard.press('right');
         ige.server.players[clientId]._lastDirection = 'right';
+        console.log('right Press');
     },
 
     _onPlayerRightUp: function (data, clientId) {
         ige.server.players[clientId].playerControl.controls.right = false;
+        //ige.server.players[clientId].playerControl.keyboard.release('right');
+        console.log('right Release');
     },
 
     _onPlayerUpDown: function (data, clientId) {
         _allArrowsUp(clientId);
         ige.server.players[clientId].playerControl.controls.up = true;
+        //ige.server.players[clientId].playerControl.keyboard.press('up');
         ige.server.players[clientId]._lastDirection = 'up';
+        console.log('up Press');
     },
 
     _onPlayerUpUp: function (data, clientId) {
         ige.server.players[clientId].playerControl.controls.up = false;
+        //ige.server.players[clientId].playerControl.keyboard.release('up');
+        console.log('up Release');
     },
 
     _onPlayerDownDown: function (data, clientId) {
         _allArrowsUp(clientId);
         ige.server.players[clientId].playerControl.controls.down = true;
+        //ige.server.players[clientId].playerControl.keyboard.press('down');
         ige.server.players[clientId]._lastDirection = 'down';
+        console.log('down Press');
     },
 
     _onPlayerDownUp: function (data, clientId) {
         ige.server.players[clientId].playerControl.controls.down = false;
+        //ige.server.players[clientId].playerControl.keyboard.release('down');
+        console.log('down Release');
     }
 
 };
@@ -113,5 +129,9 @@ var ServerNetworkEvents = {
         ige.server.players[clientId].playerControl.controls.up = false;
         ige.server.players[clientId].playerControl.controls.down = false;
     }
+
+    /*function setActiveAction(type) {
+        ige.server.players[clientId].playerControl.controls[type] = true;
+    }*/
 
 if (typeof(module) !== 'undefined' && typeof(module.exports) !== 'undefined') { module.exports = ServerNetworkEvents; }

@@ -22,7 +22,28 @@ var PlayerComponent = IgeClass.extend({
             down: false
         };
 
+        this.keyNetEvents = {
+            left: {
+                up: 'playerControlLeftUp',
+                down: 'playerControlLeftDown'
+            },
+            right: {
+                up: 'playerControlRightUp',
+                down: 'playerControlRightDown'
+            },
+            up: {
+                up: 'playerControlUpUp',
+                down: 'playerControlUpDown'
+            },
+            down: {
+                up: 'playerControlDownUp',
+                down: 'playerControlDownDown'
+            }
+        };
+
         this._speed = 0.2;
+
+        this.keyboard = new Keyboard();
 
         // Setup the control system
         ige.input.mapAction('left', ige.input.key.left);
@@ -56,6 +77,8 @@ var PlayerComponent = IgeClass.extend({
      * @param ctx The canvas context to render to.
      */
     _behaviour: function (ctx) {
+        var events = this.playerControl.keyNetEvents;
+
         /* CEXCLUDE */
         if (ige.isServer) {
             if (this.playerControl.controls.left) {
@@ -83,7 +106,9 @@ var PlayerComponent = IgeClass.extend({
                     this.playerControl.controls.left = true;
                     this._lastDirection = 'left';
                     // Tell the server about our control change
-                    ige.network.send('playerControlLeftDown');
+                    ige.network.send(events.left.down);
+                    this.playerControl.keyboard.press('left');
+                    console.log('left Press');
                 }
             } else {
                 if (this.playerControl.controls.left) {
@@ -91,7 +116,10 @@ var PlayerComponent = IgeClass.extend({
                     this.playerControl.controls.left = false;
 
                     // Tell the server about our control change
-                    ige.network.send('playerControlLeftUp');
+                    ige.network.send(events.left.up);
+                    this.playerControl.keyboard.release('left');
+                    this.playerControl.setActiveKeyboardAction(this.playerControl.keyboard.hasAction());
+                    console.log('left Release');
                 }
             }
 
@@ -101,7 +129,9 @@ var PlayerComponent = IgeClass.extend({
                     this.playerControl.controls.right = true;
                     this._lastDirection = 'right';
                     // Tell the server about our control change
-                    ige.network.send('playerControlRightDown');
+                    ige.network.send(events.right.down);
+                    this.playerControl.keyboard.press('right');
+                    console.log('right Press');
                 }
             } else {
                 if (this.playerControl.controls.right) {
@@ -109,7 +139,10 @@ var PlayerComponent = IgeClass.extend({
                     this.playerControl.controls.right = false;
 
                     // Tell the server about our control change
-                    ige.network.send('playerControlRightUp');
+                    ige.network.send(events.right.up);
+                    this.playerControl.keyboard.release('right');
+                    this.playerControl.setActiveKeyboardAction(this.playerControl.keyboard.hasAction());
+                    console.log('right Release');
                 }
             }
 
@@ -119,7 +152,9 @@ var PlayerComponent = IgeClass.extend({
                     this.playerControl.controls.up = true;
                     this._lastDirection = 'up';
                     // Tell the server about our control change
-                    ige.network.send('playerControlUpDown');
+                    ige.network.send(events.up.down);
+                    this.playerControl.keyboard.press('up');
+                    console.log('up Press');
                 }
             } else {
                 if (this.playerControl.controls.up) {
@@ -127,7 +162,10 @@ var PlayerComponent = IgeClass.extend({
                     this.playerControl.controls.up = false;
 
                     // Tell the server about our control change
-                    ige.network.send('playerControlUpUp');
+                    ige.network.send(events.up.up);
+                    this.playerControl.keyboard.release('up');
+                    this.playerControl.setActiveKeyboardAction(this.playerControl.keyboard.hasAction());
+                    console.log('up Release');
                 }
             }
 
@@ -137,7 +175,9 @@ var PlayerComponent = IgeClass.extend({
                     this.playerControl.controls.down = true;
                     this._lastDirection = 'down';
                     // Tell the server about our control change
-                    ige.network.send('playerControlDownDown');
+                    ige.network.send(events.down.down);
+                    this.playerControl.keyboard.press('down');
+                    console.log('down Press');
                 }
             } else {
                 if (this.playerControl.controls.down) {
@@ -145,11 +185,27 @@ var PlayerComponent = IgeClass.extend({
                     this.playerControl.controls.down = false;
 
                     // Tell the server about our control change
-                    ige.network.send('playerControlDownUp');
+                    ige.network.send(events.down.up);
+                    this.playerControl.keyboard.release('down');
+                    this.playerControl.setActiveKeyboardAction(this.playerControl.keyboard.hasAction());
+                    console.log('down Release');
                 }
             }
         }
+    },
+
+    /**
+     * Если есть активное действие (нажатая клавиша) - зафиксируем это действие
+     * как текущее и отправим соответствующую команду серверу
+     * @param {Object} action Объект действия, содержащий тип этого действия
+     */
+    setActiveKeyboardAction: function (action) {
+        if (action) {
+            this.controls[action.type] = true;
+            ige.network.send(this.keyNetEvents[action.type].down);
+        }
     }
+
 });
 
 if (typeof(module) !== 'undefined' && typeof(module.exports) !== 'undefined') { module.exports = PlayerComponent; }

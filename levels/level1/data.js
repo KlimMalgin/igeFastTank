@@ -75,6 +75,50 @@ var level1Data = {
                 surface: 'ground'
             },
             {
+                surface: 'ground'
+            },
+            {
+                surface: 'ground'
+            },
+            {
+                surface: 'ground'
+            },
+            {
+                surface: 'wall',
+                static: true
+            },
+            {
+                surface: 'ground'
+            },
+            {
+                surface: 'wall',
+                static: true
+            },
+            {
+                surface: 'ground'
+            },
+            {
+                surface: 'wall',
+                static: true
+            },
+        ],
+        [
+            {
+                surface: 'wall',
+                static: true
+            },
+            {
+                surface: 'wall',
+                static: true
+            },
+            {
+                surface: 'wall',
+                static: true
+            },
+            {
+                surface: 'ground'
+            },
+            {
                 surface: 'wall',
                 static: true
             },
@@ -83,17 +127,6 @@ var level1Data = {
             },
             {
                 surface: 'ground'
-            },
-            {
-                surface: 'wall',
-                static: true
-            },
-            {
-                surface: 'ground'
-            },
-            {
-                surface: 'wall',
-                static: true
             },
             {
                 surface: 'ground'
@@ -108,42 +141,11 @@ var level1Data = {
                 surface: 'ground'
             },
             {
-                surface: 'wall',
-                static: true
-            },
-            {
-                surface: 'ground'
-            },
-            {
                 surface: 'ground'
             },
             {
                 surface: 'wall',
                 static: true
-            },
-            {
-                surface: 'ground'
-            },
-            {
-                surface: 'ground'
-            },
-            {
-                surface: 'ground'
-            },
-            {
-                surface: 'wall',
-                static: true
-            },
-        ],
-        [
-            {
-                surface: 'ground'
-            },
-            {
-                surface: 'ground'
-            },
-            {
-                surface: 'ground'
             },
             {
                 surface: 'ground'
