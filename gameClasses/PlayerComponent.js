@@ -118,7 +118,7 @@ var PlayerComponent = IgeClass.extend({
                     // Tell the server about our control change
                     ige.network.send(events.left.up);
                     this.playerControl.keyboard.release('left');
-                    this.playerControl.setActiveKeyboardAction(this.playerControl.keyboard.hasAction());
+                    this.playerControl.setActiveKeyboardAction.call(this, this.playerControl.keyboard.hasAction());
                     console.log('left Release');
                 }
             }
@@ -141,7 +141,7 @@ var PlayerComponent = IgeClass.extend({
                     // Tell the server about our control change
                     ige.network.send(events.right.up);
                     this.playerControl.keyboard.release('right');
-                    this.playerControl.setActiveKeyboardAction(this.playerControl.keyboard.hasAction());
+                    this.playerControl.setActiveKeyboardAction.call(this, this.playerControl.keyboard.hasAction());
                     console.log('right Release');
                 }
             }
@@ -164,7 +164,7 @@ var PlayerComponent = IgeClass.extend({
                     // Tell the server about our control change
                     ige.network.send(events.up.up);
                     this.playerControl.keyboard.release('up');
-                    this.playerControl.setActiveKeyboardAction(this.playerControl.keyboard.hasAction());
+                    this.playerControl.setActiveKeyboardAction.call(this, this.playerControl.keyboard.hasAction());
                     console.log('up Release');
                 }
             }
@@ -187,7 +187,7 @@ var PlayerComponent = IgeClass.extend({
                     // Tell the server about our control change
                     ige.network.send(events.down.up);
                     this.playerControl.keyboard.release('down');
-                    this.playerControl.setActiveKeyboardAction(this.playerControl.keyboard.hasAction());
+                    this.playerControl.setActiveKeyboardAction.call(this, this.playerControl.keyboard.hasAction());
                     console.log('down Release');
                 }
             }
@@ -201,8 +201,9 @@ var PlayerComponent = IgeClass.extend({
      */
     setActiveKeyboardAction: function (action) {
         if (action) {
-            this.controls[action.type] = true;
-            ige.network.send(this.keyNetEvents[action.type].down);
+            this._lastDirection = action.type;
+            this.playerControl.controls[action.type] = true;
+            ige.network.send(this.playerControl.keyNetEvents[action.type].down);
         }
     }
 
