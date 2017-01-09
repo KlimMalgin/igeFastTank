@@ -65,6 +65,53 @@ var ServerNetworkEvents = {
         }
     },
 
+    _onPlayerFired: function (data, clientId) {
+        var bullet = new Bullet(),
+            bulletId = bullet.id();
+
+        ige.server.bullets[bulletId] = bullet;
+
+        ige.server.bullets[bulletId]
+            .scale().x(0.6).y(0.6)
+            .translateTo(400, 400, 0)
+            .box2dBody({
+                type: 'dynamic',
+                linearDamping: 1.0,
+                angularDamping: 1.0,
+                allowSleep: false,
+                bullet: false,
+                gravitic: false,
+                fixedRotation: false,
+                fixtures: [{
+                    density: 1.0,
+                    friction: 0,
+                    restitution: 1.0,
+                    //shape: 'polygon',
+                    shape: {
+                        type: 'polygon',
+                        data: new IgePoly2d()
+                            .addPoint(-0.2, -0.2)
+                            .addPoint(0.2, -0.2)
+                            .addPoint(0.2, 0.2)
+                            .addPoint(-0.2, 0.2)
+                    }
+                }]
+            })
+            .streamMode(1)
+            .mount(ige.server.renderer.gameScene);
+
+        // Tell the client to track bullet entity
+        ige.network.send('playerFired', bulletId, clientId);
+    },
+
+    _onBulletDestroy: function (bulletId) {
+        console.log('>>>> Уничтожаем патрон %o', bulletId);
+        if (ige.server.bullets[bulletId]) {
+            ige.server.bullets[bulletId].destroy();
+            delete ige.server.bullets[bulletId];
+        }
+    },
+
     _onPlayerLeftDown: function (data, clientId) {
         _allArrowsUp(clientId);
         ige.server.players[clientId].playerControl.controls.left = true;

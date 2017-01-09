@@ -47,7 +47,8 @@ var Client = IgeClass.extend({
 					// got a username or something?
 					ige.network.start('http://localhost:2000', function () {
 						// Setup the network command listeners
-						ige.network.define('playerEntity', self._onPlayerEntity); // Defined in ./gameClasses/ClientNetworkEvents.js
+						ige.network.define('playerEntity', self._onPlayerEntity);
+						ige.network.define('playerFired', self._onPlayerFired);
 
 						// Setup the network stream handler
 						ige.network.addComponent(IgeStreamComponent)

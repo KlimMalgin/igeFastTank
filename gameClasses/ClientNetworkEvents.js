@@ -39,6 +39,47 @@ var ClientNetworkEvents = {
                 }
             });
         }
+    },
+
+    _onPlayerFired: function (data, clientId) {
+        console.log('>>>> Создаем патрон!!! <<<< %o %o', data, clientId);
+        if (ige.$(data)) {
+
+            console.log('>>>> Сущность получена ige.$(data) IS TRUE');
+            // Add the player control component
+            //ige.$(data).addComponent(PlayerComponent);
+
+            // Track our player with the camera
+            //ige.client.renderer.viewport.camera.trackTranslate(ige.$(data), 50);
+        } else {
+            // The client has not yet received the entity via the network
+            // stream so lets ask the stream to tell us when it creates a
+            // new entity and then check if that entity is the one we
+            // should be tracking!
+            var self = this;
+
+            console.log('>>>> Сущность НЕ получена. Создаем слушателя для отложенного создания');
+
+            self._eventListener = ige.network.stream.on('entityCreated', function (entity) {
+                console.log('>>>> Отработал слушатель отложенного создания');
+                if (entity.id() === data) {
+                    console.log('>>>> Идентификаторы совпадают');
+                    // Add the player control component
+                    //ige.$(data).addComponent(PlayerComponent);
+
+                    // Tell the camera to track out player entity
+                    //ige.client.renderer.viewport.camera.trackTranslate(ige.$(data), 50);
+
+                    // Turn off the listener for this event now that we
+                    // have found and started tracking our player entity
+                    ige.network.stream.off('entityCreated', self._eventListener, function (result) {
+                        if (!result) {
+                            this.log('Could not disable event listener!', 'warning');
+                        }
+                    });
+                }
+            });
+        }
     }
 
 };

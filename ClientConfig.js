@@ -4,6 +4,7 @@ var igeClientConfig = {
 		//'./gameClasses/MyClassFile.js',
 
         './gameClasses/utils/Keyboard.js',
+        './gameClasses/ammo/Bullet.js',
         './gameClasses/ClientNetworkEvents.js',
         './gameClasses/Character.js',
         './gameClasses/PlayerComponent.js',

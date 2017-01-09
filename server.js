@@ -9,6 +9,9 @@ var Server = IgeClass.extend({
 		// Define an object to hold references to our player entities
 		this.players = {};
 
+		// Объект со ссылками на сущьности снарядов
+		this.bullets = {};
+
 		this.buildings = {};
 
 		this.builderData = new Builder(level1Data);
@@ -33,6 +36,9 @@ var Server = IgeClass.extend({
 					if (success) {
 
 						ige.network.define('playerEntity', self._onPlayerEntity);
+						ige.network.define('playerFired', self._onPlayerFired);
+
+						ige.network.define('bulletDestroy', self._onBulletDestroy);
 
 						ige.network.define('playerControlLeftDown', self._onPlayerLeftDown);
 						ige.network.define('playerControlRightDown', self._onPlayerRightDown);

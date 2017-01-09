@@ -18,7 +18,6 @@ var Character = IgeEntityBox2d.extend({
             self.addComponent(IgeAnimationComponent)
                 .depth(1);
 
-
             //this._characterTexture = new IgeCellSheet('./assets/vx_chara02_c.png', 12, 8);
             this._characterTexture = new IgeCellSheet('./assets/tanks.transparent.png', 8, 4);
 

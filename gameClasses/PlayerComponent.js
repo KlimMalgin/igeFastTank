@@ -60,14 +60,10 @@ var PlayerComponent = IgeClass.extend({
 
     _keyUp: function (event, keyCode) {
         if (keyCode === ige.input.key.space) {
-            // Change the character
-            this._entity._characterType++;
-
-            if (this._entity._characterType > 1) {
-                this._entity._characterType = 0;
-            }
-
-            this._entity.setType(this._entity._characterType);
+            /**
+             * TODO: Тут генерим Bullet
+             */
+            ige.network.send('playerFired');
         }
     },
 
