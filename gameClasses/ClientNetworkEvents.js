@@ -80,6 +80,14 @@ var ClientNetworkEvents = {
                 }
             });
         }
+    },
+
+    _onBulletDestroyProcess: function (data) {
+        console.log('onBulletDestroyProcess на Клиенте! ', arguments);
+        var bullet = ige.$(data);
+        if (bullet) {
+            bullet.runAnimation('bang');
+        }
     }
 
 };

@@ -59,11 +59,13 @@ var PlayerComponent = IgeClass.extend({
     },
 
     _keyUp: function (event, keyCode) {
-        if (keyCode === ige.input.key.space) {
-            /**
-             * TODO: Тут генерим Bullet
-             */
-            ige.network.send('playerFired');
+        if (ige.isClient) {
+            if (keyCode === ige.input.key.space) {
+                /**
+                 * TODO: Тут генерим Bullet
+                 */
+                ige.network.send('playerFired');
+            }
         }
     },
 

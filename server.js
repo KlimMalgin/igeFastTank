@@ -6,6 +6,8 @@ var Server = IgeClass.extend({
 		var self = this;
 		ige.timeScale(1);
 
+		this.collisions = new CollisionManager();
+
 		// Define an object to hold references to our player entities
 		this.players = {};
 
@@ -39,6 +41,7 @@ var Server = IgeClass.extend({
 						ige.network.define('playerFired', self._onPlayerFired);
 
 						ige.network.define('bulletDestroy', self._onBulletDestroy);
+						ige.network.define('bulletDestroyProcess', self._onBulletDestroyProcess);
 
 						ige.network.define('playerControlLeftDown', self._onPlayerLeftDown);
 						ige.network.define('playerControlRightDown', self._onPlayerRightDown);
@@ -76,34 +79,7 @@ var Server = IgeClass.extend({
 							.createMapBorders(self.builderData.params().width, self.builderData.params().height)
 							.createStaticItems(self.builderData.staticItems);
 
-						ige.box2d.contactListener(
-							// Listen for when contact's begin
-							function (contact) {
-								console.log('Contact begins between ', contact.igeEntityA()._type, ' ', contact.igeEntityA()._id, 'and', contact.igeEntityB()._type, ' ', contact.igeEntityB()._id);
-								var entityA = contact.igeEntityA(),
-									entityB = contact.igeEntityB();
-
-								entityA.onCollision && entityA.onCollision.call(entityA);
-								entityB.onCollision && entityB.onCollision.call(entityB);
-
-								//ige.network.send('playerEntity', ige.server.players[clientId].id(), clientId);
-							},
-							// Listen for when contact's end
-							function (contact) {
-								console.log('Contact ends between', contact.igeEntityA()._type, ' ', contact.igeEntityA()._id, 'and', contact.igeEntityB()._type, ' ', contact.igeEntityB()._id);
-							},
-							// Handle pre-solver events
-							function (contact) {
-								// For fun, lets allow ball1 and square2 to pass through each other
-								if (contact.igeEitherId('ball1') && contact.igeEitherId('square2')) {
-									// Cancel the contact
-									contact.SetEnabled(false);
-								}
-
-								// You can also check an entity by it's category using igeEitherCategory('categoryName')
-							}
-						);
-
+						self.collisions.listen();
 
 					}
 				});

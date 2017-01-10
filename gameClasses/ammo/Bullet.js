@@ -52,10 +52,11 @@ var Bullet = IgeEntityBox2d.extend({
      */
     runAnimation: function (type) {
         var self = this;
+
         type = type ? type : 'default';
         //this.animation.select(type);
         this.animation.start(type, {
-            onLoop: function (anim) {
+            onLoop: function () {
                 this.stop();
                 ige.network.send('bulletDestroy', self.id());
                 //self.destroy();
@@ -68,10 +69,14 @@ var Bullet = IgeEntityBox2d.extend({
     /**
      * Логика коллизии для данной сущности
      */
-    onCollision: function () {
+    onCollision: function (entity) {
         this.velocity.x(0);
         this.velocity.y(0);
-        this.runAnimation('bang');
+
+        if (ige.isServer) {
+            ige.network.send('bulletDestroyProcess', entity.id());
+        }
+        //this.runAnimation('bang');
     },
 
     /*update: function (ctx, tickDelta) {

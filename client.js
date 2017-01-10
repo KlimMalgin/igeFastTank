@@ -49,6 +49,7 @@ var Client = IgeClass.extend({
 						// Setup the network command listeners
 						ige.network.define('playerEntity', self._onPlayerEntity);
 						ige.network.define('playerFired', self._onPlayerFired);
+						ige.network.define('bulletDestroyProcess', self._onBulletDestroyProcess);
 
 						// Setup the network stream handler
 						ige.network.addComponent(IgeStreamComponent)
@@ -76,7 +77,6 @@ var Client = IgeClass.extend({
 							// be redrawn
 							self.renderer.surface.cacheDirty(true);
 						});
-
 
 						// We don't create any entities here because in this example the entities
 						// are created server-side and then streamed to the clients. If an entity

@@ -112,6 +112,10 @@ var ServerNetworkEvents = {
         }
     },
 
+    _onBulletDestroyProcess: function () {
+        console.log('onBulletDestroyProcess на Сервере!');
+    },
+
     _onPlayerLeftDown: function (data, clientId) {
         _allArrowsUp(clientId);
         ige.server.players[clientId].playerControl.controls.left = true;

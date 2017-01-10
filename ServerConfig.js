@@ -3,6 +3,7 @@ var config = {
 		//{name: 'MyClassName', path: './gameClasses/MyClassFileName'},
         //{name: 'ExampleEntity', path: './gameClasses/ExampleEntity'},
         {name: 'Keyboard', path: './gameClasses/utils/Keyboard'},
+        {name: 'CollisionManager', path: './gameClasses/utils/CollisionManager'},
         {name: 'Bullet', path: './gameClasses/ammo/Bullet'},
         {name: 'ServerNetworkEvents', path: './gameClasses/ServerNetworkEvents'},
         {name: 'Character', path: './gameClasses/Character'},
