@@ -76,15 +76,21 @@ var Server = IgeClass.extend({
 							.createMapBorders(self.builderData.params().width, self.builderData.params().height)
 							.createStaticItems(self.builderData.staticItems);
 
-						/*ige.box2d.contactListener(
+						ige.box2d.contactListener(
 							// Listen for when contact's begin
 							function (contact) {
-								console.log('Contact begins between', contact.igeEntityA()._id, 'and', contact.igeEntityB()._id);
+								console.log('Contact begins between ', contact.igeEntityA()._type, ' ', contact.igeEntityA()._id, 'and', contact.igeEntityB()._type, ' ', contact.igeEntityB()._id);
+								var entityA = contact.igeEntityA(),
+									entityB = contact.igeEntityB();
+
+								entityA.onCollision && entityA.onCollision.call(entityA);
+								entityB.onCollision && entityB.onCollision.call(entityB);
+
 								//ige.network.send('playerEntity', ige.server.players[clientId].id(), clientId);
 							},
 							// Listen for when contact's end
 							function (contact) {
-								console.log('Contact ends between', contact.igeEntityA()._id, 'and', contact.igeEntityB()._id);
+								console.log('Contact ends between', contact.igeEntityA()._type, ' ', contact.igeEntityA()._id, 'and', contact.igeEntityB()._type, ' ', contact.igeEntityB()._id);
 							},
 							// Handle pre-solver events
 							function (contact) {
@@ -96,7 +102,7 @@ var Server = IgeClass.extend({
 
 								// You can also check an entity by it's category using igeEitherCategory('categoryName')
 							}
-						);*/
+						);
 
 
 					}

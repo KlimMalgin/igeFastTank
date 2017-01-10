@@ -10,6 +10,7 @@ var Character = IgeEntityBox2d.extend({
             this.addComponent(IgeVelocityComponent);
         }
 
+        this._type = 'tank';
         this._lastDirection = 'up';
         this.__tempLastDirection = '';
 
@@ -33,6 +34,7 @@ var Character = IgeEntityBox2d.extend({
         this.selectedAnimation = 'walkUp';
 
         this._lastTranslate = this._translate.clone();
+
     },
 
     /**
@@ -68,6 +70,10 @@ var Character = IgeEntityBox2d.extend({
         this._characterType = type;
 
         return this;
+    },
+
+    onCollision: function () {
+
     },
 
     update: function (ctx, tickDelta) {

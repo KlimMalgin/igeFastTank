@@ -8,10 +8,10 @@ var Bullet = IgeEntityBox2d.extend({
 
         if (ige.isServer) {
             this.addComponent(IgeVelocityComponent);
+            this.velocity.x(-0.2);
         }
 
-        this._lastDirection = 'up';
-        this.__tempLastDirection = '';
+        this._type = 'bullet';
 
         // Load the character texture file
         if (ige.isClient) {
@@ -28,23 +28,31 @@ var Bullet = IgeEntityBox2d.extend({
                     .dimensionsFromCell();
 
                 self.defineAnimations();
-                self.runAnimation('bang');
+                //self.runAnimation();
             }, false, true);
         }
 
     },
 
+    /**
+     * Создает набор анимаций для патрона
+     */
     defineAnimations: function () {
         this.animation.define('default', [22], 1, -1)
             .animation.define('bang', [18, 19, 20], 12, -1)
             .cell(22);
+
+        return this;
     },
 
     /**
-     * Создает набор анимаций для патрона
+     * Запускает указанную анимацию
+     * @chainable
+     * @param  {String} type Тип анимации
      */
     runAnimation: function (type) {
         var self = this;
+        type = type ? type : 'default';
         //this.animation.select(type);
         this.animation.start(type, {
             onLoop: function (anim) {
@@ -55,6 +63,15 @@ var Bullet = IgeEntityBox2d.extend({
         });
 
         return this;
+    },
+
+    /**
+     * Логика коллизии для данной сущности
+     */
+    onCollision: function () {
+        this.velocity.x(0);
+        this.velocity.y(0);
+        this.runAnimation('bang');
     },
 
     /*update: function (ctx, tickDelta) {
