@@ -35,6 +35,40 @@ var Bullet = IgeEntityBox2d.extend({
     },
 
     /**
+     * Задает направление движения патрона
+     * @param {String} direction Направление движения {'up'|'down'|'left'|'right'}
+     */
+    setDirection: function (direction) {
+        var BULLET_SPEED = 0.5;
+
+        switch (direction) {
+
+            case 'up':
+                this.velocity.x(0);
+                this.velocity.y(-BULLET_SPEED);
+                break;
+
+            case 'down':
+                this.velocity.x(0);
+                this.velocity.y(BULLET_SPEED);
+                break;
+
+            case 'left':
+                this.velocity.x(-BULLET_SPEED);
+                this.velocity.y(0);
+                break;
+
+            case 'right':
+                this.velocity.x(BULLET_SPEED);
+                this.velocity.y(0);
+                break;
+
+        }
+
+        return this;
+    },
+
+    /**
      * Создает набор анимаций для патрона
      */
     defineAnimations: function () {

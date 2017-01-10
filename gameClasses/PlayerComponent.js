@@ -52,19 +52,28 @@ var PlayerComponent = IgeClass.extend({
         ige.input.mapAction('down', ige.input.key.down);
 
         // Listen for the key up event
-        ige.input.on('keyUp', function (event, keyCode) { self._keyUp(event, keyCode); });
+        ige.input.on('keyUp', function (event, keyCode) {
+            //self._keyUp(event, keyCode);
+            self._fire(event, keyCode, self._entity);
+        });
 
         // Add the playerComponent behaviour to the entity
         this._entity.addBehaviour('playerComponent_behaviour', this._behaviour);
     },
 
-    _keyUp: function (event, keyCode) {
+    /*_keyUp: function (event, keyCode) {
         if (ige.isClient) {
             if (keyCode === ige.input.key.space) {
-                /**
-                 * TODO: Тут генерим Bullet
-                 */
                 ige.network.send('playerFired');
+            }
+        }
+    },*/
+
+    _fire: function (event, keyCode, entity) {
+        if (ige.isClient) {
+            if (keyCode === ige.input.key.space) {
+                // Генерим Bullet
+                ige.network.send('playerFired', entity._lastDirection);
             }
         }
     },
