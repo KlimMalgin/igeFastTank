@@ -72,9 +72,9 @@ var ServerNetworkEvents = {
         ige.server.bullets[bulletId] = bullet;
 
         ige.server.bullets[bulletId]
-            .setDirection(data)
+            .setDirection(data.direction)
             .scale().x(0.6).y(0.6)
-            .translateTo(400, 400, 0)
+            .translateTo(data.position.x, data.position.y, 0)
             .box2dBody({
                 type: 'dynamic',
                 linearDamping: 1.0,

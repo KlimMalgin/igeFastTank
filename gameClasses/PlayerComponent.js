@@ -54,7 +54,7 @@ var PlayerComponent = IgeClass.extend({
         // Listen for the key up event
         ige.input.on('keyUp', function (event, keyCode) {
             //self._keyUp(event, keyCode);
-            self._fire(event, keyCode, self._entity);
+            self._fire.call(self, event, keyCode, self._entity, self._bulletStartPosition(self._entity));
         });
 
         // Add the playerComponent behaviour to the entity
@@ -69,13 +69,60 @@ var PlayerComponent = IgeClass.extend({
         }
     },*/
 
-    _fire: function (event, keyCode, entity) {
+    _fire: function (event, keyCode, entity, position) {
         if (ige.isClient) {
             if (keyCode === ige.input.key.space) {
                 // Генерим Bullet
-                ige.network.send('playerFired', entity._lastDirection);
+                //debugger;
+                console.log(entity.aabb(), entity.aabb(true));
+                ige.network.send('playerFired', {
+                    direction: entity._lastDirection,
+                    position: position
+                });
             }
         }
+    },
+
+    _bulletStartPosition: function (entity) {
+        //entity.bounds2d()
+        //IgeClass {x: 84, y: 84, _floor: false, x2: 42, y2: 42}
+        //--
+        //entity.worldPosition()
+        // _floor : false
+        // x : 27.15
+        // x2 : 13.575
+        // y : 380.4
+        // y2 : 190.2
+        // z : 0
+        // z2 : 0
+        //
+        var bounds = entity.bounds2d(),
+            position = entity.worldPosition(),
+            result = { x: 0, y: 0 };
+
+        switch(entity._lastDirection) {
+            case 'up':
+                result.x = position.x;
+                result.y = position.y - bounds.y2;
+                break;
+
+            case 'down':
+                result.x = position.x;
+                result.y = position.y + bounds.y2;
+                break;
+
+            case 'left':
+                result.x = position.x - bounds.x2;
+                result.y = position.y;
+                break;
+
+            case 'right':
+                result.x = position.x + bounds.x2;
+                result.y = position.y;
+                break;
+        }
+
+        return result;
     },
 
     /**
