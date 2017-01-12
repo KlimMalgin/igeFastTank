@@ -12,12 +12,12 @@ var Bullet = IgeEntityBox2d.extend({
         }
 
         this._type = 'bullet';
+        this._parentId = '';
 
         // Load the character texture file
         if (ige.isClient) {
             self.addComponent(IgeAnimationComponent)
                 .depth(1);
-
 
             //this._characterTexture = new IgeCellSheet('./assets/vx_chara02_c.png', 12, 8);
             this._characterTexture = new IgeCellSheet('./assets/tanks.transparent.png', 8, 4);
@@ -68,6 +68,16 @@ var Bullet = IgeEntityBox2d.extend({
         return this;
     },
 
+    setParentId: function (parentId) {
+        console.log('setParentId: ', parentId);
+        this._parentId = parentId;
+        return this;
+    },
+
+    getParentId: function () {
+        return this._parentId;
+    },
+
     /**
      * Создает набор анимаций для патрона
      */
@@ -104,13 +114,9 @@ var Bullet = IgeEntityBox2d.extend({
      * Логика коллизии для данной сущности
      */
     onCollision: function (entity) {
-        this.velocity.x(0);
-        this.velocity.y(0);
-
         if (ige.isServer) {
             ige.network.send('bulletDestroyProcess', entity.id());
         }
-        //this.runAnimation('bang');
     },
 
     /*update: function (ctx, tickDelta) {

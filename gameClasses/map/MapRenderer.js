@@ -68,13 +68,13 @@ var MapRenderer = IgeClass.extend({
         // TODO: magic numbers
 
         // top border
-        _wallCreator(width, 20, width / 2, -10).mount(this.gameScene);
+        _wallCreator(width, 60, width / 2, -30).mount(this.gameScene);
         // bottom border
-        _wallCreator(width, 20, width / 2, height + 10).mount(this.gameScene);
+        _wallCreator(width, 60, width / 2, height + 30).mount(this.gameScene);
         // left border
-        _wallCreator(20, height, -10, height / 2).mount(this.gameScene);
+        _wallCreator(60, height, -30, height / 2).mount(this.gameScene);
         // right border
-        _wallCreator(20, height, width + 10, height / 2).mount(this.gameScene);
+        _wallCreator(60, height, width + 30, height / 2).mount(this.gameScene);
 
 
         return this;
@@ -87,7 +87,7 @@ function _wallCreator(width, height, x, y) {
         .translateTo(x, y, 0)
         .width(width)
         .height(height)
-        .drawBounds(false)
+        .drawBounds(true)
         .box2dBody({
             type: 'static',
             allowSleep: true,

@@ -28,29 +28,31 @@ var ServerNetworkEvents = {
         if (!ige.server.players[clientId]) {
             ige.server.players[clientId] = new Character(clientId)
 
+            ige.server.players[clientId].box2dNoDebug(true);
             ige.server.players[clientId]
                 .scale().x(0.6).y(0.6)
                 .translateTo(150, 150, 0)
+                .drawBounds(true)
                 .box2dBody({
                     type: 'dynamic',
-                    linearDamping: 1.0,
-                    angularDamping: 1.0,
-                    allowSleep: false,
+                    linearDamping: 0.0,
+                    angularDamping: 0.1,
+                    allowSleep: true,
                     bullet: false,
                     gravitic: false,
                     fixedRotation: false,
                     fixtures: [{
                         density: 1.0,
-                        friction: 0,
-                        restitution: 1.0,
+                        friction: 0.5,
+                        restitution: 0.2,
                         //shape: 'polygon',
                         shape: {
-                            type: 'polygon',
-                            data: new IgePoly2d()
+                            type: 'rectangle',   //'polygon',
+                            /*data: new IgePoly2d()
                                 .addPoint(-0.9, -0.9)
                                 .addPoint(0.9, -0.9)
                                 .addPoint(0.9, 0.9)
-                                .addPoint(-0.9, 0.9)
+                                .addPoint(-0.9, 0.9)*/
                         }
                     }]
                 });
@@ -69,32 +71,35 @@ var ServerNetworkEvents = {
         var bullet = new Bullet(),
             bulletId = bullet.id();
 
+        bullet.setParentId(data.parentId);
         ige.server.bullets[bulletId] = bullet;
 
+        ige.server.bullets[bulletId].box2dNoDebug(true);
         ige.server.bullets[bulletId]
             .setDirection(data.direction)
             .scale().x(0.6).y(0.6)
             .translateTo(data.position.x, data.position.y, 0)
+            .drawBounds(true)
             .box2dBody({
                 type: 'dynamic',
-                linearDamping: 1.0,
-                angularDamping: 1.0,
-                allowSleep: false,
-                bullet: false,
+                linearDamping: 0.0,
+                angularDamping: 0.1,
+                allowSleep: true,
+                bullet: true,
                 gravitic: false,
                 fixedRotation: false,
                 fixtures: [{
                     density: 1.0,
-                    friction: 0,
-                    restitution: 1.0,
+                    friction: 0.5,
+                    restitution: 0.2,
                     //shape: 'polygon',
                     shape: {
-                        type: 'polygon',
-                        data: new IgePoly2d()
+                        type: 'rectangle',  // 'polygon',
+                        /*data: new IgePoly2d()
                             .addPoint(-0.2, -0.2)
                             .addPoint(0.2, -0.2)
                             .addPoint(0.2, 0.2)
-                            .addPoint(-0.2, 0.2)
+                            .addPoint(-0.2, 0.2)*/
                     }
                 }]
             })
@@ -114,63 +119,47 @@ var ServerNetworkEvents = {
     },
 
     _onBulletDestroyProcess: function () {
-        console.log('onBulletDestroyProcess на Сервере!');
+        //console.log('onBulletDestroyProcess на Сервере!');
     },
 
     _onPlayerLeftDown: function (data, clientId) {
         _allArrowsUp(clientId);
         ige.server.players[clientId].playerControl.controls.left = true;
         ige.server.players[clientId]._lastDirection = 'left';
-        //ige.server.players[clientId].playerControl.keyboard.press('left');
-        console.log('left Press');
     },
 
     _onPlayerLeftUp: function (data, clientId) {
         ige.server.players[clientId].playerControl.controls.left = false;
-        //ige.server.players[clientId].playerControl.keyboard.release('left');
-        console.log('left Release');
     },
 
     _onPlayerRightDown: function (data, clientId) {
         _allArrowsUp(clientId);
         ige.server.players[clientId].playerControl.controls.right = true;
-        //ige.server.players[clientId].playerControl.keyboard.press('right');
         ige.server.players[clientId]._lastDirection = 'right';
-        console.log('right Press');
     },
 
     _onPlayerRightUp: function (data, clientId) {
         ige.server.players[clientId].playerControl.controls.right = false;
-        //ige.server.players[clientId].playerControl.keyboard.release('right');
-        console.log('right Release');
     },
 
     _onPlayerUpDown: function (data, clientId) {
         _allArrowsUp(clientId);
         ige.server.players[clientId].playerControl.controls.up = true;
-        //ige.server.players[clientId].playerControl.keyboard.press('up');
         ige.server.players[clientId]._lastDirection = 'up';
-        console.log('up Press');
     },
 
     _onPlayerUpUp: function (data, clientId) {
         ige.server.players[clientId].playerControl.controls.up = false;
-        //ige.server.players[clientId].playerControl.keyboard.release('up');
-        console.log('up Release');
     },
 
     _onPlayerDownDown: function (data, clientId) {
         _allArrowsUp(clientId);
         ige.server.players[clientId].playerControl.controls.down = true;
-        //ige.server.players[clientId].playerControl.keyboard.press('down');
         ige.server.players[clientId]._lastDirection = 'down';
-        console.log('down Press');
     },
 
     _onPlayerDownUp: function (data, clientId) {
         ige.server.players[clientId].playerControl.controls.down = false;
-        //ige.server.players[clientId].playerControl.keyboard.release('down');
-        console.log('down Release');
     }
 
 };
@@ -182,8 +171,5 @@ var ServerNetworkEvents = {
         ige.server.players[clientId].playerControl.controls.down = false;
     }
 
-    /*function setActiveAction(type) {
-        ige.server.players[clientId].playerControl.controls[type] = true;
-    }*/
 
 if (typeof(module) !== 'undefined' && typeof(module.exports) !== 'undefined') { module.exports = ServerNetworkEvents; }

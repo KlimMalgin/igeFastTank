@@ -5,7 +5,7 @@ var level1Data = {
     tileSize: 60,
     spriteHash: {
         ground: [0, 1],
-        wall: [0, 29]
+        wall: [0, 31]
     },
     map: [
         [

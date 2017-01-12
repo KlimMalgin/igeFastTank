@@ -86,6 +86,7 @@ var ClientNetworkEvents = {
         console.log('onBulletDestroyProcess на Клиенте! ', arguments);
         var bullet = ige.$(data);
         if (bullet) {
+            bullet.velocityTo(0, 0, 0);
             bullet.runAnimation('bang');
         }
     }

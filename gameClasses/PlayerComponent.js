@@ -74,10 +74,11 @@ var PlayerComponent = IgeClass.extend({
             if (keyCode === ige.input.key.space) {
                 // Генерим Bullet
                 //debugger;
-                console.log(entity.aabb(), entity.aabb(true));
+                //console.log(entity.aabb(), entity.aabb(true));
                 ige.network.send('playerFired', {
                     direction: entity._lastDirection,
-                    position: position
+                    position: position,
+                    parentId: entity.id()
                 });
             }
         }
