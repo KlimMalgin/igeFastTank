@@ -28,31 +28,30 @@ var ServerNetworkEvents = {
         if (!ige.server.players[clientId]) {
             ige.server.players[clientId] = new Character(clientId)
 
-            ige.server.players[clientId].box2dNoDebug(true);
+            //ige.server.players[clientId].box2dNoDebug(true);
             ige.server.players[clientId]
                 .scale().x(0.6).y(0.6)
                 .translateTo(150, 150, 0)
-                .drawBounds(true)
+                .drawBounds(false)
                 .box2dBody({
                     type: 'dynamic',
                     linearDamping: 0.0,
                     angularDamping: 0.1,
                     allowSleep: true,
-                    bullet: false,
-                    gravitic: false,
-                    fixedRotation: false,
+                    bullet: true,
+                    gravitic: true,
+                    fixedRotation: true,
                     fixtures: [{
                         density: 1.0,
                         friction: 0.5,
                         restitution: 0.2,
-                        //shape: 'polygon',
                         shape: {
-                            type: 'rectangle',   //'polygon',
-                            /*data: new IgePoly2d()
+                            type: 'polygon',
+                            data: new IgePoly2d()
                                 .addPoint(-0.9, -0.9)
                                 .addPoint(0.9, -0.9)
                                 .addPoint(0.9, 0.9)
-                                .addPoint(-0.9, 0.9)*/
+                                .addPoint(-0.9, 0.9)
                         }
                     }]
                 });
@@ -79,27 +78,26 @@ var ServerNetworkEvents = {
             .setDirection(data.direction)
             .scale().x(0.6).y(0.6)
             .translateTo(data.position.x, data.position.y, 0)
-            .drawBounds(true)
+            .drawBounds(false)
             .box2dBody({
                 type: 'dynamic',
                 linearDamping: 0.0,
                 angularDamping: 0.1,
                 allowSleep: true,
                 bullet: true,
-                gravitic: false,
-                fixedRotation: false,
+                gravitic: true,
+                fixedRotation: true,
                 fixtures: [{
                     density: 1.0,
                     friction: 0.5,
                     restitution: 0.2,
-                    //shape: 'polygon',
                     shape: {
-                        type: 'rectangle',  // 'polygon',
-                        /*data: new IgePoly2d()
-                            .addPoint(-0.2, -0.2)
-                            .addPoint(0.2, -0.2)
-                            .addPoint(0.2, 0.2)
-                            .addPoint(-0.2, 0.2)*/
+                        type: 'polygon',
+                        data: new IgePoly2d()
+                            .addPoint(-0.1, -0.1)
+                            .addPoint(0.1, -0.1)
+                            .addPoint(0.1, 0.1)
+                            .addPoint(-0.1, 0.1)
                     }
                 }]
             })
@@ -119,7 +117,11 @@ var ServerNetworkEvents = {
     },
 
     _onBulletDestroyProcess: function () {
-        //console.log('onBulletDestroyProcess на Сервере!');
+        //console.log('onBulletDestroyProcess');
+        if (ige.server.bullets[bulletId]) {
+            //console.log('::STOP:: onBulletDestroyProcess');
+            ige.server.bullets[bulletId].setDirection('stop');
+        }
     },
 
     _onPlayerLeftDown: function (data, clientId) {

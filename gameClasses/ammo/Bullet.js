@@ -8,7 +8,6 @@ var Bullet = IgeEntityBox2d.extend({
 
         if (ige.isServer) {
             this.addComponent(IgeVelocityComponent);
-            this.velocity.x(-0.2);
         }
 
         this._type = 'bullet';
@@ -63,13 +62,18 @@ var Bullet = IgeEntityBox2d.extend({
                 this.velocity.y(0);
                 break;
 
+            case 'stop':
+                this.velocity.x(0);
+                this.velocity.y(0);
+                break;
+
         }
 
         return this;
     },
 
     setParentId: function (parentId) {
-        console.log('setParentId: ', parentId);
+        //console.log('setParentId: ', parentId);
         this._parentId = parentId;
         return this;
     },
@@ -115,6 +119,7 @@ var Bullet = IgeEntityBox2d.extend({
      */
     onCollision: function (entity) {
         if (ige.isServer) {
+            entity.setDirection('stop');
             ige.network.send('bulletDestroyProcess', entity.id());
         }
     },
