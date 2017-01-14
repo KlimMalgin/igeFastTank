@@ -30,9 +30,10 @@ var ServerNetworkEvents = {
 
             //ige.server.players[clientId].box2dNoDebug(true);
             ige.server.players[clientId]
-                .scale().x(0.6).y(0.6)
-                .translateTo(150, 150, 0)
+                //.scale().x(0.6).y(0.6)
+                .translateTo(150, 450, 0)
                 .drawBounds(false)
+                .bounds2d(84, 84)
                 .box2dBody({
                     type: 'dynamic',
                     linearDamping: 0.0,
@@ -41,17 +42,20 @@ var ServerNetworkEvents = {
                     bullet: true,
                     gravitic: true,
                     fixedRotation: true,
+                    density: 1.0,
+                    friction: 1.0,
+                    restitution: 1.0,
                     fixtures: [{
                         density: 1.0,
-                        friction: 0.5,
-                        restitution: 0.2,
+                        friction: 1.0,
+                        restitution: 1.0,
                         shape: {
                             type: 'polygon',
                             data: new IgePoly2d()
-                                .addPoint(-0.9, -0.9)
-                                .addPoint(0.9, -0.9)
-                                .addPoint(0.9, 0.9)
-                                .addPoint(-0.9, 0.9)
+                                .addPoint(-1.4, -1.4)
+                                .addPoint(1.4, -1.4)
+                                .addPoint(1.4, 1.4)
+                                .addPoint(-1.4, 1.4)
                         }
                     }]
                 });
@@ -76,7 +80,7 @@ var ServerNetworkEvents = {
         ige.server.bullets[bulletId].box2dNoDebug(true);
         ige.server.bullets[bulletId]
             .setDirection(data.direction)
-            .scale().x(0.6).y(0.6)
+            //.scale().x(0.6).y(0.6)
             .translateTo(data.position.x, data.position.y, 0)
             .drawBounds(false)
             .box2dBody({

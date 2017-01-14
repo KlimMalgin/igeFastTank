@@ -41,7 +41,7 @@ var PlayerComponent = IgeClass.extend({
             }
         };
 
-        this._speed = 0.2;
+        this._speed = 6;
 
         this.keyboard = new Keyboard();
 
@@ -132,24 +132,42 @@ var PlayerComponent = IgeClass.extend({
      * @param ctx The canvas context to render to.
      */
     _behaviour: function (ctx) {
-        var events = this.playerControl.keyNetEvents;
+        var events = this.playerControl.keyNetEvents,
+            speed = this.playerControl._speed;
 
         /* CEXCLUDE */
         if (ige.isServer) {
-            if (this.playerControl.controls.left) {
-                this.velocity.x(-this.playerControl._speed);
-            } else if (this.playerControl.controls.right) {
-                this.velocity.x(this.playerControl._speed);
-            } else {
-                this.velocity.x(0);
-            }
 
-            if (this.playerControl.controls.up) {
-                this.velocity.y(-this.playerControl._speed);
+            if (this.playerControl.controls.left) {
+                // this.velocity.x(-this.playerControl._speed);
+
+                this._box2dBody.SetLinearVelocity(new IgePoint3d(-speed, 0, 0));
+                this._box2dBody.SetAwake(true);
+
+            } else if (this.playerControl.controls.right) {
+                // this.velocity.x(this.playerControl._speed);
+
+                this._box2dBody.SetLinearVelocity(new IgePoint3d(speed, 0, 0));
+                this._box2dBody.SetAwake(true);
+
+            } else if (this.playerControl.controls.up) {
+                // this.velocity.y(-this.playerControl._speed);
+
+                this._box2dBody.SetLinearVelocity(new IgePoint3d(0, -speed, 0));
+                this._box2dBody.SetAwake(true);
+
             } else if (this.playerControl.controls.down) {
-                this.velocity.y(this.playerControl._speed);
+                // this.velocity.y(this.playerControl._speed);
+
+                this._box2dBody.SetLinearVelocity(new IgePoint3d(0, speed, 0));
+                this._box2dBody.SetAwake(true);
+
             } else {
-                this.velocity.y(0);
+                // this.velocity.y(0);
+
+                this._box2dBody.SetLinearVelocity(new IgePoint3d(0, 0, 0));
+                this._box2dBody.SetAwake(true);
+
             }
         }
         /* CEXCLUDE */

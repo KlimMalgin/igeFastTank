@@ -2,11 +2,11 @@ var Client = IgeClass.extend({
 	classId: 'Client',
 
 	init: function () {
-		//ige.timeScale(0.1);
-		ige.showStats(1);
+		ige.timeScale(1);
+		//ige.showStats(1);
 		ige.globalSmoothing(true);
 
-		ige.debugEnabled(false);
+		ige.debugEnabled(true);
 
 		// Load our textures
 		var self = this;
@@ -90,7 +90,7 @@ var Client = IgeClass.extend({
 
 						// Add the box2d debug painter entity to the
 						// scene to show the box2d body outlines
-						//ige.box2d.enableDebug(self.renderer.gameScene);
+						ige.box2d.enableDebug(self.renderer.gameScene);
 
 					});
 

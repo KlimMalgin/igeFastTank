@@ -40,8 +40,8 @@ var MapRenderer = IgeClass.extend({
             this.surface = new IgeTextureMap()
                 .depth(0)
                 // TODO: magic numbers
-                .tileWidth(60)
-                .tileHeight(60)
+                .tileWidth(84)
+                .tileHeight(84)
                 .translateTo(0, 0, 0)
                 .drawBounds(false)
                 .autoSection(20)
@@ -54,7 +54,7 @@ var MapRenderer = IgeClass.extend({
     createStaticItems: function (staticItems) {
         var ln = staticItems.length,
             // TODO: magic numbers
-            tileSize = 60;
+            tileSize = 84;
 
         for (var i = 0; i < ln; i++) {
             _wallCreator(tileSize, tileSize, staticItems[i].x, staticItems[i].y).mount(this.staticScene);
@@ -68,13 +68,13 @@ var MapRenderer = IgeClass.extend({
         // TODO: magic numbers
 
         // top border
-        _wallCreator(width, 60, width / 2, -30).mount(this.gameScene);
+        _wallCreator(width, 84, width / 2, -30).mount(this.gameScene);
         // bottom border
-        _wallCreator(width, 60, width / 2, height + 30).mount(this.gameScene);
+        _wallCreator(width, 84, width / 2, height + 30).mount(this.gameScene);
         // left border
-        _wallCreator(60, height, -30, height / 2).mount(this.gameScene);
+        _wallCreator(84, height, -30, height / 2).mount(this.gameScene);
         // right border
-        _wallCreator(60, height, width + 30, height / 2).mount(this.gameScene);
+        _wallCreator(84, height, width + 30, height / 2).mount(this.gameScene);
 
 
         return this;
@@ -85,13 +85,20 @@ var MapRenderer = IgeClass.extend({
 function _wallCreator(width, height, x, y) {
     return new IgeEntityBox2d()
         .translateTo(x, y, 0)
-        .width(width)
-        .height(height)
+        //.width(width)
+        //.height(height)
+        .bounds2d(width, height)
         .drawBounds(true)
         .box2dBody({
             type: 'static',
             allowSleep: true,
+            density: 1.0,
+            friction: 1.0,
+            restitution: 1.0,
             fixtures: [{
+                density: 1.0,
+                friction: 1.0,
+                restitution: 1.0,
                 shape: {
                     type: 'rectangle'
                 }

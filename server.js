@@ -5,7 +5,7 @@ var Server = IgeClass.extend({
 	init: function (options) {
 		var self = this;
 		ige.timeScale(1);
-		ige.debugEnabled(false)
+		ige.debugEnabled(true)
 
 		this.collisions = new CollisionManager();
 

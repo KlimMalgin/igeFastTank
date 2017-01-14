@@ -2,7 +2,7 @@ var level1Data = {
 
     width: 15,
     height: 11,
-    tileSize: 60,
+    tileSize: 84,
     spriteHash: {
         ground: [0, 1],
         wall: [0, 31]

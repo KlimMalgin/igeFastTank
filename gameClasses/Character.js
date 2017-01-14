@@ -85,16 +85,7 @@ var Character = IgeEntityBox2d.extend({
                 currX = this.translate().x(),
                 currY = this.translate().y() * 2,
                 distX = currX - oldX,
-                distY = currY - oldY,
-                distance = Math.distance(
-                    oldX,
-                    oldY,
-                    currX,
-                    currY
-                ),
-                speed = 0.2,
-                time = (distance / speed),
-                rotateAngle = Math.PI / 2;
+                distY = currY - oldY;
 
             this._lastTranslate = this._translate.clone();
 
