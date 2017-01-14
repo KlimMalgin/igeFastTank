@@ -42,20 +42,17 @@ var ServerNetworkEvents = {
                     bullet: true,
                     gravitic: true,
                     fixedRotation: true,
-                    density: 1.0,
-                    friction: 1.0,
-                    restitution: 1.0,
                     fixtures: [{
-                        density: 1.0,
-                        friction: 1.0,
-                        restitution: 1.0,
+                        density: 0.3,
+                        friction: 0.2,
+                        restitution: 0.2,
                         shape: {
                             type: 'polygon',
                             data: new IgePoly2d()
-                                .addPoint(-1.4, -1.4)
-                                .addPoint(1.4, -1.4)
-                                .addPoint(1.4, 1.4)
-                                .addPoint(-1.4, 1.4)
+                                .addPoint(-1.1, -1.3)
+                                .addPoint(1.1, -1.3)
+                                .addPoint(1.1, 1.2)
+                                .addPoint(-1.1, 1.2)
                         }
                     }]
                 });

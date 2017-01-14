@@ -92,13 +92,10 @@ function _wallCreator(width, height, x, y) {
         .box2dBody({
             type: 'static',
             allowSleep: true,
-            density: 1.0,
-            friction: 1.0,
-            restitution: 1.0,
             fixtures: [{
-                density: 1.0,
-                friction: 1.0,
-                restitution: 1.0,
+                density: 0.3,
+                friction: 0.2,
+                restitution: 0.2,
                 shape: {
                     type: 'rectangle'
                 }
