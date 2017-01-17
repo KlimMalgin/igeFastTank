@@ -101,24 +101,28 @@ var PlayerComponent = IgeClass.extend({
             position = entity.worldPosition(),
             result = { x: 0, y: 0 };
 
+        if (ige.isClient) {
+            console.log('position: %o  bounds: %o', position, bounds);
+        }
+
         switch(entity._lastDirection) {
             case 'up':
                 result.x = position.x;
-                result.y = position.y - bounds.y2;
+                result.y = position.y - (bounds.y2 - Math.round(bounds.y2 / 2));
                 break;
 
             case 'down':
                 result.x = position.x;
-                result.y = position.y + bounds.y2;
+                result.y = position.y + (bounds.y2 - Math.round(bounds.y2 / 2));
                 break;
 
             case 'left':
-                result.x = position.x - bounds.x2;
+                result.x = position.x - (bounds.x2 - Math.round(bounds.x2 / 2));
                 result.y = position.y;
                 break;
 
             case 'right':
-                result.x = position.x + bounds.x2;
+                result.x = position.x + (bounds.x2 - Math.round(bounds.x2 / 2));
                 result.y = position.y;
                 break;
         }

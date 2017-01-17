@@ -16,7 +16,7 @@ var Bullet = IgeEntityBox2d.extend({
         // Load the character texture file
         if (ige.isClient) {
             self.addComponent(IgeAnimationComponent)
-                .depth(1);
+                .depth(5);
 
             //this._characterTexture = new IgeCellSheet('./assets/vx_chara02_c.png', 12, 8);
             this._characterTexture = new IgeCellSheet('./assets/tanks.transparent.png', 8, 4);
@@ -38,7 +38,7 @@ var Bullet = IgeEntityBox2d.extend({
      * @param {String} direction Направление движения {'up'|'down'|'left'|'right'}
      */
     setDirection: function (direction) {
-        var BULLET_SPEED = 0.5;
+        var BULLET_SPEED = 0.8;
 
         switch (direction) {
 
