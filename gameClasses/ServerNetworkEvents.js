@@ -26,14 +26,18 @@ var ServerNetworkEvents = {
 
     _onPlayerEntity: function (data, clientId) {
         if (!ige.server.players[clientId]) {
+            var unitSize = GameConfig.tileSize * GameConfig.scaleRate;
+
             ige.server.players[clientId] = new Character(clientId)
 
             //ige.server.players[clientId].box2dNoDebug(true);
             ige.server.players[clientId]
-                //.scale().x(0.6).y(0.6)
-                .translateTo(150, 450, 0)
+                .scale()
+                .x(GameConfig.scaleRate)
+                .y(GameConfig.scaleRate)
+                .translateTo(unitSize / 2, unitSize / 2, 0)
                 .drawBounds(false)
-                .bounds2d(84, 84)
+                //.bounds2d(84, 84)
                 .box2dBody({
                     type: 'dynamic',
                     linearDamping: 0.0,
@@ -49,10 +53,10 @@ var ServerNetworkEvents = {
                         shape: {
                             type: 'polygon',
                             data: new IgePoly2d()
-                                .addPoint(-1.1, -1.3)
-                                .addPoint(1.1, -1.3)
-                                .addPoint(1.1, 1.2)
-                                .addPoint(-1.1, 1.2)
+                                .addPoint(-1.1 * GameConfig.scaleRate, -1.3 * GameConfig.scaleRate)
+                                .addPoint(1.1 * GameConfig.scaleRate, -1.3 * GameConfig.scaleRate)
+                                .addPoint(1.1 * GameConfig.scaleRate, 1.2 * GameConfig.scaleRate)
+                                .addPoint(-1.1 * GameConfig.scaleRate, 1.2 * GameConfig.scaleRate)
                         }
                     }]
                 });
@@ -77,7 +81,9 @@ var ServerNetworkEvents = {
         ige.server.bullets[bulletId].box2dNoDebug(true);
         ige.server.bullets[bulletId]
             .setDirection(data.direction)
-            //.scale().x(0.6).y(0.6)
+            .scale()
+            .x(GameConfig.scaleRate)
+            .y(GameConfig.scaleRate)
             .translateTo(data.position.x, data.position.y, 0)
             .drawBounds(false)
             .box2dBody({
@@ -95,10 +101,10 @@ var ServerNetworkEvents = {
                     shape: {
                         type: 'polygon',
                         data: new IgePoly2d()
-                            .addPoint(-0.1, -0.1)
-                            .addPoint(0.1, -0.1)
-                            .addPoint(0.1, 0.1)
-                            .addPoint(-0.1, 0.1)
+                            .addPoint(-0.1 * GameConfig.scaleRate, -0.1 * GameConfig.scaleRate)
+                            .addPoint(0.1 * GameConfig.scaleRate, -0.1 * GameConfig.scaleRate)
+                            .addPoint(0.1 * GameConfig.scaleRate, 0.1 * GameConfig.scaleRate)
+                            .addPoint(-0.1 * GameConfig.scaleRate, 0.1 * GameConfig.scaleRate)
                     }
                 }]
             })

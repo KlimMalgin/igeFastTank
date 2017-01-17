@@ -66,8 +66,8 @@ var Builder = IgeClass.extend({
     params: function () {
         //return this.levelData;
         return {
-            width: this.levelData.width * this.levelData.tileSize,
-            height: this.levelData.height * this.levelData.tileSize
+            width: this.levelData.width * this.levelData.tileSize * GameConfig.scaleRate,
+            height: this.levelData.height * this.levelData.tileSize * GameConfig.scaleRate
         };
     },
 
@@ -75,7 +75,7 @@ var Builder = IgeClass.extend({
         var levelData = this.levelData,
             width = levelData.width,
             height = levelData.height,
-            tileSize = levelData.tileSize,
+            tileSize = levelData.tileSize * GameConfig.scaleRate,
             spriteHash = levelData.spriteHash,
             map = levelData.map;
 

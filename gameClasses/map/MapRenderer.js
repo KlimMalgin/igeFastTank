@@ -4,7 +4,11 @@
 var MapRenderer = IgeClass.extend({
     classId: 'MapRenderer',
 
-    //init: function () {},
+    init: function () {
+
+        this.TILE_SIZE = GameConfig.tileSize * GameConfig.scaleRate;
+
+    },
 
     /**
      * TODO: Создание сцен и viewport'a имеет смысл вынести в класс Viewport
@@ -40,8 +44,8 @@ var MapRenderer = IgeClass.extend({
             this.surface = new IgeTextureMap()
                 .depth(0)
                 // TODO: magic numbers
-                .tileWidth(84)
-                .tileHeight(84)
+                .tileWidth(this.TILE_SIZE)
+                .tileHeight(this.TILE_SIZE)
                 .translateTo(0, 0, 0)
                 .drawBounds(false)
                 .autoSection(20)
@@ -54,7 +58,7 @@ var MapRenderer = IgeClass.extend({
     createStaticItems: function (staticItems) {
         var ln = staticItems.length,
             // TODO: magic numbers
-            tileSize = 84;
+            tileSize = this.TILE_SIZE;
 
         for (var i = 0; i < ln; i++) {
             _wallCreator(tileSize, tileSize, staticItems[i].x, staticItems[i].y).mount(this.staticScene);
@@ -68,14 +72,13 @@ var MapRenderer = IgeClass.extend({
         // TODO: magic numbers
 
         // top border
-        _wallCreator(width, 84, width / 2, -30).mount(this.gameScene);
+        _wallCreator(width, this.TILE_SIZE, width / 2, -this.TILE_SIZE / 2).mount(this.gameScene);
         // bottom border
-        _wallCreator(width, 84, width / 2, height + 30).mount(this.gameScene);
+        _wallCreator(width, this.TILE_SIZE, width / 2, height + (this.TILE_SIZE / 2)).mount(this.gameScene);
         // left border
-        _wallCreator(84, height, -30, height / 2).mount(this.gameScene);
+        _wallCreator(this.TILE_SIZE, height, -this.TILE_SIZE / 2, height / 2).mount(this.gameScene);
         // right border
-        _wallCreator(84, height, width + 30, height / 2).mount(this.gameScene);
-
+        _wallCreator(this.TILE_SIZE, height, width + (this.TILE_SIZE / 2), height / 2).mount(this.gameScene);
 
         return this;
     }

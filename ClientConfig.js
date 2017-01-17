@@ -3,6 +3,7 @@ var igeClientConfig = {
 		/* Your custom game JS scripts */
 		//'./gameClasses/MyClassFile.js',
 
+        './GameConfig.js',
         './gameClasses/utils/Keyboard.js',
         './gameClasses/utils/CollisionManager.js',
         './gameClasses/ammo/Bullet.js',

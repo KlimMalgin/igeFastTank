@@ -2,6 +2,7 @@ var config = {
 	include: [
 		//{name: 'MyClassName', path: './gameClasses/MyClassFileName'},
         //{name: 'ExampleEntity', path: './gameClasses/ExampleEntity'},
+        {name: 'GameConfig', path: './GameConfig'},
         {name: 'Keyboard', path: './gameClasses/utils/Keyboard'},
         {name: 'CollisionManager', path: './gameClasses/utils/CollisionManager'},
         {name: 'Bullet', path: './gameClasses/ammo/Bullet'},
