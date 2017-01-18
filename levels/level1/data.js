@@ -2,10 +2,11 @@ var level1Data = {
 
     width: 15,
     height: 11,
-    tileSize: 84,
+    // Перенесен в config
+    // tileSize: 84,
     spriteHash: {
         ground: [0, 1],
-        wall: [0, 31]
+        wall: [0, 32]
     },
     map: [
         [

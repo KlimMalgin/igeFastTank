@@ -38,7 +38,7 @@ var Bullet = IgeEntityBox2d.extend({
      * @param {String} direction Направление движения {'up'|'down'|'left'|'right'}
      */
     setDirection: function (direction) {
-        var BULLET_SPEED = 0.8;
+        var BULLET_SPEED = 0.7;
 
         switch (direction) {
 

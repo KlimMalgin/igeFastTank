@@ -11,7 +11,9 @@ var ClientNetworkEvents = {
     _onPlayerEntity: function (data) {
         if (ige.$(data)) {
             // Add the player control component
-            ige.$(data).addComponent(PlayerComponent);
+            ige.$(data)
+                .addComponent(PlayerComponent)
+                .drawBounds(false);
 
             // Track our player with the camera
             ige.client.renderer.viewport.camera.trackTranslate(ige.$(data), 50);
@@ -24,7 +26,9 @@ var ClientNetworkEvents = {
             self._eventListener = ige.network.stream.on('entityCreated', function (entity) {
                 if (entity.id() === data) {
                     // Add the player control component
-                    ige.$(data).addComponent(PlayerComponent);
+                    ige.$(data)
+                        .addComponent(PlayerComponent)
+                        .drawBounds(false);
 
                     // Tell the camera to track out player entity
                     ige.client.renderer.viewport.camera.trackTranslate(ige.$(data), 50);
@@ -49,6 +53,8 @@ var ClientNetworkEvents = {
             // Add the player control component
             //ige.$(data).addComponent(PlayerComponent);
 
+            ige.$(data).drawBounds(false);
+
             // Track our player with the camera
             //ige.client.renderer.viewport.camera.trackTranslate(ige.$(data), 50);
         } else {
@@ -66,6 +72,8 @@ var ClientNetworkEvents = {
                     console.log('>>>> Идентификаторы совпадают');
                     // Add the player control component
                     //ige.$(data).addComponent(PlayerComponent);
+
+                    ige.$(data).drawBounds(false);
 
                     // Tell the camera to track out player entity
                     //ige.client.renderer.viewport.camera.trackTranslate(ige.$(data), 50);

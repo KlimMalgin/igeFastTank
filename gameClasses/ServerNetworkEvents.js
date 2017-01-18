@@ -48,7 +48,7 @@ var ServerNetworkEvents = {
                     fixedRotation: true,
                     fixtures: [{
                         density: 0.3,
-                        friction: 0.2,
+                        friction: 0.0,
                         restitution: 0.2,
                         shape: {
                             type: 'polygon',
@@ -95,8 +95,8 @@ var ServerNetworkEvents = {
                 gravitic: true,
                 fixedRotation: true,
                 fixtures: [{
-                    density: 1.0,
-                    friction: 0.5,
+                    density: 0.5,
+                    friction: 0,
                     restitution: 0.2,
                     shape: {
                         type: 'polygon',

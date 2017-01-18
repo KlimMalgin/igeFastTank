@@ -6,7 +6,7 @@ var Client = IgeClass.extend({
 		//ige.showStats(1);
 		ige.globalSmoothing(true);
 
-		ige.debugEnabled(true);
+		//ige.debugEnabled(true);
 
 		// Load our textures
 		var self = this;

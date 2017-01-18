@@ -12,6 +12,11 @@ var Builder = IgeClass.extend({
         this.levelData = levelData;
 
         /**
+         * Вычисляем недостающие данные
+         */
+        this.config();
+
+        /**
          * Массив с данными о ландшафте
          * @type {Array}
          */
@@ -47,6 +52,14 @@ var Builder = IgeClass.extend({
 
         this.defaults();
         this.build();
+    },
+
+    /**
+     * Некоторые поля в данных об уровне нужно вычислять.
+     * Делаем это тут
+     */
+    config: function () {
+        this.levelData.tileSize = GameConfig.tileSize;
     },
 
     /**

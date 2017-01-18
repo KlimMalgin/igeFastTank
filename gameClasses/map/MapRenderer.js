@@ -6,7 +6,7 @@ var MapRenderer = IgeClass.extend({
 
     init: function () {
 
-        this.TILE_SIZE = GameConfig.tileSize * GameConfig.scaleRate;
+        this.TILE_SIZE = Math.round(GameConfig.tileSize * GameConfig.scaleRate);
 
     },
 
@@ -91,7 +91,7 @@ function _wallCreator(width, height, x, y) {
         //.width(width)
         //.height(height)
         .bounds2d(width, height)
-        .drawBounds(true)
+        .drawBounds(false)
         .box2dBody({
             type: 'static',
             allowSleep: true,
