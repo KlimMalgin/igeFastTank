@@ -9,7 +9,7 @@ var CollisionManager = IgeClass.extend({
     listen: function () {
         var self = this;
 
-        console.log('[[[ ЗАПУСКАЕМ СЛУШАТЕЛЯ КОЛЛИЗИЙ ]]]');
+        // console.log('[[[ ЗАПУСКАЕМ СЛУШАТЕЛЯ КОЛЛИЗИЙ ]]]');
 
         ige.box2d.contactListener(
             // Listen for when contact's begin
@@ -21,10 +21,11 @@ var CollisionManager = IgeClass.extend({
                 if (!self.isTankSelfBulletContact(entityA, entityB)) {
                     entityA.onCollision && entityA.onCollision(entityA);
                     entityB.onCollision && entityB.onCollision(entityB);
+                } else if (self.isTankSomeBulletContact(entityA, entityB)) {
+                    entityA.onCollision && entityA.onCollision(entityA);
+                    entityB.onCollision && entityB.onCollision(entityB);
                 }
 
-
-                //ige.network.send('playerEntity', ige.server.players[clientId].id(), clientId);
             },
             // Listen for when contact's end
             function (contact) {
@@ -62,6 +63,24 @@ var CollisionManager = IgeClass.extend({
             if (entityA.id() == entityB.getParentId()) {
                 //console.log("entityA::tank // entityB::bullet", entityA.id(), ' ', entityB.getParentId());
                 //contact.SetEnabled(false);
+                return true;
+            }
+        }
+
+        return false;
+    },
+
+    /**
+     * Проверяет кейс когда одна сущность это юнит, а вторая любой патрон
+     */
+    isTankSomeBulletContact: function (entityA, entityB) {
+        if (entityA._type == 'bullet' && entityB._type == 'tank') {
+            if (entityA.getParentId() !== entityB.id()) {
+                return true;
+            }
+        }
+        if (entityA._type == 'tank' && entityB._type == 'bullet') {
+            if (entityA.id() !== entityB.getParentId()) {
                 return true;
             }
         }

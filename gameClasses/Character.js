@@ -46,6 +46,9 @@ var Character = IgeEntityBox2d.extend({
      */
     setType: function (type) {
         switch (type) {
+            /**
+             * Анимация зеленого танка
+             */
             case 0:
                 this.animation.define('walkDown', [9, 8, 7, 6, 5, 4, 3, 2], 14, -1)
                     .animation.define('walkLeft', [9, 8, 7, 6, 5, 4, 3, 2], 14, -1)
@@ -53,9 +56,12 @@ var Character = IgeEntityBox2d.extend({
                     .animation.define('walkUp', [9, 8, 7, 6, 5, 4, 3, 2], 14, -1)
                     .cell(9);
 
-                this._restCell = 9;
+                //this._restCell = 9;
                 break;
 
+            /**
+             * Анимация синего танка
+             */
             case 1:
                 this.animation.define('walkDown', [17, 16, 15, 14, 13, 12, 11, 10], 14, -1)
                     .animation.define('walkLeft', [17, 16, 15, 14, 13, 12, 11, 10], 14, -1)
@@ -63,7 +69,16 @@ var Character = IgeEntityBox2d.extend({
                     .animation.define('walkUp', [17, 16, 15, 14, 13, 12, 11, 10], 14, -1)
                     .cell(17);
 
-                this._restCell = 17;
+                //this._restCell = 17;
+                break;
+
+            /**
+             * Анимация взрыва для танка
+             */
+            case 2:
+                this.animation.define('bang', [18, 19, 20], 12, -1)
+                    .cell(18);
+
                 break;
         }
 
@@ -72,8 +87,20 @@ var Character = IgeEntityBox2d.extend({
         return this;
     },
 
-    onCollision: function () {
+    onCollision: function (entity) {
+        var self = this;
 
+        // WTF !?
+
+        if (ige.isClient) {
+            this.animation.start('bang', {
+                onLoop: function () {
+                    this.stop();
+                    //ige.network.send('bulletDestroy', self.id());
+                    //self.destroy();
+                }
+            });
+        }
     },
 
     update: function (ctx, tickDelta) {
