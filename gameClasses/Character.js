@@ -54,6 +54,7 @@ var Character = IgeEntityBox2d.extend({
                     .animation.define('walkLeft', [9, 8, 7, 6, 5, 4, 3, 2], 14, -1)
                     .animation.define('walkRight', [9, 8, 7, 6, 5, 4, 3, 2], 14, -1)
                     .animation.define('walkUp', [9, 8, 7, 6, 5, 4, 3, 2], 14, -1)
+                    .animation.define('bang', [18, 19, 20], 3, -1)
                     .cell(9);
 
                 //this._restCell = 9;
@@ -62,7 +63,7 @@ var Character = IgeEntityBox2d.extend({
             /**
              * Анимация синего танка
              */
-            case 1:
+            /*case 1:
                 this.animation.define('walkDown', [17, 16, 15, 14, 13, 12, 11, 10], 14, -1)
                     .animation.define('walkLeft', [17, 16, 15, 14, 13, 12, 11, 10], 14, -1)
                     .animation.define('walkRight', [17, 16, 15, 14, 13, 12, 11, 10], 14, -1)
@@ -70,16 +71,16 @@ var Character = IgeEntityBox2d.extend({
                     .cell(17);
 
                 //this._restCell = 17;
-                break;
+                break;*/
 
             /**
              * Анимация взрыва для танка
              */
-            case 2:
-                this.animation.define('bang', [18, 19, 20], 12, -1)
+            /*case 2:
+                this.animation.define('bang', [18, 19, 20], 3, -1)
                     .cell(18);
 
-                break;
+                break;*/
         }
 
         this._characterType = type;
@@ -93,6 +94,7 @@ var Character = IgeEntityBox2d.extend({
         // WTF !?
 
         if (ige.isClient) {
+            console.log('>>> Взорвать танк <<<');
             this.animation.start('bang', {
                 onLoop: function () {
                     this.stop();
@@ -125,18 +127,22 @@ var Character = IgeEntityBox2d.extend({
                     if (distX < 0) {
                         // Moving left
                         this.selectedAnimation = 'walkLeft';
+                        this._lastDirection = 'left';
                     } else {
                         // Moving right
                         this.selectedAnimation = 'walkRight';
+                        this._lastDirection = 'right';
                     }
                 } else {
                     // Moving vertical
                     if (distY < 0) {
                         // Moving up
                         this.selectedAnimation = 'walkUp';
+                        this._lastDirection = 'up';
                     } else {
                         // Moving down
                         this.selectedAnimation = 'walkDown';
+                        this._lastDirection = 'down';
                     }
                 }
 
@@ -169,12 +175,10 @@ var Character = IgeEntityBox2d.extend({
     tick: function (ctx) {
         this.customRotate(this._lastDirection);
 
-        //if (ige.isServer) {
-            if (this._lastDirection != this.__tempLastDirection) {
-                this.__tempLastDirection = this._lastDirection;
-                console.log('_lastDirection: ', this._lastDirection);
-            }
-        //}
+        if (this._lastDirection != this.__tempLastDirection) {
+            this.__tempLastDirection = this._lastDirection;
+            console.log('_lastDirection: ', this._lastDirection);
+        }
 
         IgeEntityBox2d.prototype.tick.call(this, ctx);
     },

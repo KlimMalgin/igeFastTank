@@ -15,6 +15,8 @@ var ClientNetworkEvents = {
                 .addComponent(PlayerComponent)
                 .drawBounds(false);
 
+            console.log('Сущность с id %o СУЩЕСТВУЕТ // Направление %o', data, ige.$(data)._lastDirection);
+
             // Track our player with the camera
             ige.client.renderer.viewport.camera.trackTranslate(ige.$(data), 50);
         } else {
@@ -29,6 +31,8 @@ var ClientNetworkEvents = {
                     ige.$(data)
                         .addComponent(PlayerComponent)
                         .drawBounds(false);
+
+                    console.log('Сущность с id %o СОЗДАНА // Направление %o', data, ige.$(data)._lastDirection);
 
                     // Tell the camera to track out player entity
                     ige.client.renderer.viewport.camera.trackTranslate(ige.$(data), 50);

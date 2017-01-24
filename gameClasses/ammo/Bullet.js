@@ -19,6 +19,8 @@ var Bullet = IgeEntityBox2d.extend({
                 .depth(5);
 
             //this._characterTexture = new IgeCellSheet('./assets/vx_chara02_c.png', 12, 8);
+
+            // TODO: Тут происходит загрузка спрайта? Каждый раз при инициализации Патрона?
             this._characterTexture = new IgeCellSheet('./assets/tanks.transparent.png', 8, 4);
 
             // Wait for the texture to load
