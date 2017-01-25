@@ -11,6 +11,7 @@ var Character = IgeEntityBox2d.extend({
         }
 
         this._type = 'tank';
+        this._destroyed = false;
         this._lastDirection = 'up';
         this.__tempLastDirection = '';
 
@@ -91,17 +92,10 @@ var Character = IgeEntityBox2d.extend({
     onCollision: function (entity) {
         var self = this;
 
-        // WTF !?
+        this._destroyed = true;
 
-        if (ige.isClient) {
-            console.log('>>> Взорвать танк <<<');
-            this.animation.start('bang', {
-                onLoop: function () {
-                    this.stop();
-                    //ige.network.send('bulletDestroy', self.id());
-                    //self.destroy();
-                }
-            });
+        if (ige.isServer) {
+            ige.network.send('bulletDestroyProcess', entity.id());
         }
     },
 
@@ -119,31 +113,40 @@ var Character = IgeEntityBox2d.extend({
             this._lastTranslate = this._translate.clone();
 
             if (distX == 0 && distY == 0) {
-                this.animation.stop();
+                if (!this._destroyed) {
+                    this.animation.stop();
+                }
             } else {
-                // Set the animation based on direction
-                if (Math.abs(distX) > Math.abs(distY)) {
-                    // Moving horizontal
-                    if (distX < 0) {
-                        // Moving left
-                        this.selectedAnimation = 'walkLeft';
-                        this._lastDirection = 'left';
-                    } else {
-                        // Moving right
-                        this.selectedAnimation = 'walkRight';
-                        this._lastDirection = 'right';
-                    }
+
+                if (this._destroyed) {
+                    this.selectedAnimation = 'bang';
                 } else {
-                    // Moving vertical
-                    if (distY < 0) {
-                        // Moving up
-                        this.selectedAnimation = 'walkUp';
-                        this._lastDirection = 'up';
+
+                    // Set the animation based on direction
+                    if (Math.abs(distX) > Math.abs(distY)) {
+                        // Moving horizontal
+                        if (distX < 0) {
+                            // Moving left
+                            this.selectedAnimation = 'walkLeft';
+                            this._lastDirection = 'left';
+                        } else {
+                            // Moving right
+                            this.selectedAnimation = 'walkRight';
+                            this._lastDirection = 'right';
+                        }
                     } else {
-                        // Moving down
-                        this.selectedAnimation = 'walkDown';
-                        this._lastDirection = 'down';
+                        // Moving vertical
+                        if (distY < 0) {
+                            // Moving up
+                            this.selectedAnimation = 'walkUp';
+                            this._lastDirection = 'up';
+                        } else {
+                            // Moving down
+                            this.selectedAnimation = 'walkDown';
+                            this._lastDirection = 'down';
+                        }
                     }
+
                 }
 
                 if (this.animation.defined(this.selectedAnimation)) {

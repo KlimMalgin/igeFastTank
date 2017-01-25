@@ -115,6 +115,16 @@ var ServerNetworkEvents = {
         ige.network.send('playerFired', bulletId, clientId);
     },
 
+    _onPlayerDestroy: function () {
+
+    },
+
+    _onPlayerDestroyProcess: function (clientId) {
+        if (ige.server.players[clientId]) {
+            _allArrowsUp(clientId);
+        }
+    },
+
     _onBulletDestroy: function (bulletId) {
         console.log('>>>> Уничтожаем патрон %o', bulletId);
         if (ige.server.bullets[bulletId]) {

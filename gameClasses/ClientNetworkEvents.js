@@ -94,6 +94,18 @@ var ClientNetworkEvents = {
         }
     },
 
+    _onPlayerDestroy: function () {
+
+    },
+
+    _onPlayerDestroyProcess: function (data) {
+        var player = ige.$(data);
+        if (player) {
+            player.velocityTo(0, 0, 0);
+            player.runAnimation('bang');
+        }
+    },
+
     _onBulletDestroyProcess: function (data) {
         console.log('onBulletDestroyProcess на Клиенте! ', arguments);
         var bullet = ige.$(data);

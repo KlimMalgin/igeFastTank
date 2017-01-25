@@ -53,6 +53,9 @@ var Client = IgeClass.extend({
 						ige.network.define('playerFired', self._onPlayerFired);
 						ige.network.define('bulletDestroyProcess', self._onBulletDestroyProcess);
 
+						ige.network.define('playerDestroy', self._onPlayerDestroy);
+						ige.network.define('playerDestroyProcess', self._onPlayerDestroyProcess);
+
 						// Setup the network stream handler
 						ige.network.addComponent(IgeStreamComponent)
 							.stream.renderLatency(80) // Render the simulation 160 milliseconds in the past

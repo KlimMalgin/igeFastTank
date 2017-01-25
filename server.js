@@ -44,6 +44,9 @@ var Server = IgeClass.extend({
 						ige.network.define('bulletDestroy', self._onBulletDestroy);
 						ige.network.define('bulletDestroyProcess', self._onBulletDestroyProcess);
 
+						ige.network.define('playerDestroy', self._onPlayerDestroy);
+						ige.network.define('playerDestroyProcess', self._onPlayerDestroyProcess);
+
 						ige.network.define('playerControlLeftDown', self._onPlayerLeftDown);
 						ige.network.define('playerControlRightDown', self._onPlayerRightDown);
 						ige.network.define('playerControlUpDown', self._onPlayerUpDown);
