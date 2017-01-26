@@ -30,6 +30,8 @@ var ServerNetworkEvents = {
 
             ige.server.players[clientId] = new Character(clientId)
 
+            console.log('CREATE PLAYER ', clientId, ige.server.players[clientId].id());
+
             //ige.server.players[clientId].box2dNoDebug(true);
             ige.server.players[clientId]
                 .scale()
@@ -115,8 +117,13 @@ var ServerNetworkEvents = {
         ige.network.send('playerFired', bulletId, clientId);
     },
 
-    _onPlayerDestroy: function () {
-
+    _onPlayerDestroy: function (clientId) {
+        console.log('>>>> Уничтожаем танк ', clientId, ' ', ige.server.players[clientId]);
+        if (ige.server.players[clientId]) {
+            console.log('>>>> Танк существует. Вызываем destroy ', clientId);
+            ige.server.players[clientId].destroy();
+            delete ige.server.players[clientId];
+        }
     },
 
     _onPlayerDestroyProcess: function (clientId) {
@@ -126,7 +133,7 @@ var ServerNetworkEvents = {
     },
 
     _onBulletDestroy: function (bulletId) {
-        console.log('>>>> Уничтожаем патрон %o', bulletId);
+        console.log('>>>> Уничтожаем патрон ', bulletId);
         if (ige.server.bullets[bulletId]) {
             ige.server.bullets[bulletId].destroy();
             delete ige.server.bullets[bulletId];

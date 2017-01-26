@@ -15,7 +15,9 @@ var ClientNetworkEvents = {
                 .addComponent(PlayerComponent)
                 .drawBounds(false);
 
-            console.log('Сущность с id %o СУЩЕСТВУЕТ // Направление %o', data, ige.$(data)._lastDirection);
+            console.log('CREATE PLAYER %o %o', data, ige.$(data));
+
+            //console.log('Сущность с id %o СУЩЕСТВУЕТ // Направление %o', data, ige.$(data)._lastDirection);
 
             // Track our player with the camera
             ige.client.renderer.viewport.camera.trackTranslate(ige.$(data), 50);
@@ -32,7 +34,9 @@ var ClientNetworkEvents = {
                         .addComponent(PlayerComponent)
                         .drawBounds(false);
 
-                    console.log('Сущность с id %o СОЗДАНА // Направление %o', data, ige.$(data)._lastDirection);
+                    console.log('CREATE PLAYER %o %o', data, ige.$(data));
+
+                    //console.log('Сущность с id %o СОЗДАНА // Направление %o', data, ige.$(data)._lastDirection);
 
                     // Tell the camera to track out player entity
                     ige.client.renderer.viewport.camera.trackTranslate(ige.$(data), 50);
@@ -50,10 +54,10 @@ var ClientNetworkEvents = {
     },
 
     _onPlayerFired: function (data, clientId) {
-        console.log('>>>> Создаем патрон!!! <<<< %o %o', data, clientId);
+        //console.log('>>>> Создаем патрон!!! <<<< %o %o', data, clientId);
         if (ige.$(data)) {
 
-            console.log('>>>> Сущность получена ige.$(data) IS TRUE');
+            //console.log('>>>> Сущность получена ige.$(data) IS TRUE');
             // Add the player control component
             //ige.$(data).addComponent(PlayerComponent);
 
@@ -68,12 +72,12 @@ var ClientNetworkEvents = {
             // should be tracking!
             var self = this;
 
-            console.log('>>>> Сущность НЕ получена. Создаем слушателя для отложенного создания');
+            ////console.log('>>>> Сущность НЕ получена. Создаем слушателя для отложенного создания');
 
             self._eventListener = ige.network.stream.on('entityCreated', function (entity) {
-                console.log('>>>> Отработал слушатель отложенного создания');
+                //console.log('>>>> Отработал слушатель отложенного создания');
                 if (entity.id() === data) {
-                    console.log('>>>> Идентификаторы совпадают');
+                    //console.log('>>>> Идентификаторы совпадают');
                     // Add the player control component
                     //ige.$(data).addComponent(PlayerComponent);
 
@@ -101,6 +105,8 @@ var ClientNetworkEvents = {
     _onPlayerDestroyProcess: function (data) {
         var player = ige.$(data);
         if (player) {
+            console.log('onPlayerDestroyProcess на Клиенте! ', arguments, player);
+            player._destroyed = true;
             player.velocityTo(0, 0, 0);
             player.runAnimation('bang');
         }

@@ -19,11 +19,11 @@ var CollisionManager = IgeClass.extend({
                     entityB = contact.igeEntityB();
 
                 if (!self.isTankSelfBulletContact(entityA, entityB)) {
-                    entityA.onCollision && entityA.onCollision(entityA);
-                    entityB.onCollision && entityB.onCollision(entityB);
+                    entityA.onCollision && entityA.onCollision(entityA, entityB);
+                    entityB.onCollision && entityB.onCollision(entityB, entityA);
                 } else if (self.isTankSomeBulletContact(entityA, entityB)) {
-                    entityA.onCollision && entityA.onCollision(entityA);
-                    entityB.onCollision && entityB.onCollision(entityB);
+                    entityA.onCollision && entityA.onCollision(entityA, entityB);
+                    entityB.onCollision && entityB.onCollision(entityB, entityA);
                 }
 
             },

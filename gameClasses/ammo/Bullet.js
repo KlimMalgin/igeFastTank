@@ -119,10 +119,10 @@ var Bullet = IgeEntityBox2d.extend({
     /**
      * Логика коллизии для данной сущности
      */
-    onCollision: function (entity) {
+    onCollision: function (me, subject) {
         if (ige.isServer) {
-            entity.setDirection('stop');
-            ige.network.send('bulletDestroyProcess', entity.id());
+            me.setDirection('stop');
+            ige.network.send('bulletDestroyProcess', me.id());
         }
     },
 

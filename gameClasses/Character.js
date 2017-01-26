@@ -55,7 +55,7 @@ var Character = IgeEntityBox2d.extend({
                     .animation.define('walkLeft', [9, 8, 7, 6, 5, 4, 3, 2], 14, -1)
                     .animation.define('walkRight', [9, 8, 7, 6, 5, 4, 3, 2], 14, -1)
                     .animation.define('walkUp', [9, 8, 7, 6, 5, 4, 3, 2], 14, -1)
-                    .animation.define('bang', [18, 19, 20], 3, -1)
+                    .animation.define('bang', [18, 19, 20], 3, 1)
                     .cell(9);
 
                 //this._restCell = 9;
@@ -89,14 +89,35 @@ var Character = IgeEntityBox2d.extend({
         return this;
     },
 
-    onCollision: function (entity) {
+    onCollision: function (me, subject) {
         var self = this;
 
-        this._destroyed = true;
-
         if (ige.isServer) {
-            ige.network.send('bulletDestroyProcess', entity.id());
+            if (subject._type == 'bullet') {
+                this._destroyed = true;
+                ige.network.send('playerDestroyProcess', me.id());
+            }
         }
+    },
+
+    /**
+     * Запускает указанную анимацию
+     * @chainable
+     * @param  {String} type Тип анимации
+     */
+    runAnimation: function (type) {
+        var self = this;
+
+        type = type ? type : 'default';
+        this.animation.select(type, {
+            onLoop: function () {
+                this.stop();
+                ige.network.send('playerDestroy', self.id());
+                //self.destroy();
+            }
+        });
+
+        return this;
     },
 
     update: function (ctx, tickDelta) {
