@@ -95,7 +95,10 @@ var Character = IgeEntityBox2d.extend({
         if (ige.isServer) {
             if (subject._type == 'bullet') {
                 this._destroyed = true;
-                ige.network.send('playerDestroyProcess', me.id());
+                ige.network.send('playerDestroyProcess', {
+                    entityId: me.id(),
+                    clientId: me.clientId
+                });
             }
         }
     },
@@ -112,7 +115,10 @@ var Character = IgeEntityBox2d.extend({
         this.animation.select(type, {
             onLoop: function () {
                 this.stop();
-                ige.network.send('playerDestroy', self.id());
+                ige.network.send('playerDestroy', {
+                    entityId: self.id(),
+                    clientId: self.clientId
+                });
                 //self.destroy();
             }
         });

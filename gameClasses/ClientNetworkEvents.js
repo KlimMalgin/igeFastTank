@@ -9,18 +9,25 @@ var ClientNetworkEvents = {
      * @private
      */
     _onPlayerEntity: function (data) {
-        if (ige.$(data)) {
+        var entityId = data.entityId,
+            clientId = data.clientId;
+
+        console.log('_onPlayerEntity: ', arguments);
+
+        if (ige.$(entityId)) {
             // Add the player control component
-            ige.$(data)
+            ige.$(entityId)
                 .addComponent(PlayerComponent)
                 .drawBounds(false);
 
-            console.log('CREATE PLAYER %o %o', data, ige.$(data));
+            ige.$(entityId).clientId = clientId;
 
-            //console.log('Сущность с id %o СУЩЕСТВУЕТ // Направление %o', data, ige.$(data)._lastDirection);
+            console.log('CREATE PLAYER %o %o', entityId, ige.$(entityId));
+
+            //console.log('Сущность с id %o СУЩЕСТВУЕТ // Направление %o', entityId, ige.$(entityId)._lastDirection);
 
             // Track our player with the camera
-            ige.client.renderer.viewport.camera.trackTranslate(ige.$(data), 50);
+            ige.client.renderer.viewport.camera.trackTranslate(ige.$(entityId), 50);
         } else {
             // The client has not yet received the entity via the network
             // stream so lets ask the stream to tell us when it creates a
@@ -28,18 +35,20 @@ var ClientNetworkEvents = {
             // should be tracking!
             var self = this;
             self._eventListener = ige.network.stream.on('entityCreated', function (entity) {
-                if (entity.id() === data) {
+                if (entity.id() === entityId) {
                     // Add the player control component
-                    ige.$(data)
+                    ige.$(entityId)
                         .addComponent(PlayerComponent)
                         .drawBounds(false);
 
-                    console.log('CREATE PLAYER %o %o', data, ige.$(data));
+                    ige.$(entityId).clientId = clientId;
 
-                    //console.log('Сущность с id %o СОЗДАНА // Направление %o', data, ige.$(data)._lastDirection);
+                    console.log('CREATE PLAYER %o %o', entityId, ige.$(entityId));
+
+                    //console.log('Сущность с id %o СОЗДАНА // Направление %o', entityId, ige.$(entityId)._lastDirection);
 
                     // Tell the camera to track out player entity
-                    ige.client.renderer.viewport.camera.trackTranslate(ige.$(data), 50);
+                    ige.client.renderer.viewport.camera.trackTranslate(ige.$(entityId), 50);
 
                     // Turn off the listener for this event now that we
                     // have found and started tracking our player entity
@@ -103,7 +112,10 @@ var ClientNetworkEvents = {
     },
 
     _onPlayerDestroyProcess: function (data) {
-        var player = ige.$(data);
+        var entityId = data.entityId,
+            clientId = data.clientId;
+
+        var player = ige.$(entityId);
         if (player) {
             console.log('onPlayerDestroyProcess на Клиенте! ', arguments, player);
             player._destroyed = true;

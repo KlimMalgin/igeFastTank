@@ -25,6 +25,9 @@ var ServerNetworkEvents = {
     },
 
     _onPlayerEntity: function (data, clientId) {
+
+        console.log('_onPlayerEntity: ', data, clientId);
+
         if (!ige.server.players[clientId]) {
             var unitSize = GameConfig.tileSize * GameConfig.scaleRate;
 
@@ -69,7 +72,10 @@ var ServerNetworkEvents = {
                 .mount(ige.server.renderer.gameScene);
 
             // Tell the client to track their player entity
-            ige.network.send('playerEntity', ige.server.players[clientId].id(), clientId);
+            ige.network.send('playerEntity', {
+                entityId: ige.server.players[clientId].id(),
+                clientId: clientId
+            }, clientId);
         }
     },
 
@@ -117,17 +123,32 @@ var ServerNetworkEvents = {
         ige.network.send('playerFired', bulletId, clientId);
     },
 
-    _onPlayerDestroy: function (clientId) {
-        console.log('>>>> Уничтожаем танк ', clientId, ' ', ige.server.players[clientId]);
-        if (ige.server.players[clientId]) {
+    _onPlayerDestroy: function (data, sClientId) {
+        var entityId = data.entityId,
+            clientId = data.clientId,
+            player = ige.server.players[clientId];
+
+        console.log('>>>> Уничтожаем танк ', clientId);
+        if (player && player.id() == entityId) {
             console.log('>>>> Танк существует. Вызываем destroy ', clientId);
-            ige.server.players[clientId].destroy();
-            delete ige.server.players[clientId];
+            player.destroy();
+            delete player;
         }
     },
 
-    _onPlayerDestroyProcess: function (clientId) {
-        if (ige.server.players[clientId]) {
+    /**
+     * Действия, реализующие визуальный процесс уничтожения юнита (остановка, визуализация взрыва и пр)
+     * @param  {Object} data      Набор данных о юните
+     *                            - entityId Идентификатор сущности юнита  игрока
+     *                            - clientId Идентификатор клиента, уничтожаемого игрока
+     * @param  {String} sClientId Идентификатор клиента
+     */
+    _onPlayerDestroyProcess: function (data, sClientId) {
+        var entityId = data.entityId,
+            clientId = data.clientId,
+            player = ige.server.players[clientId];
+
+        if (player && player.id() == entityId) {
             _allArrowsUp(clientId);
         }
     },
