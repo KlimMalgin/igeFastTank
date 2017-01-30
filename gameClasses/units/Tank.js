@@ -219,6 +219,10 @@ var Tank = IgeEntityBox2d.extend({
             this._characterTexture.destroy();
         }
 
+        if (this.playerControl && this.playerControl._saveKeyUpListener) {
+            ige.input.off('keyUp', this.playerControl._saveKeyUpListenerObject);
+        }
+
         // Call the super class
         IgeEntityBox2d.prototype.destroy.call(this);
     }

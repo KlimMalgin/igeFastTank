@@ -51,23 +51,23 @@ var UnitKeyboardControl = IgeClass.extend({
         ige.input.mapAction('up', ige.input.key.up);
         ige.input.mapAction('down', ige.input.key.down);
 
-        // Listen for the key up event
-        ige.input.on('keyUp', function (event, keyCode) {
-            //self._keyUp(event, keyCode);
-            self._fire.call(self, event, keyCode, self._entity, self._bulletStartPosition(self._entity));
-        });
+        /**
+         * keyUp обработчик для выстрела. С привязанным контекстом UniKeyboardControl
+         */
+        this._saveKeyUpListener = this._keyUpListener.bind(this);
+
+        /**
+         * Объект с данными текущего обработчика. Требуется для удаления обработчика
+         */
+        this._saveKeyUpListenerObject = ige.input.on('keyUp', this._saveKeyUpListener);
 
         // Add the playerComponent behaviour to the entity
         this._entity.addBehaviour('playerComponent_behaviour', this._behaviour);
     },
 
-    /*_keyUp: function (event, keyCode) {
-        if (ige.isClient) {
-            if (keyCode === ige.input.key.space) {
-                ige.network.send('playerFired');
-            }
-        }
-    },*/
+    _keyUpListener: function (event, keyCode) {
+        this._fire.call(this, event, keyCode, this._entity, this._bulletStartPosition(this._entity));
+    },
 
     _fire: function (event, keyCode, entity, position) {
         if (ige.isClient) {
@@ -139,6 +139,7 @@ var UnitKeyboardControl = IgeClass.extend({
         var events = this.playerControl.keyNetEvents,
             speed = this.playerControl._speed;
 
+
         /* CEXCLUDE */
         if (ige.isServer) {
 
@@ -185,7 +186,6 @@ var UnitKeyboardControl = IgeClass.extend({
                     // Tell the server about our control change
                     ige.network.send(events.left.down);
                     this.playerControl.keyboard.press('left');
-                    console.log('left Press');
                 }
             } else {
                 if (this.playerControl.controls.left) {
@@ -196,7 +196,6 @@ var UnitKeyboardControl = IgeClass.extend({
                     ige.network.send(events.left.up);
                     this.playerControl.keyboard.release('left');
                     this.playerControl.setActiveKeyboardAction.call(this, this.playerControl.keyboard.hasAction());
-                    console.log('left Release');
                 }
             }
 
@@ -208,7 +207,6 @@ var UnitKeyboardControl = IgeClass.extend({
                     // Tell the server about our control change
                     ige.network.send(events.right.down);
                     this.playerControl.keyboard.press('right');
-                    console.log('right Press');
                 }
             } else {
                 if (this.playerControl.controls.right) {
@@ -219,7 +217,6 @@ var UnitKeyboardControl = IgeClass.extend({
                     ige.network.send(events.right.up);
                     this.playerControl.keyboard.release('right');
                     this.playerControl.setActiveKeyboardAction.call(this, this.playerControl.keyboard.hasAction());
-                    console.log('right Release');
                 }
             }
 
@@ -231,7 +228,6 @@ var UnitKeyboardControl = IgeClass.extend({
                     // Tell the server about our control change
                     ige.network.send(events.up.down);
                     this.playerControl.keyboard.press('up');
-                    console.log('up Press');
                 }
             } else {
                 if (this.playerControl.controls.up) {
@@ -242,7 +238,6 @@ var UnitKeyboardControl = IgeClass.extend({
                     ige.network.send(events.up.up);
                     this.playerControl.keyboard.release('up');
                     this.playerControl.setActiveKeyboardAction.call(this, this.playerControl.keyboard.hasAction());
-                    console.log('up Release');
                 }
             }
 
@@ -254,7 +249,6 @@ var UnitKeyboardControl = IgeClass.extend({
                     // Tell the server about our control change
                     ige.network.send(events.down.down);
                     this.playerControl.keyboard.press('down');
-                    console.log('down Press');
                 }
             } else {
                 if (this.playerControl.controls.down) {
@@ -265,7 +259,6 @@ var UnitKeyboardControl = IgeClass.extend({
                     ige.network.send(events.down.up);
                     this.playerControl.keyboard.release('down');
                     this.playerControl.setActiveKeyboardAction.call(this, this.playerControl.keyboard.hasAction());
-                    console.log('down Release');
                 }
             }
         }
