@@ -1,6 +1,6 @@
 // Define our player character classes
-var Character = IgeEntityBox2d.extend({
-    classId: 'Character',
+var Tank = IgeEntityBox2d.extend({
+    classId: 'Tank',
 
     init: function () {
         var self = this;
@@ -224,4 +224,4 @@ var Character = IgeEntityBox2d.extend({
     }
 });
 
-if (typeof(module) !== 'undefined' && typeof(module.exports) !== 'undefined') { module.exports = Character; }
+if (typeof(module) !== 'undefined' && typeof(module.exports) !== 'undefined') { module.exports = Tank; }

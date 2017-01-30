@@ -2,8 +2,8 @@
  * Adds keyboard control to the entity this component is added to.
  * @type {IgeClass}
  */
-var PlayerComponent = IgeClass.extend({
-    classId: 'PlayerComponent',
+var UnitKeyboardControl = IgeClass.extend({
+    classId: 'UnitKeyboardControl',
     componentId: 'playerControl',
 
     init: function (entity, options) {
@@ -286,4 +286,4 @@ var PlayerComponent = IgeClass.extend({
 
 });
 
-if (typeof(module) !== 'undefined' && typeof(module.exports) !== 'undefined') { module.exports = PlayerComponent; }
+if (typeof(module) !== 'undefined' && typeof(module.exports) !== 'undefined') { module.exports = UnitKeyboardControl; }

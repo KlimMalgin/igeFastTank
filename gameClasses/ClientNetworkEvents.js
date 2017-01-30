@@ -17,7 +17,7 @@ var ClientNetworkEvents = {
         if (ige.$(entityId)) {
             // Add the player control component
             ige.$(entityId)
-                .addComponent(PlayerComponent)
+                .addComponent(UnitKeyboardControl)
                 .drawBounds(false);
 
             ige.$(entityId).clientId = clientId;
@@ -38,7 +38,7 @@ var ClientNetworkEvents = {
                 if (entity.id() === entityId) {
                     // Add the player control component
                     ige.$(entityId)
-                        .addComponent(PlayerComponent)
+                        .addComponent(UnitKeyboardControl)
                         .drawBounds(false);
 
                     ige.$(entityId).clientId = clientId;
@@ -68,7 +68,7 @@ var ClientNetworkEvents = {
 
             //console.log('>>>> Сущность получена ige.$(data) IS TRUE');
             // Add the player control component
-            //ige.$(data).addComponent(PlayerComponent);
+            //ige.$(data).addComponent(UnitKeyboardControl);
 
             ige.$(data).drawBounds(false);
 
@@ -88,7 +88,7 @@ var ClientNetworkEvents = {
                 if (entity.id() === data) {
                     //console.log('>>>> Идентификаторы совпадают');
                     // Add the player control component
-                    //ige.$(data).addComponent(PlayerComponent);
+                    //ige.$(data).addComponent(UnitKeyboardControl);
 
                     ige.$(data).drawBounds(false);
 

@@ -31,7 +31,7 @@ var ServerNetworkEvents = {
         if (!ige.server.players[clientId]) {
             var unitSize = GameConfig.tileSize * GameConfig.scaleRate;
 
-            ige.server.players[clientId] = new Character(clientId)
+            ige.server.players[clientId] = new Tank(clientId);
 
             console.log('CREATE PLAYER ', clientId, ige.server.players[clientId].id());
 
@@ -67,7 +67,7 @@ var ServerNetworkEvents = {
                 });
 
             ige.server.players[clientId]
-                .addComponent(PlayerComponent)
+                .addComponent(UnitKeyboardControl)
                 .streamMode(1)
                 .mount(ige.server.renderer.gameScene);
 

@@ -7,8 +7,8 @@ var config = {
         {name: 'CollisionManager', path: './gameClasses/utils/CollisionManager'},
         {name: 'Bullet', path: './gameClasses/ammo/Bullet'},
         {name: 'ServerNetworkEvents', path: './gameClasses/ServerNetworkEvents'},
-        {name: 'Character', path: './gameClasses/Character'},
-        {name: 'PlayerComponent', path: './gameClasses/PlayerComponent'},
+        {name: 'Tank', path: './gameClasses/units/Tank'},
+        {name: 'UnitKeyboardControl', path: './gameClasses/units/UnitKeyboardControl'},
 
         // --
         {name: 'level1Data', path: './levels/level1/data'},
