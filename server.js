@@ -21,6 +21,8 @@ var Server = IgeClass.extend({
 
 		// Add the server-side game methods / event handlers
 		this.implement(ServerNetworkEvents);
+		this.implement(ServerTankNetworkEvents);
+
 
 		// Add physics and setup physics world
 		ige.addComponent(IgeBox2dComponent)

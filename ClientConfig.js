@@ -10,6 +10,7 @@ var igeClientConfig = {
         './gameClasses/ClientNetworkEvents.js',
         './gameClasses/units/Tank.js',
         './gameClasses/units/UnitKeyboardControl.js',
+        './gameClasses/units/ClientTankNetworkEvents.js',
 
         './gameClasses/map/MapRenderer.js',
         //'./levels/level1/background.js',

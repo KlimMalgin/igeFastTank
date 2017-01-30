@@ -9,6 +9,7 @@ var config = {
         {name: 'ServerNetworkEvents', path: './gameClasses/ServerNetworkEvents'},
         {name: 'Tank', path: './gameClasses/units/Tank'},
         {name: 'UnitKeyboardControl', path: './gameClasses/units/UnitKeyboardControl'},
+        {name: 'ServerTankNetworkEvents', path: './gameClasses/units/ServerTankNetworkEvents'},
 
         // --
         {name: 'level1Data', path: './levels/level1/data'},
