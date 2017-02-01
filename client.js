@@ -71,7 +71,7 @@ var Client = IgeClass.extend({
 							.createViewport()
 							.renderSurface();
 
-						// Ask the server to send us the tile data
+						// Ask the server to send us the level data
 						ige.network.request('levelData', {}, function (commandName, data) {
 							console.log(' >>> levelData response :: ', data);
 

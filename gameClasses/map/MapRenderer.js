@@ -43,7 +43,6 @@ var MapRenderer = IgeClass.extend({
         if (ige.isClient) {
             this.surface = new IgeTextureMap()
                 .depth(0)
-                // TODO: magic numbers
                 .tileWidth(this.TILE_SIZE)
                 .tileHeight(this.TILE_SIZE)
                 .translateTo(0, 0, 0)
@@ -51,6 +50,15 @@ var MapRenderer = IgeClass.extend({
                 .autoSection(20)
                 .mount(this.gameScene);
         }
+
+        return this;
+    },
+
+    // only client
+    renderRespawn: function () {
+        /*if (ige.isClient) {
+
+        }*/
 
         return this;
     },
