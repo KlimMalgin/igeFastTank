@@ -8,9 +8,9 @@ var igeClientConfig = {
         './gameClasses/utils/CollisionManager.js',
         './gameClasses/ammo/Bullet.js',
         './gameClasses/ClientNetworkEvents.js',
-        './gameClasses/units/Tank.js',
-        './gameClasses/units/UnitKeyboardControl.js',
-        './gameClasses/units/ClientTankNetworkEvents.js',
+        './gameClasses/display/Tank/Tank.js',
+        './gameClasses/display/Tank/UnitKeyboardControl.js',
+        './gameClasses/display/Tank/ClientTankNetworkEvents.js',
 
         './gameClasses/map/MapRenderer.js',
         //'./levels/level1/background.js',

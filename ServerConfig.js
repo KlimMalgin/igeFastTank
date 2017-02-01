@@ -7,9 +7,9 @@ var config = {
         {name: 'CollisionManager', path: './gameClasses/utils/CollisionManager'},
         {name: 'Bullet', path: './gameClasses/ammo/Bullet'},
         {name: 'ServerNetworkEvents', path: './gameClasses/ServerNetworkEvents'},
-        {name: 'Tank', path: './gameClasses/units/Tank'},
-        {name: 'UnitKeyboardControl', path: './gameClasses/units/UnitKeyboardControl'},
-        {name: 'ServerTankNetworkEvents', path: './gameClasses/units/ServerTankNetworkEvents'},
+        {name: 'Tank', path: './gameClasses/display/Tank/Tank'},
+        {name: 'UnitKeyboardControl', path: './gameClasses/display/Tank/UnitKeyboardControl'},
+        {name: 'ServerTankNetworkEvents', path: './gameClasses/display/Tank/ServerTankNetworkEvents'},
 
         // --
         {name: 'level1Data', path: './levels/level1/data'},
