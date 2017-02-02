@@ -63,7 +63,7 @@ var Client = IgeClass.extend({
 							// Create a listener that will fire whenever an entity
 							// is created because of the incoming stream data
 							.stream.on('entityCreated', function (entity) {
-								self.log('Stream entity created with ID: ' + entity.id());
+								self.log('Stream entity created with ID: ' + entity.id() + ' type: ' + entity._type);
 							});
 
 						self.renderer = new MapRenderer()
@@ -78,6 +78,8 @@ var Client = IgeClass.extend({
 							self.renderer.surface.loadMap(data.level);
 							self.renderer.createMapBorders(data.params.width, data.params.height);
 							self.renderer.createStaticItems(data.staticItems);
+
+							console.log('Respawns data: ', data.respawnsData);
 
 							// Now set the texture map's cache data to dirty so it will
 							// be redrawn

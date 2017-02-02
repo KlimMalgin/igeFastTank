@@ -3,10 +3,11 @@
  * Класс Respawn реализует точку появления и перерождения юнита
  */
 
-var Respawn = IgeClass.extend({
+var Respawn = IgeEntity.extend({
     classId: 'Respawn',
 
-    init: function () {
+    init: function (data) {
+        IgeEntity.prototype.init.call(this);
 
         if (ige.isServer) {
             // На сервере создавать карту с данными о респаунах и
@@ -14,7 +15,21 @@ var Respawn = IgeClass.extend({
             //
             // Создание респаунов должно происходить подобно тому как происходит создание юнитов на данный момент
             // т.е. создается на сервере и транслируется на клиент
+
+            console.log('Данные для респауна: ', data);
         }
+
+        /**
+         * Тип создаваемой сущности
+         * @type {String}
+         */
+        this._type = 'respawn';
+
+        /**
+         * Ссылка на юнита, который будет рождаться на текущем респауне
+         * @type {Object}
+         */
+        this._refUnit = null;
 
         // Load the character texture file
         if (ige.isClient) {

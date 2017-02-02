@@ -25,6 +25,12 @@ var Builder = IgeClass.extend({
         this.surface = [];
 
         /**
+         * Массив с данными о респаунах
+         * @type {Array}
+         */
+        this.respawnsData = [];
+
+        /**
          * Массив с координатами статических объектов на карте
          * @type {Array}
          */
@@ -111,6 +117,15 @@ var Builder = IgeClass.extend({
                         this.staticItems.push({
                             x: x * tileSize + tileSize / 2,
                             y: y * tileSize + tileSize / 2
+                        });
+                    }
+
+                    // Сохраняем информацию о респауне в текущей клетке
+                    if (map[y][x].respawn) {
+                        this.respawnsData.push({
+                            x: x * tileSize + tileSize / 2,
+                            y: y * tileSize + tileSize / 2,
+                            respawnData: map[y][x].respawn
                         });
                     }
                 } else {

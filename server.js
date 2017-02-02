@@ -12,8 +12,11 @@ var Server = IgeClass.extend({
 		// Define an object to hold references to our player entities
 		this.players = {};
 
-		// Объект со ссылками на сущьности снарядов
+		// Объект со ссылками на сущности снарядов
 		this.bullets = {};
+
+		// Ссылки на сущности респаунов
+		this.respawns = {};
 
 		this.buildings = {};
 
@@ -22,7 +25,7 @@ var Server = IgeClass.extend({
 		// Add the server-side game methods / event handlers
 		this.implement(ServerNetworkEvents);
 		this.implement(ServerTankNetworkEvents);
-
+		this.implement(ServerRespawnMethods);
 
 		// Add physics and setup physics world
 		ige.addComponent(IgeBox2dComponent)
@@ -39,6 +42,15 @@ var Server = IgeClass.extend({
 				ige.start(function (success) {
 					// Check if the engine started successfully
 					if (success) {
+
+						/**
+						 * Создаем экземпляры респаунов на сервере
+						 * и сохраняем их id в билдере.
+						 * На момент вызова билдер уже должен существовать и его данные
+						 * еще не должны быть отправлены клиенту.
+						 */
+						self._createRespawns();
+
 
 						ige.network.define('playerEntity', self._onPlayerEntity);
 						ige.network.define('playerFired', self._onPlayerFired);
@@ -63,8 +75,11 @@ var Server = IgeClass.extend({
 							ige.network.response(requestId, {
 								level: self.builderData.getSurface(),
 								params: self.builderData.params(),
-								staticItems: self.builderData.staticItems
+								staticItems: self.builderData.staticItems,
+								respawnsData: self.builderData.respawnsData
 							});
+
+							console.log('Send respawns data: ', self.builderData.respawnsData);
 						});
 
 						ige.network.on('connect', self._onPlayerConnect); // Defined in ./gameClasses/ServerNetworkEvents.js
