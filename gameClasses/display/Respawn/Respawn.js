@@ -12,13 +12,16 @@ var Respawn = IgeEntity.extend({
         IgeEntity.prototype.init.call(this);
 
         if (ige.isServer) {
-            // На сервере создавать карту с данными о респаунах и
-            // серверный экземпляр респауна (занимается фиксацией килла и перерождением юнита)
-            //
-            // Создание респаунов должно происходить подобно тому как происходит создание юнитов на данный момент
-            // т.е. создается на сервере и транслируется на клиент
-
             console.log('Данные для респауна: ', data);
+
+            this.streamMode(1)
+                .scale()
+                .x(GameConfig.scaleRate)
+                .y(GameConfig.scaleRate)
+                .mount(ige.server.renderer.gameScene)
+                .translateTo(data.x, data.y, 0);
+
+            this._createUnit(data);
         }
 
         /**
@@ -36,6 +39,7 @@ var Respawn = IgeEntity.extend({
         // Load the character texture file
         if (ige.isClient) {
             this.addComponent(IgeAnimationComponent)
+                .drawBounds(false)
                 .depth(5);
 
             // TODO: Грузить спрайт единожды при старте клиента!
@@ -54,10 +58,18 @@ var Respawn = IgeEntity.extend({
 
     setSprite: function () {
         var respawnAnimationName = 'respawn';
-        this.animation.define(respawnAnimationName, [29], 0, -1)
+        this.animation.define(respawnAnimationName, [29], 0, 0)
             .cell(29);
 
         this.animation.select(respawnAnimationName);
+    },
+
+    _createUnit: function (data) {
+        if (ige.isServer) {
+            this._refUnit = new Tank(data);
+        }
+
+        if (ige.isClient) {}
     }
 
 });

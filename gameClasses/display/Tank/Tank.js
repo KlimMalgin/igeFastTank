@@ -2,12 +2,48 @@
 var Tank = IgeEntityBox2d.extend({
     classId: 'Tank',
 
-    init: function () {
-        var self = this;
+    init: function (data) {
+        data = data || {};
+        var self = this,
+            unitSize = GameConfig.tileSize * GameConfig.scaleRate,
+            coordX = data.x || unitSize / 2,
+            coordY = data.y || unitSize / 2;
+
         IgeEntityBox2d.prototype.init.call(this);
 
         if (ige.isServer) {
-            this.addComponent(IgeVelocityComponent);
+            this.addComponent(IgeVelocityComponent)
+                .addComponent(UnitKeyboardControl)
+                .streamMode(1)
+                .scale()
+                .x(GameConfig.scaleRate)
+                .y(GameConfig.scaleRate)
+                .translateTo(coordX, coordY, 0)
+                .drawBounds(false)
+                .box2dBody({
+                    type: 'dynamic',
+                    linearDamping: 0.0,
+                    angularDamping: 0.1,
+                    allowSleep: true,
+                    bullet: true,
+                    gravitic: true,
+                    fixedRotation: true,
+                    fixtures: [{
+                        density: 0.3,
+                        friction: 0.0,
+                        restitution: 0.2,
+                        shape: {
+                            type: 'polygon',
+                            data: new IgePoly2d()
+                                .addPoint(-1.1 * GameConfig.scaleRate, -1.3 * GameConfig.scaleRate)
+                                .addPoint(1.1 * GameConfig.scaleRate, -1.3 * GameConfig.scaleRate)
+                                .addPoint(1.1 * GameConfig.scaleRate, 1.2 * GameConfig.scaleRate)
+                                .addPoint(-1.1 * GameConfig.scaleRate, 1.2 * GameConfig.scaleRate)
+                        }
+                    }]
+                })
+                .mount(ige.server.renderer.gameScene);
+
         }
 
         this._type = 'tank';
@@ -17,7 +53,7 @@ var Tank = IgeEntityBox2d.extend({
 
         // Load the character texture file
         if (ige.isClient) {
-            self.addComponent(IgeAnimationComponent)
+            this.addComponent(IgeAnimationComponent)
                 .depth(10);
 
             //this._characterTexture = new IgeCellSheet('./assets/vx_chara02_c.png', 12, 8);
@@ -55,7 +91,7 @@ var Tank = IgeEntityBox2d.extend({
                     .animation.define('walkLeft', [9, 8, 7, 6, 5, 4, 3, 2], 14, -1)
                     .animation.define('walkRight', [9, 8, 7, 6, 5, 4, 3, 2], 14, -1)
                     .animation.define('walkUp', [9, 8, 7, 6, 5, 4, 3, 2], 14, -1)
-                    .animation.define('bang', [18, 19, 20], 3, 1)
+                    .animation.define('bang', [18, 19, 20], 12, 1)
                     .cell(9);
 
                 //this._restCell = 9;
@@ -64,15 +100,16 @@ var Tank = IgeEntityBox2d.extend({
             /**
              * Анимация синего танка
              */
-            /*case 1:
+            case 1:
                 this.animation.define('walkDown', [17, 16, 15, 14, 13, 12, 11, 10], 14, -1)
                     .animation.define('walkLeft', [17, 16, 15, 14, 13, 12, 11, 10], 14, -1)
                     .animation.define('walkRight', [17, 16, 15, 14, 13, 12, 11, 10], 14, -1)
                     .animation.define('walkUp', [17, 16, 15, 14, 13, 12, 11, 10], 14, -1)
+                    .animation.define('bang', [18, 19, 20], 12, 1)
                     .cell(17);
 
                 //this._restCell = 17;
-                break;*/
+                break;
 
             /**
              * Анимация взрыва для танка
