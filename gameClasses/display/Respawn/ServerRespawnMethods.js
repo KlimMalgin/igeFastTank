@@ -2,6 +2,7 @@ var ServerRespawnMethods = {
 
     _createRespawns: function () {
         var respawnsData = ige.server.builderData.respawnsData,
+            itemSize = GameConfig.tileSize * GameConfig.scaleRate,
             ln = respawnsData.length,
             resp,
             id;
@@ -18,7 +19,14 @@ var ServerRespawnMethods = {
                 // Сохраняем сущность респауна для последующей работы
                 ige.server.respawns[id] = resp;
 
-                resp.streamMode(1);
+                resp
+                    .streamMode(1)
+                    .scale()
+                    .x(GameConfig.scaleRate)
+                    .y(GameConfig.scaleRate)
+                    .mount(ige.server.renderer.gameScene)
+                    //.translateTo(itemSize / 2, itemSize / 2, 0);
+                    .translateTo(respawnsData[i].x, respawnsData[i].y, 0);
 
                 // Сохраняем id респайна в данных билдера для отправки клиенту
                 respawnsData[i].id = id;

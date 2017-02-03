@@ -7,6 +7,8 @@ var Respawn = IgeEntity.extend({
     classId: 'Respawn',
 
     init: function (data) {
+        var self = this;
+
         IgeEntity.prototype.init.call(this);
 
         if (ige.isServer) {
@@ -33,8 +35,8 @@ var Respawn = IgeEntity.extend({
 
         // Load the character texture file
         if (ige.isClient) {
-            self.addComponent(IgeAnimationComponent)
-                .depth(9);
+            this.addComponent(IgeAnimationComponent)
+                .depth(5);
 
             // TODO: Грузить спрайт единожды при старте клиента!
             this._characterTexture = new IgeCellSheet('./assets/tanks.transparent.png', 8, 4);
@@ -53,8 +55,9 @@ var Respawn = IgeEntity.extend({
     setSprite: function () {
         var respawnAnimationName = 'respawn';
         this.animation.define(respawnAnimationName, [29], 0, -1)
-            .cell(29)
-            .select(respawnAnimationName);
+            .cell(29);
+
+        this.animation.select(respawnAnimationName);
     }
 
 });

@@ -148,7 +148,10 @@ var level1Data = {
         ],
         [
             {
-                surface: 'ground'
+                surface: 'ground',
+                respawn: {
+                    teamId: 0
+                }
             },
             {
                 surface: 'ground'

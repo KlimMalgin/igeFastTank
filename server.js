@@ -43,15 +43,6 @@ var Server = IgeClass.extend({
 					// Check if the engine started successfully
 					if (success) {
 
-						/**
-						 * Создаем экземпляры респаунов на сервере
-						 * и сохраняем их id в билдере.
-						 * На момент вызова билдер уже должен существовать и его данные
-						 * еще не должны быть отправлены клиенту.
-						 */
-						self._createRespawns();
-
-
 						ige.network.define('playerEntity', self._onPlayerEntity);
 						ige.network.define('playerFired', self._onPlayerFired);
 
@@ -99,6 +90,14 @@ var Server = IgeClass.extend({
 							.createViewport()
 							.createMapBorders(self.builderData.params().width, self.builderData.params().height)
 							.createStaticItems(self.builderData.staticItems);
+
+						/**
+						 * Создаем экземпляры респаунов на сервере
+						 * и сохраняем их id в билдере.
+						 * На момент вызова билдер уже должен существовать и его данные
+						 * еще не должны быть отправлены клиенту.
+						 */
+						self._createRespawns();
 
 						self.collisions.listen();
 

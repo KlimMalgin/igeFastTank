@@ -112,7 +112,7 @@ function _wallCreator(width, height, x, y) {
                 }
             }]
         })
-        .depth(10);
+        .depth(0);
 }
 
 if (typeof(module) !== 'undefined' && typeof(module.exports) !== 'undefined') { module.exports = MapRenderer; }
