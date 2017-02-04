@@ -11,6 +11,10 @@ var Respawn = IgeEntity.extend({
 
         IgeEntity.prototype.init.call(this);
 
+        this.unitInfo = {
+            killed: 0
+        };
+
         if (ige.isServer) {
             console.log('Данные для респауна: ', data);
 
@@ -21,10 +25,7 @@ var Respawn = IgeEntity.extend({
                 .mount(ige.server.renderer.gameScene)
                 .translateTo(data.x, data.y, 0);
 
-            this._createUnit(data)
-                .on('killed', function () {
-                    console.log('KILLED');
-                });
+            this._respawnUnit(data);
         }
 
         /**
@@ -65,6 +66,16 @@ var Respawn = IgeEntity.extend({
             .cell(29);
 
         this.animation.select(respawnAnimationName);
+    },
+
+    _respawnUnit: function (data) {
+        var self = this;
+        this._createUnit(data)
+            .on('killed', function () {
+                self.unitInfo.killed++;
+                console.log('Respawn ' + self.id() + ' KILLED ', self.unitInfo.killed);
+                self._respawnUnit(data);
+            });
     },
 
     _createUnit: function (data) {
