@@ -21,7 +21,10 @@ var Respawn = IgeEntity.extend({
                 .mount(ige.server.renderer.gameScene)
                 .translateTo(data.x, data.y, 0);
 
-            this._createUnit(data);
+            this._createUnit(data)
+                .on('killed', function () {
+                    console.log('KILLED');
+                });
         }
 
         /**
@@ -70,6 +73,8 @@ var Respawn = IgeEntity.extend({
         }
 
         if (ige.isClient) {}
+
+        return this._refUnit;
     }
 
 });

@@ -251,6 +251,8 @@ var Tank = IgeEntityBox2d.extend({
     },
 
     destroy: function () {
+        this.emit('killed');
+
         // Destroy the texture object
         if (this._characterTexture) {
             this._characterTexture.destroy();

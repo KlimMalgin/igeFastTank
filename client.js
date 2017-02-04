@@ -64,6 +64,10 @@ var Client = IgeClass.extend({
 							// is created because of the incoming stream data
 							.stream.on('entityCreated', function (entity) {
 								self.log('Stream entity created with ID: ' + entity.id() + ' type: ' + entity._type);
+
+								entity.on('killed', function () {
+									console.log('Tank destroy ', arguments);
+								});
 							});
 
 						self.renderer = new MapRenderer()

@@ -89,13 +89,20 @@ var ServerTankNetworkEvents = {
     _onPlayerDestroy: function (data, sClientId) {
         var entityId = data.entityId,
             clientId = data.clientId,
-            player = ige.server.players[clientId];
+            //player = ige.server.players[clientId],
+            entity = ige.$(entityId);
 
-        console.log('>>>> Уничтожаем танк ', clientId);
-        if (player && player.id() == entityId) {
-            console.log('>>>> Танк существует. Вызываем destroy ', clientId);
-            player.destroy();
-            delete player;
+        // TODO: !!! Раньше танк уничтожался по id подконнекченного клиента. Это неверно.
+        // Нужно по id самого танка.
+        // События по которым срабатывает данный метод и все смежные нужно унести в танк
+
+        console.log('>>>> Уничтожаем танк ', clientId, ige.$(entityId).id(), entityId);
+        if (entity && entity.id() == entityId) {
+            console.log('>>>> Танк существует. Вызываем destroy ', entityId);
+            entity.destroy();
+            // TODO: Ранее player удалялся, т/к/ хранился в искуственном хранилище
+            // Теперь entity не удаляю, т.к. за это должен отвечать движок
+            // delete entity;
         }
     },
 
