@@ -265,6 +265,30 @@ var Tank = IgeEntityBox2d.extend({
         // Call the super class
         IgeEntityBox2d.prototype.destroy.call(this);
     }
+
+
+    /**
+     * Включает режим бота - перемещение в случайную сторону через промежуток времени
+     */
+    /*enableBotMode() {
+            // Случайное направление движения
+        let xyRand = () => Math.floor((Math.random() * 4) + 1),
+
+            // Каждые 5 сек меняем направление движения
+            changeDirectionMs = 1500;
+
+        this.botModeIntervalId = setInterval(() => {
+            this.stop();
+            if (xyRand() == 1) this.go('up');
+            else if (xyRand() == 2) this.go('right');
+            else if (xyRand() == 3) this.go('down');
+            else if (xyRand() == 4) this.go('left');
+        }, changeDirectionMs);
+
+    }*/
+
+
+
 });
 
 if (typeof(module) !== 'undefined' && typeof(module.exports) !== 'undefined') { module.exports = Tank; }

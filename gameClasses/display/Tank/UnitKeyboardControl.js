@@ -178,6 +178,26 @@ var UnitKeyboardControl = IgeClass.extend({
         /* CEXCLUDE */
 
         if (ige.isClient) {
+            /*
+            if (actionEmitter('up')) {
+                // ... go up
+            }
+            if (actionEmitter('down')) {
+                // ... go down
+            }
+
+            // actionEmitter это обертка над источником, предписывающем действие танку
+            // Таким источником может быть пользовательский ввод или рандомная генерация состояний и т.д.
+            actionEmitter = function () {
+                if (botMode) {
+                    return botModeState; // "up" / "down" / "left" / "right"
+                } else {
+                    return ige.input.actionState('left')
+                }
+            }
+
+            */
+
             if (ige.input.actionState('left')) {
                 if (!this.playerControl.controls.left) {
                     // Record the new state
