@@ -295,6 +295,16 @@ var UnitKeyboardControl = IgeClass.extend({
             this.playerControl.controls[action.type] = true;
             ige.network.send(this.playerControl.keyNetEvents[action.type].down);
         }
+    },
+
+    /**
+     * actionEmitter это обертка над источником, предписывающем действие танку
+     * Таким источником может быть пользовательский ввод или рандомная генерация состояний и т.д.
+     */
+    actionEmitter: function () {
+        var botMode = true;
+
+        // ige.input.actionState('down')
     }
 
 });

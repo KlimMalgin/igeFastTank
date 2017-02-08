@@ -70,7 +70,7 @@ var Server = IgeClass.extend({
 								respawnsData: self.builderData.respawnsData
 							});
 
-							console.log('Send respawns data: ', self.builderData.respawnsData);
+							//console.log('Send respawns data: ', self.builderData.respawnsData);
 						});
 
 						ige.network.on('connect', self._onPlayerConnect); // Defined in ./gameClasses/ServerNetworkEvents.js

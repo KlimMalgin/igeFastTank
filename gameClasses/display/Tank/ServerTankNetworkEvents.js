@@ -8,7 +8,7 @@ var ServerTankNetworkEvents = {
      * @param clientId The client id of the client that sent the message.
      * @private
      */
-    _onPlayerConnect: function (socket) {
+    /*_onPlayerConnect: function (socket) {
         // Don't reject the client connection
         return false;
     },
@@ -22,23 +22,21 @@ var ServerTankNetworkEvents = {
             // so that we don't leak memory
             delete ige.server.players[clientId];
         }
-    },
+    },*/
 
     _onPlayerEntity: function (data, clientId) {
-        console.log('_onPlayerEntity: ', data, clientId);
+        var respawns = ige.server.respawns;
 
-        if (!ige.server.players[clientId]) {
-            ige.server.players[clientId] = new Tank({
-                clientId: clientId
-            });
+        // Обходим респауны в поисках свободного и на свободном размещаем клиента
+        for (var key in respawns) {
+            if (!respawns.hasOwnProperty(key)) continue;
 
-            console.log('CREATE PLAYER ', clientId, ige.server.players[clientId].id());
+            if (!respawns[key].getClientId()) {
+                respawns[key].setClientId(clientId);
+                break;
+            }
 
-            // Tell the client to track their player entity
-            ige.network.send('playerEntity', {
-                entityId: ige.server.players[clientId].id(),
-                clientId: clientId
-            }, clientId);
+            console.log('Нужна обработка случая, когда свободных респаунов не оказалось.');
         }
     },
 
@@ -100,7 +98,7 @@ var ServerTankNetworkEvents = {
         if (entity && entity.id() == entityId) {
             console.log('>>>> Танк существует. Вызываем destroy ', entityId);
             entity.destroy();
-            // TODO: Ранее player удалялся, т/к/ хранился в искуственном хранилище
+            // TODO: Ранее player удалялся, т/к/ хранился в искуственном хранилище.
             // Теперь entity не удаляю, т.к. за это должен отвечать движок
             // delete entity;
         }

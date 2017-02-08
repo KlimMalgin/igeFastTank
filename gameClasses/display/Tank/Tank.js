@@ -11,6 +11,8 @@ var Tank = IgeEntityBox2d.extend({
 
         IgeEntityBox2d.prototype.init.call(this);
 
+        console.log('init Tank: ', data);
+
         if (ige.isServer) {
             this.addComponent(IgeVelocityComponent)
                 .addComponent(UnitKeyboardControl)
@@ -251,8 +253,6 @@ var Tank = IgeEntityBox2d.extend({
     },
 
     destroy: function () {
-        this.emit('killed');
-
         // Destroy the texture object
         if (this._characterTexture) {
             this._characterTexture.destroy();
@@ -261,6 +261,8 @@ var Tank = IgeEntityBox2d.extend({
         if (this.playerControl && this.playerControl._saveKeyUpListener) {
             ige.input.off('keyUp', this.playerControl._saveKeyUpListenerObject);
         }
+
+        this.emit('destroy');
 
         // Call the super class
         IgeEntityBox2d.prototype.destroy.call(this);

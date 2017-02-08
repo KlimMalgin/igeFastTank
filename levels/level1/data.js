@@ -1,7 +1,7 @@
 var level1Data = {
 
-    width: 15,
-    height: 11,
+    width: 25,
+    height: 31,
     // Перенесен в config
     // tileSize: 84,
     spriteHash: {
@@ -23,10 +23,7 @@ var level1Data = {
                 surface: 'ground'
             },
             {
-                surface: 'ground',
-                respawn: {
-                    teamId: 0
-                }
+                surface: 'ground'
             },
             {
                 surface: 'ground'
@@ -182,6 +179,12 @@ var level1Data = {
             {
                 surface: 'wall',
                 static: true
+            },
+            {
+                surface: 'ground',
+                respawn: {
+                    teamId: 0
+                }
             },
         ]
     ]
