@@ -200,88 +200,75 @@ var UnitKeyboardControl = IgeClass.extend({
 
             if (ige.input.actionState('left')) {
                 if (!this.playerControl.controls.left) {
-                    // Record the new state
-                    this.playerControl.controls.left = true;
-                    this._lastDirection = 'left';
-                    // Tell the server about our control change
-                    ige.network.send(events.left.down);
-                    this.playerControl.keyboard.press('left');
+                    this.playerControl._go('left');
                 }
             } else {
                 if (this.playerControl.controls.left) {
-                    // Record the new state
-                    this.playerControl.controls.left = false;
-
-                    // Tell the server about our control change
-                    ige.network.send(events.left.up);
-                    this.playerControl.keyboard.release('left');
-                    this.playerControl.setActiveKeyboardAction.call(this, this.playerControl.keyboard.hasAction());
+                    this.playerControl._release('left');
                 }
             }
 
             if (ige.input.actionState('right')) {
                 if (!this.playerControl.controls.right) {
-                    // Record the new state
-                    this.playerControl.controls.right = true;
-                    this._lastDirection = 'right';
-                    // Tell the server about our control change
-                    ige.network.send(events.right.down);
-                    this.playerControl.keyboard.press('right');
+                    this.playerControl._go('right');
                 }
             } else {
                 if (this.playerControl.controls.right) {
-                    // Record the new state
-                    this.playerControl.controls.right = false;
-
-                    // Tell the server about our control change
-                    ige.network.send(events.right.up);
-                    this.playerControl.keyboard.release('right');
-                    this.playerControl.setActiveKeyboardAction.call(this, this.playerControl.keyboard.hasAction());
+                    this.playerControl._release('right');
                 }
             }
 
             if (ige.input.actionState('up')) {
                 if (!this.playerControl.controls.up) {
-                    // Record the new state
-                    this.playerControl.controls.up = true;
-                    this._lastDirection = 'up';
-                    // Tell the server about our control change
-                    ige.network.send(events.up.down);
-                    this.playerControl.keyboard.press('up');
+                    this.playerControl._go('up');
                 }
             } else {
                 if (this.playerControl.controls.up) {
-                    // Record the new state
-                    this.playerControl.controls.up = false;
-
-                    // Tell the server about our control change
-                    ige.network.send(events.up.up);
-                    this.playerControl.keyboard.release('up');
-                    this.playerControl.setActiveKeyboardAction.call(this, this.playerControl.keyboard.hasAction());
+                    this.playerControl._release('up');
                 }
             }
 
             if (ige.input.actionState('down')) {
                 if (!this.playerControl.controls.down) {
-                    // Record the new state
-                    this.playerControl.controls.down = true;
-                    this._lastDirection = 'down';
-                    // Tell the server about our control change
-                    ige.network.send(events.down.down);
-                    this.playerControl.keyboard.press('down');
+                    this.playerControl._go('down');
                 }
             } else {
                 if (this.playerControl.controls.down) {
-                    // Record the new state
-                    this.playerControl.controls.down = false;
-
-                    // Tell the server about our control change
-                    ige.network.send(events.down.up);
-                    this.playerControl.keyboard.release('down');
-                    this.playerControl.setActiveKeyboardAction.call(this, this.playerControl.keyboard.hasAction());
+                    this.playerControl._release('down');
                 }
             }
         }
+    },
+
+    /**
+     * Предписывает юниту двигаться в заданную сторону
+     * @param  {String} direction Направление в котором нужно двигаться юниту
+     */
+    _go: function (direction) {
+        var events = this.keyNetEvents;
+
+        // Record the new state
+        this.controls[direction] = true;
+        this._lastDirection = direction;
+        // Tell the server about our control change
+        ige.network.send(events[direction].down);
+        this.keyboard.press(direction);
+    },
+
+    /**
+     * Предписывает юниту прекратить движение в указанном направлении
+     * @param  {String} direction Направление, движение в котором нужно прекратить
+     */
+    _release: function (direction) {
+        var events = this.keyNetEvents;
+
+        // Record the new state
+        this.controls[direction] = false;
+
+        // Tell the server about our control change
+        ige.network.send(events[direction].up);
+        this.keyboard.release(direction);
+        this.setActiveKeyboardAction.call(this, this.keyboard.hasAction());
     },
 
     /**
@@ -292,8 +279,8 @@ var UnitKeyboardControl = IgeClass.extend({
     setActiveKeyboardAction: function (action) {
         if (action) {
             this._lastDirection = action.type;
-            this.playerControl.controls[action.type] = true;
-            ige.network.send(this.playerControl.keyNetEvents[action.type].down);
+            this.controls[action.type] = true;
+            ige.network.send(this.keyNetEvents[action.type].down);
         }
     },
 
