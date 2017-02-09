@@ -11,7 +11,7 @@ var Tank = IgeEntityBox2d.extend({
 
         IgeEntityBox2d.prototype.init.call(this);
 
-        console.log('init Tank: ', data);
+        //console.log('init Tank: ', data);
 
         if (ige.isServer) {
             this.addComponent(IgeVelocityComponent)

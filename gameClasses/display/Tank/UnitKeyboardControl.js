@@ -69,12 +69,17 @@ var UnitKeyboardControl = IgeClass.extend({
         this._fire.call(this, event, keyCode, this._entity, this._bulletStartPosition(this._entity));
     },
 
+    /**
+     * Метод отвечает за стрельбу юнита
+     * @param  {Object} event    Объект события клавиатуры
+     * @param  {String} keyCode  Код нажатой клавиши
+     * @param  {Object} entity   Объект сущности юнита
+     * @param  {Object} position Объект с координатами стартовой позиции снаряда
+     */
     _fire: function (event, keyCode, entity, position) {
         if (ige.isClient) {
             if (keyCode === ige.input.key.space) {
                 // Генерим Bullet
-                //debugger;
-                //console.log(entity.aabb(), entity.aabb(true));
                 ige.network.send('playerFired', {
                     direction: entity._lastDirection,
                     position: position,
@@ -84,26 +89,16 @@ var UnitKeyboardControl = IgeClass.extend({
         }
     },
 
+    /**
+     * Вычисляет координаты стартовой позиции снаряда - точки, где
+     * в момент выстрела впервые будет отрисован снаряд
+     * @param  {Object} entity Сущность юнита, который произвел выстрел
+     * @return {Object}        Объект с координатами для снаряда
+     */
     _bulletStartPosition: function (entity) {
-        //entity.bounds2d()
-        //IgeClass {x: 84, y: 84, _floor: false, x2: 42, y2: 42}
-        //--
-        //entity.worldPosition()
-        // _floor : false
-        // x : 27.15
-        // x2 : 13.575
-        // y : 380.4
-        // y2 : 190.2
-        // z : 0
-        // z2 : 0
-        //
         var bounds = entity.bounds2d(),
             position = entity.worldPosition(),
             result = { x: 0, y: 0 };
-
-        if (ige.isClient) {
-            console.log('position: %o  bounds: %o', position, bounds);
-        }
 
         switch(entity._lastDirection) {
             case 'up':
@@ -136,44 +131,22 @@ var UnitKeyboardControl = IgeClass.extend({
      * @param ctx The canvas context to render to.
      */
     _behaviour: function (ctx) {
-        var events = this.playerControl.keyNetEvents,
-            speed = this.playerControl._speed;
-
+        var self = this.playerControl,
+            events = self.keyNetEvents,
+            speed = self._speed,
+            ctrls = self.controls;
 
         /* CEXCLUDE */
         if (ige.isServer) {
 
-            if (this.playerControl.controls.left) {
-                // this.velocity.x(-this.playerControl._speed);
-
-                this._box2dBody.SetLinearVelocity(new IgePoint3d(-speed, 0, 0));
-                this._box2dBody.SetAwake(true);
-
-            } else if (this.playerControl.controls.right) {
-                // this.velocity.x(this.playerControl._speed);
-
-                this._box2dBody.SetLinearVelocity(new IgePoint3d(speed, 0, 0));
-                this._box2dBody.SetAwake(true);
-
-            } else if (this.playerControl.controls.up) {
-                // this.velocity.y(-this.playerControl._speed);
-
-                this._box2dBody.SetLinearVelocity(new IgePoint3d(0, -speed, 0));
-                this._box2dBody.SetAwake(true);
-
-            } else if (this.playerControl.controls.down) {
-                // this.velocity.y(this.playerControl._speed);
-
-                this._box2dBody.SetLinearVelocity(new IgePoint3d(0, speed, 0));
-                this._box2dBody.SetAwake(true);
-
-            } else {
-                // this.velocity.y(0);
-
-                this._box2dBody.SetLinearVelocity(new IgePoint3d(0, 0, 0));
-                this._box2dBody.SetAwake(true);
-
+            switch (true) {
+                case ctrls.left:  self._move(-speed, 0); break;
+                case ctrls.right: self._move(speed, 0);  break;
+                case ctrls.up:    self._move(0, -speed); break;
+                case ctrls.down:  self._move(0, speed);  break;
+                default:          self._move(0, 0);      break;
             }
+
         }
         /* CEXCLUDE */
 
@@ -198,50 +171,45 @@ var UnitKeyboardControl = IgeClass.extend({
 
             */
 
-            if (ige.input.actionState('left')) {
-                if (!this.playerControl.controls.left) {
-                    this.playerControl._go('left');
-                }
-            } else {
-                if (this.playerControl.controls.left) {
-                    this.playerControl._release('left');
-                }
-            }
+            self._checkInputAction('left');
+            self._checkInputAction('right');
+            self._checkInputAction('up');
+            self._checkInputAction('down');
 
-            if (ige.input.actionState('right')) {
-                if (!this.playerControl.controls.right) {
-                    this.playerControl._go('right');
-                }
-            } else {
-                if (this.playerControl.controls.right) {
-                    this.playerControl._release('right');
-                }
-            }
+        }
+    },
 
-            if (ige.input.actionState('up')) {
-                if (!this.playerControl.controls.up) {
-                    this.playerControl._go('up');
-                }
-            } else {
-                if (this.playerControl.controls.up) {
-                    this.playerControl._release('up');
-                }
-            }
+    /**
+     * Придает ускорение юниту в указанных координатах
+     * @server
+     * @param  {Number} x Ускорение по x
+     * @param  {Number} y Ускорение по y
+     */
+    _move: function (x, y) {
+        this._entity._box2dBody.SetLinearVelocity(new IgePoint3d(x, y, 0));
+        this._entity._box2dBody.SetAwake(true);
+    },
 
-            if (ige.input.actionState('down')) {
-                if (!this.playerControl.controls.down) {
-                    this.playerControl._go('down');
-                }
-            } else {
-                if (this.playerControl.controls.down) {
-                    this.playerControl._release('down');
-                }
+    /**
+     * Проверяет наличие действия на указанной клавише.
+     * @client
+     * @param  {String} direction Обозначение действия
+     */
+    _checkInputAction: function (direction) {
+        if (ige.input.actionState(direction)) {
+            if (!this.controls[direction]) {
+                this._go(direction);
+            }
+        } else {
+            if (this.controls[direction]) {
+                this._release(direction);
             }
         }
     },
 
     /**
      * Предписывает юниту двигаться в заданную сторону
+     * @client
      * @param  {String} direction Направление в котором нужно двигаться юниту
      */
     _go: function (direction) {
@@ -257,6 +225,7 @@ var UnitKeyboardControl = IgeClass.extend({
 
     /**
      * Предписывает юниту прекратить движение в указанном направлении
+     * @client
      * @param  {String} direction Направление, движение в котором нужно прекратить
      */
     _release: function (direction) {
@@ -274,6 +243,7 @@ var UnitKeyboardControl = IgeClass.extend({
     /**
      * Если есть активное действие (нажатая клавиша) - зафиксируем это действие
      * как текущее и отправим соответствующую команду серверу
+     * @client
      * @param {Object} action Объект действия, содержащий тип этого действия
      */
     setActiveKeyboardAction: function (action) {
