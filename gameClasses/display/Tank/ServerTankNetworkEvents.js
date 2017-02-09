@@ -1,29 +1,5 @@
 var ServerTankNetworkEvents = {
 
-    /**
-     * Is called when the network tells us a new client has connected
-     * to the server. This is the point we can return true to reject
-     * the client connection if we wanted to.
-     * @param data The data object that contains any data sent from the client.
-     * @param clientId The client id of the client that sent the message.
-     * @private
-     */
-    /*_onPlayerConnect: function (socket) {
-        // Don't reject the client connection
-        return false;
-    },
-
-    _onPlayerDisconnect: function (clientId) {
-        if (ige.server.players[clientId]) {
-            // Remove the player from the game
-            ige.server.players[clientId].destroy();
-
-            // Remove the reference to the player entity
-            // so that we don't leak memory
-            delete ige.server.players[clientId];
-        }
-    },*/
-
     _onPlayerEntity: function (data, clientId) {
         var respawns = ige.server.respawns;
 
@@ -87,16 +63,10 @@ var ServerTankNetworkEvents = {
     _onPlayerDestroy: function (data, sClientId) {
         var entityId = data.entityId,
             clientId = data.clientId,
-            //player = ige.server.players[clientId],
             entity = ige.$(entityId);
 
-        // TODO: !!! Раньше танк уничтожался по id подконнекченного клиента. Это неверно.
-        // Нужно по id самого танка.
-        // События по которым срабатывает данный метод и все смежные нужно унести в танк
-
-        console.log('>>>> Уничтожаем танк ', clientId, ige.$(entityId).id(), entityId);
         if (entity && entity.id() == entityId) {
-            console.log('>>>> Танк существует. Вызываем destroy ', entityId);
+            console.log('>>>> Уничтожаем танк ', clientId, ige.$(entityId).id(), entityId);
             entity.destroy();
             // TODO: Ранее player удалялся, т/к/ хранился в искуственном хранилище.
             // Теперь entity не удаляю, т.к. за это должен отвечать движок
@@ -130,9 +100,7 @@ var ServerTankNetworkEvents = {
     },
 
     _onBulletDestroyProcess: function () {
-        //console.log('onBulletDestroyProcess');
         if (ige.server.bullets[bulletId]) {
-            //console.log('::STOP:: onBulletDestroyProcess');
             ige.server.bullets[bulletId].setDirection('stop');
         }
     },

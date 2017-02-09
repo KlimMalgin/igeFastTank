@@ -11,7 +11,11 @@ var Tank = IgeEntityBox2d.extend({
 
         IgeEntityBox2d.prototype.init.call(this);
 
-        //console.log('init Tank: ', data);
+        this.clientId = data.clientId || null;
+        this._type = 'tank';
+        this._destroyed = false;
+        this._lastDirection = 'up';
+        this.__tempLastDirection = '';
 
         if (ige.isServer) {
             this.addComponent(IgeVelocityComponent)
@@ -48,10 +52,7 @@ var Tank = IgeEntityBox2d.extend({
 
         }
 
-        this._type = 'tank';
-        this._destroyed = false;
-        this._lastDirection = 'up';
-        this.__tempLastDirection = '';
+        console.log('TANK: ', ( !this.clientId ? ' Я БОТ :: ' + this.clientId : ' Я ЭТО ТЫ ' + this.clientId ));
 
         // Load the character texture file
         if (ige.isClient) {
@@ -246,7 +247,6 @@ var Tank = IgeEntityBox2d.extend({
 
         if (this._lastDirection != this.__tempLastDirection) {
             this.__tempLastDirection = this._lastDirection;
-            console.log('_lastDirection: ', this._lastDirection);
         }
 
         IgeEntityBox2d.prototype.tick.call(this, ctx);

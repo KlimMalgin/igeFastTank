@@ -12,8 +12,6 @@ var ClientTankNetworkEvents = {
         var entityId = data.entityId,
             clientId = data.clientId;
 
-        console.log('_onPlayerEntity: ', arguments);
-
         if (ige.$(entityId)) {
             // Add the player control component
             ige.$(entityId)
@@ -117,7 +115,6 @@ var ClientTankNetworkEvents = {
 
         var player = ige.$(entityId);
         if (player) {
-            console.log('onPlayerDestroyProcess на Клиенте! ', arguments, player);
             player._destroyed = true;
             player.velocityTo(0, 0, 0);
             player.runAnimation('bang');
@@ -125,7 +122,6 @@ var ClientTankNetworkEvents = {
     },
 
     _onBulletDestroyProcess: function (data) {
-        console.log('onBulletDestroyProcess на Клиенте! ', arguments);
         var bullet = ige.$(data);
         if (bullet) {
             bullet.velocityTo(0, 0, 0);
