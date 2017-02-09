@@ -259,7 +259,7 @@ var UnitKeyboardControl = IgeClass.extend({
                     parentId: entity.id()
                 })
             },
-            800
+            1000
         );
     },
 

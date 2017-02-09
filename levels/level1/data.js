@@ -186,6 +186,203 @@ var level1Data = {
                     teamId: 0
                 }
             },
+        ],
+        [
+            {
+                surface: 'ground'
+            },
+            {
+                surface: 'ground'
+            },
+            {
+                surface: 'wall',
+                static: true
+            },
+            {
+                surface: 'ground'
+            },
+            {
+                surface: 'ground'
+            },
+            {
+                surface: 'ground'
+            },
+            {
+                surface: 'ground'
+            },
+            {
+                surface: 'ground'
+            },
+            {
+                surface: 'ground'
+            },
+            {
+                surface: 'ground'
+            },
+            {
+                surface: 'ground'
+            },
+            {
+                surface: 'ground'
+            },
+        ],
+        [
+            {
+                surface: 'ground'
+            },
+            {
+                surface: 'ground'
+            },
+            {
+                surface: 'ground'
+            },
+            {
+                surface: 'ground'
+            },
+            {
+                surface: 'ground'
+            },
+            {
+                surface: 'ground'
+            },
+            {
+                surface: 'ground'
+            },
+            {
+                surface: 'ground'
+            },
+            {
+                surface: 'ground'
+            },
+            {
+                surface: 'ground'
+            },
+            {
+                surface: 'ground'
+            },
+            {
+                surface: 'ground'
+            },
+        ],
+        [
+            {
+                surface: 'ground'
+            },
+            {
+                surface: 'ground'
+            },
+            {
+                surface: 'ground'
+            },
+            {
+                surface: 'ground'
+            },
+            {
+                surface: 'ground'
+            },
+            {
+                surface: 'ground'
+            },
+            {
+                surface: 'ground'
+            },
+            {
+                surface: 'ground'
+            },
+            {
+                surface: 'ground'
+            },
+            {
+                surface: 'ground'
+            },
+            {
+                surface: 'ground'
+            },
+            {
+                surface: 'ground',
+                respawn: {
+                    teamId: 0
+                }
+            },
+        ],
+        [
+            {
+                surface: 'ground'
+            },
+            {
+                surface: 'ground'
+            },
+            {
+                surface: 'ground'
+            },
+            {
+                surface: 'ground'
+            },
+            {
+                surface: 'ground'
+            },
+            {
+                surface: 'ground'
+            },
+            {
+                surface: 'ground'
+            },
+            {
+                surface: 'ground'
+            },
+            {
+                surface: 'ground'
+            },
+            {
+                surface: 'ground'
+            },
+            {
+                surface: 'ground'
+            },
+            {
+                surface: 'ground'
+            },
+        ],
+        [
+            {
+                surface: 'ground'
+            },
+            {
+                surface: 'ground'
+            },
+            {
+                surface: 'ground'
+            },
+            {
+                surface: 'ground'
+            },
+            {
+                surface: 'ground',
+                respawn: {
+                    teamId: 0
+                }
+            },
+            {
+                surface: 'ground'
+            },
+            {
+                surface: 'ground'
+            },
+            {
+                surface: 'ground'
+            },
+            {
+                surface: 'ground'
+            },
+            {
+                surface: 'ground'
+            },
+            {
+                surface: 'ground'
+            },
+            {
+                surface: 'ground'
+            },
         ]
     ]
 
