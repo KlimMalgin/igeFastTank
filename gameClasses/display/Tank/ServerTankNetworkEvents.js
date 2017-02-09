@@ -57,7 +57,7 @@ var ServerTankNetworkEvents = {
             .mount(ige.server.renderer.gameScene);
 
         // Tell the client to track bullet entity
-        ige.network.send('playerFired', bulletId, clientId);
+        //ige.network.send('playerFired', bulletId, clientId);
     },
 
     _onPlayerDestroy: function (data, sClientId) {
@@ -92,7 +92,6 @@ var ServerTankNetworkEvents = {
     },
 
     _onBulletDestroy: function (bulletId) {
-        console.log('>>>> Уничтожаем патрон ', bulletId);
         if (ige.server.bullets[bulletId]) {
             ige.server.bullets[bulletId].destroy();
             delete ige.server.bullets[bulletId];

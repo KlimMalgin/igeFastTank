@@ -267,6 +267,9 @@ var Tank = IgeEntityBox2d.extend({
         }
 
         if (this.playerControl && this.playerControl._saveKeyUpListener) {
+            clearInterval(this.playerControl.directionInterval);
+            clearInterval(this.playerControl.fireInterval);
+
             ige.input.off('keyUp', this.playerControl._saveKeyUpListenerObject);
         }
 

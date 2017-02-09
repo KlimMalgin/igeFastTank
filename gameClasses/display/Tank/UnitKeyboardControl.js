@@ -64,8 +64,10 @@ var UnitKeyboardControl = IgeClass.extend({
         // Add the playerComponent behaviour to the entity
         this._entity.addBehaviour('playerComponent_behaviour', this._behaviour);
 
-        if (!this._entity.clientId) {
-            this.enableBotMode();
+        if (ige.isServer) {
+            if (!this._entity.clientId) {
+                this.enableBotMode();
+            }
         }
     },
 
@@ -142,7 +144,6 @@ var UnitKeyboardControl = IgeClass.extend({
 
         /* CEXCLUDE */
         if (ige.isServer) {
-
             switch (true) {
                 case ctrls.left:  self._move(-speed, 0); break;
                 case ctrls.right: self._move(speed, 0);  break;
@@ -150,36 +151,14 @@ var UnitKeyboardControl = IgeClass.extend({
                 case ctrls.down:  self._move(0, speed);  break;
                 default:          self._move(0, 0);      break;
             }
-
         }
         /* CEXCLUDE */
 
         if (ige.isClient) {
-            /*
-            if (actionEmitter('up')) {
-                // ... go up
-            }
-            if (actionEmitter('down')) {
-                // ... go down
-            }
-
-            // actionEmitter это обертка над источником, предписывающем действие танку
-            // Таким источником может быть пользовательский ввод или рандомная генерация состояний и т.д.
-            actionEmitter = function () {
-                if (botMode) {
-                    return botModeState; // "up" / "down" / "left" / "right"
-                } else {
-                    return ige.input.actionState('left')
-                }
-            }
-
-            */
-
             self._checkInputAction('left');
             self._checkInputAction('right');
             self._checkInputAction('up');
             self._checkInputAction('down');
-
         }
     },
 
@@ -262,11 +241,25 @@ var UnitKeyboardControl = IgeClass.extend({
      * Включает режим бота - перемещение в случайную сторону через промежуток времени
      */
     enableBotMode: function () {
-        setInterval(
-            this.changeDirection.bind(this),
+        var entity = this._entity,
+            self = this;
 
-            // Интервал смены направления движения
+        // Интервал задает направление движения и его смену
+        this.directionInterval = setInterval(
+            this.changeDirection.bind(this),
             2000
+        );
+
+        // Интервал задает частоту выстрелов
+        this.fireInterval = setInterval(
+            function () {
+                ServerTankNetworkEvents._onPlayerFired.call({}, {
+                    direction: entity._lastDirection,
+                    position: self._bulletStartPosition(entity),
+                    parentId: entity.id()
+                })
+            },
+            800
         );
     },
 
@@ -277,7 +270,8 @@ var UnitKeyboardControl = IgeClass.extend({
         var xyRand = function () { return Math.floor(Math.random() * 4); },
             // Направления движения
             directions = ['up', 'down', 'left', 'right'],
-            ctrls = this.controls;
+            ctrls = this.controls,
+            direction = directions[xyRand()];
 
         // Останавливаем юнита
         ctrls.left = false;
@@ -286,7 +280,8 @@ var UnitKeyboardControl = IgeClass.extend({
         ctrls.down = false;
 
         // Задаем юниту случайное направление
-        ctrls[directions[xyRand()]] = true;
+        this._entity._lastDirection = direction;
+        ctrls[direction] = true;
     }
 
 
