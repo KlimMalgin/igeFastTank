@@ -14,9 +14,21 @@ var ServerNetworkEvents = {
     },
 
     _onPlayerDisconnect: function (clientId) {
+        var respawns = ige.server.respawns;
+
         if (ige.server.players[clientId]) {
             // Remove the player from the game
             ige.server.players[clientId].destroy();
+
+            // Обходим респауны в поисках свободного и на свободном размещаем клиента
+            for (var key in respawns) {
+                if (!respawns.hasOwnProperty(key)) continue;
+
+                if (respawns[key].getClientId() == clientId) {
+                    respawns[key].removeClient();
+                    break;
+                }
+            }
 
             // Remove the reference to the player entity
             // so that we don't leak memory

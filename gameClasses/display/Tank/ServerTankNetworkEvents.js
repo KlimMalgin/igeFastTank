@@ -8,7 +8,7 @@ var ServerTankNetworkEvents = {
             if (!respawns.hasOwnProperty(key)) continue;
 
             if (!respawns[key].getClientId()) {
-                respawns[key].setClientId(clientId);
+                respawns[key].setClient(clientId);
                 break;
             }
 

@@ -151,13 +151,36 @@ var Respawn = IgeEntity.extend({
      * Установит id клиента текущему респауну
      * @param {String} clientId Идентификатор
      */
-    setClientId: function (clientId) {
+    setClient: function (clientId) {
         var data = this._respawnInitData,
             listener = null;
 
         this._clientId = clientId;
 
         console.log('\nsetClientId: ', clientId);
+
+        this.destroyClientOnRespawn();
+
+        this._respawnUnit(data, clientId);
+
+        // После связывания клиента с респауном - нужно переродить танк с возможностью управления для игрока
+    },
+
+    removeClient: function () {
+        this._clientId = null;
+        this.destroyClientOnRespawn();
+    },
+
+    /**
+     * Вернет идентификатор клиента, связанного с респауном
+     * @return {String} Идентификатор
+     */
+    getClientId: function () {
+        return this._clientId;
+    },
+
+    destroyClientOnRespawn: function () {
+        var listener = null;
 
         if (this._refUnit) {
             console.log('clear this._refUnit\n\n');
@@ -172,18 +195,6 @@ var Respawn = IgeEntity.extend({
             this._refUnit.destroy();
             delete this._refUnit;
         }
-
-        this._respawnUnit(data, clientId);
-
-        // После связывания клиента с респауном - нужно переродить танк с возможностью управления для игрока
-    },
-
-    /**
-     * Вернет идентификатор клиента, связанного с респауном
-     * @return {String} Идентификатор
-     */
-    getClientId: function () {
-        return this._clientId;
     }
 
 });
