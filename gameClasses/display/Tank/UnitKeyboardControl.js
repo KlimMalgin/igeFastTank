@@ -63,6 +63,10 @@ var UnitKeyboardControl = IgeClass.extend({
 
         // Add the playerComponent behaviour to the entity
         this._entity.addBehaviour('playerComponent_behaviour', this._behaviour);
+
+        if (!this._entity.clientId) {
+            this.enableBotMode();
+        }
     },
 
     _keyUpListener: function (event, keyCode) {
@@ -255,14 +259,36 @@ var UnitKeyboardControl = IgeClass.extend({
     },
 
     /**
-     * actionEmitter это обертка над источником, предписывающем действие танку
-     * Таким источником может быть пользовательский ввод или рандомная генерация состояний и т.д.
+     * Включает режим бота - перемещение в случайную сторону через промежуток времени
      */
-    actionEmitter: function () {
-        var botMode = true;
+    enableBotMode: function () {
+        setInterval(
+            this.changeDirection.bind(this),
 
-        // ige.input.actionState('down')
+            // Интервал смены направления движения
+            2000
+        );
+    },
+
+    /**
+     * Случайным образом выбирает направление движения для бота и задает ему это направление
+     */
+    changeDirection: function () {
+        var xyRand = function () { return Math.floor(Math.random() * 4); },
+            // Направления движения
+            directions = ['up', 'down', 'left', 'right'],
+            ctrls = this.controls;
+
+        // Останавливаем юнита
+        ctrls.left = false;
+        ctrls.right = false;
+        ctrls.up = false;
+        ctrls.down = false;
+
+        // Задаем юниту случайное направление
+        ctrls[directions[xyRand()]] = true;
     }
+
 
 });
 

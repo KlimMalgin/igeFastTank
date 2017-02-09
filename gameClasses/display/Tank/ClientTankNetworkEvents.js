@@ -25,7 +25,7 @@ var ClientTankNetworkEvents = {
             //console.log('Сущность с id %o СУЩЕСТВУЕТ // Направление %o', entityId, ige.$(entityId)._lastDirection);
 
             // Track our player with the camera
-            ige.client.renderer.viewport.camera.trackTranslate(ige.$(entityId), 50);
+            ige.client.renderer.viewport.camera.trackTranslate(ige.$(entityId), 30);
         } else {
             // The client has not yet received the entity via the network
             // stream so lets ask the stream to tell us when it creates a
@@ -46,7 +46,7 @@ var ClientTankNetworkEvents = {
                     //console.log('Сущность с id %o СОЗДАНА // Направление %o', entityId, ige.$(entityId)._lastDirection);
 
                     // Tell the camera to track out player entity
-                    ige.client.renderer.viewport.camera.trackTranslate(ige.$(entityId), 50);
+                    ige.client.renderer.viewport.camera.trackTranslate(ige.$(entityId), 30);
 
                     // Turn off the listener for this event now that we
                     // have found and started tracking our player entity
