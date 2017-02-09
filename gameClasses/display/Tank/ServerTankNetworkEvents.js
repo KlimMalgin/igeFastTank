@@ -111,6 +111,7 @@ var ServerTankNetworkEvents = {
     },
 
     _onPlayerLeftUp: function (data, clientId) {
+        disableBotMode(clientId);
         ige.server.players[clientId].playerControl.controls.left = false;
     },
 
@@ -121,6 +122,7 @@ var ServerTankNetworkEvents = {
     },
 
     _onPlayerRightUp: function (data, clientId) {
+        disableBotMode(clientId);
         ige.server.players[clientId].playerControl.controls.right = false;
     },
 
@@ -131,6 +133,7 @@ var ServerTankNetworkEvents = {
     },
 
     _onPlayerUpUp: function (data, clientId) {
+        disableBotMode(clientId);
         ige.server.players[clientId].playerControl.controls.up = false;
     },
 
@@ -141,6 +144,7 @@ var ServerTankNetworkEvents = {
     },
 
     _onPlayerDownUp: function (data, clientId) {
+        disableBotMode(clientId);
         ige.server.players[clientId].playerControl.controls.down = false;
     }
 
@@ -151,6 +155,11 @@ var ServerTankNetworkEvents = {
         ige.server.players[clientId].playerControl.controls.right = false;
         ige.server.players[clientId].playerControl.controls.up = false;
         ige.server.players[clientId].playerControl.controls.down = false;
+    }
+
+    function disableBotMode (clientId) {
+        clearInterval(ige.server.players[clientId].playerControl.directionInterval);
+        clearInterval(ige.server.players[clientId].playerControl.fireInterval);
     }
 
 
