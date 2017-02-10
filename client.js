@@ -63,7 +63,9 @@ var Client = IgeClass.extend({
 							// Create a listener that will fire whenever an entity
 							// is created because of the incoming stream data
 							.stream.on('entityCreated', function (entity) {
-								self.log('Stream entity created with ID: ' + entity.id() + ' type: ' + entity._type);
+								if (entity._type == 'tank') {
+									self.log('Stream entity created with ID: ' + entity.id() + ' type: ' + entity._type + ' ' + entity.teamId);
+								}
 
 								entity.drawBounds(false);
 							});

@@ -140,6 +140,8 @@ var Respawn = IgeEntity.extend({
                 this._refUnit = new Tank(data);
             }
 
+            this._refUnit.setTeamId(data.respawnData.teamId);
+
         }
 
         if (ige.isClient) {}

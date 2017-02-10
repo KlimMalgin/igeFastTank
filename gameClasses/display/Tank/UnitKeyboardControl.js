@@ -66,7 +66,7 @@ var UnitKeyboardControl = IgeClass.extend({
 
         if (ige.isServer) {
             //if (!this._entity.clientId) {
-                this.enableBotMode();
+                //this.enableBotMode();
             //}
         }
     },

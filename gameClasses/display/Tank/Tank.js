@@ -67,7 +67,7 @@ var Tank = IgeEntityBox2d.extend({
                 self.texture(self._characterTexture)
                     .dimensionsFromCell();
 
-                self.setType(0);
+                //self.setType(0);
             }, false, true);
         }
 
@@ -75,6 +75,55 @@ var Tank = IgeEntityBox2d.extend({
 
         this._lastTranslate = this._translate.clone();
 
+        // Define the data sections that will be included in the stream
+        // this.streamSections(['transform', 'score']);
+        this.streamSections(['transform', 'teamId']);
+    },
+
+    /**
+     * Override the default IgeEntity class streamSectionData() method
+     * so that we can check for the custom1 section and handle how we deal
+     * with it.
+     * @param {String} sectionId A string identifying the section to
+     * handle data get / set for.
+     * @param {*=} data If present, this is the data that has been sent
+     * from the server to the client for this entity.
+     * @return {*}
+     */
+    streamSectionData: function (sectionId, data) {
+        // Check if the section is one that we are handling
+        if (sectionId === 'teamId') {
+            // Check if the server sent us data, if not we are supposed
+            // to return the data instead of set it
+            if (data) {
+                console.log('\nstreamSectionData: ', sectionId, ' / ', data);
+                // We have been given new data!
+                this._teamId = data;
+
+                if (ige.isClient) {
+                    this.setType(this._teamId);
+                }
+
+            } else {
+                // Return current data
+                return this._teamId;
+            }
+        } else {
+            // The section was not one that we handle here, so pass this
+            // to the super-class streamSectionData() method - it handles
+            // the "transform" section by itself
+            return IgeEntity.prototype.streamSectionData.call(this, sectionId, data);
+        }
+    },
+
+    /**
+     * @server
+     */
+    setTeamId: function (teamId) {
+        console.log('setTeamId :: entityId: ' + this.id() + ' :: teamId: ' + teamId);
+        this._teamId = teamId;
+
+        return this;
     },
 
     /**
@@ -85,6 +134,8 @@ var Tank = IgeEntityBox2d.extend({
      * @return {*}
      */
     setType: function (type) {
+        type = parseInt(type, 10);
+
         switch (type) {
             /**
              * Анимация зеленого танка
