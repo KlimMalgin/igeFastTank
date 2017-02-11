@@ -9,19 +9,16 @@ var CollisionManager = IgeClass.extend({
     listen: function () {
         var self = this;
 
-        // console.log('[[[ ЗАПУСКАЕМ СЛУШАТЕЛЯ КОЛЛИЗИЙ ]]]');
-
         ige.box2d.contactListener(
             // Listen for when contact's begin
             function (contact) {
-                //console.log('[[[ Contact begins between ', contact.igeEntityA()._type, ' ', contact.igeEntityA()._id, 'and', contact.igeEntityB()._type, ' ', contact.igeEntityB()._id);
                 var entityA = contact.igeEntityA(),
                     entityB = contact.igeEntityB();
 
-                if (!self.isTankSelfBulletContact(entityA, entityB)) {
+                if (self.isDifferentTeamsFire(entityA, entityB) && !self.isTankSelfBulletContact(entityA, entityB)) {
                     entityA.onCollision && entityA.onCollision(entityA, entityB);
                     entityB.onCollision && entityB.onCollision(entityB, entityA);
-                } else if (self.isTankSomeBulletContact(entityA, entityB)) {
+                } else if (self.isDifferentTeamsFire(entityA, entityB) && self.isTankSomeBulletContact(entityA, entityB)) {
                     entityA.onCollision && entityA.onCollision(entityA, entityB);
                     entityB.onCollision && entityB.onCollision(entityB, entityA);
                 }
@@ -33,11 +30,15 @@ var CollisionManager = IgeClass.extend({
             },
             // Handle pre-solver events
             function (contact) {
-                /*var entityA = contact.igeEntityA(),
-                    entityB = contact.igeEntityB();*/
+                var entityA = contact.igeEntityA(),
+                    entityB = contact.igeEntityB();
 
                 // TODO: Регистрировать категории bullet, tank и др.
-                if (self.isTankSelfBulletContact(contact.igeEntityA(), contact.igeEntityB())) {
+                if (self.isTankSelfBulletContact(entityA, entityB)) {
+                    contact.SetEnabled(false);
+                }
+
+                if (self.isTankSomeBulletContact(entityA, entityB) && self.isSameTeamsFire(entityA, entityB)) {
                     contact.SetEnabled(false);
                 }
 
@@ -53,16 +54,12 @@ var CollisionManager = IgeClass.extend({
     isTankSelfBulletContact: function (entityA, entityB) {
         if (entityA._type == 'bullet' && entityB._type == 'tank') {
             if (entityA.getParentId() == entityB.id()) {
-                //console.log("entityA::bullet // entityB::tank", entityA.getParentId(), ' ', entityB.id());
-                //contact.SetEnabled(false);
                 return true;
             }
         }
 
         if (entityA._type == 'tank' && entityB._type == 'bullet') {
             if (entityA.id() == entityB.getParentId()) {
-                //console.log("entityA::tank // entityB::bullet", entityA.id(), ' ', entityB.getParentId());
-                //contact.SetEnabled(false);
                 return true;
             }
         }
@@ -71,7 +68,7 @@ var CollisionManager = IgeClass.extend({
     },
 
     /**
-     * Проверяет кейс когда одна сущность это юнит, а вторая любой патрон
+     * Проверяет кейс когда одна сущность это юнит, а вторая любой патрон.
      */
     isTankSomeBulletContact: function (entityA, entityB) {
         if (entityA._type == 'bullet' && entityB._type == 'tank') {
@@ -86,6 +83,41 @@ var CollisionManager = IgeClass.extend({
         }
 
         return false;
+    },
+
+    /**
+     * Обработка кейса с столкновением снаряда и юнита одной команды
+     * @return {Boolean} Вернет true, когда столкнувшиеся патрон и юнит принадлежат разным командам
+     */
+    isSameTeamsFire: function (entityA, entityB) {
+        if (this.isTankSomeBulletContact(entityA, entityB)) {
+            if (entityA._teamId == entityB._teamId) {
+                return true;
+            } else {
+                return false;
+            }
+        } else {
+            // Если сталкиваются не юнит с патроном, а другая комбинация сущностей - по умолчанию возвращаем true
+            // Такое поведение "отключает" проверку принадлежности к командам
+            return true;
+        }
+    },
+
+    /**
+     * Обработка кейса с столкновением снаряда и юнита разных команд
+     */
+    isDifferentTeamsFire: function (entityA, entityB) {
+        if (this.isTankSomeBulletContact(entityA, entityB)) {
+            if (entityA._teamId != entityB._teamId) {
+                return true;
+            } else {
+                return false;
+            }
+        } else {
+            // Если сталкиваются не юнит с патроном, а другая комбинация сущностей - по умолчанию возвращаем true
+            // Такое поведение "отключает" проверку принадлежности к командам
+            return true;
+        }
     }
 
 });

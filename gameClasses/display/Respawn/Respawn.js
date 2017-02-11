@@ -97,14 +97,18 @@ var Respawn = IgeEntity.extend({
      */
     _respawnUnit: function (data, clientId) {
         var self = this,
-            createdUnit = null;
+            createdUnit = null,
+            createTimeout = 3000,
+            creator = function () {
+                createdUnit = self._createUnit(data, clientId);
+                createdUnit.on('destroy', function () {
+                        self.unitInfo.killed++;
+                        console.log('Respawn ' + self.id() + ' DESTROY EVENT ', self.unitInfo.killed);
+                        self._respawnUnit(data, clientId);
+                    });
+            };
 
-        createdUnit = this._createUnit(data, clientId);
-        createdUnit.on('destroy', function () {
-                self.unitInfo.killed++;
-                console.log('Respawn ' + self.id() + ' DESTROY EVENT ', self.unitInfo.killed);
-                self._respawnUnit(data, clientId);
-            });
+            setTimeout(creator, createTimeout);
     },
 
     /**
@@ -182,17 +186,19 @@ var Respawn = IgeEntity.extend({
     },
 
     destroyClientOnRespawn: function () {
-        var listener = null;
+        var listener = null,
+            eventList = null;
 
         if (this._refUnit) {
-            console.log('clear this._refUnit\n\n');
-
-            console.log(this._refUnit.eventList()['destroy'][0]);
+            eventList = this._refUnit.eventList();
 
             // WARN: Лютый хак. Вместо него должен быть сохраненный объект из on (но on ничего не возвращает)
-            listener = this._refUnit.eventList()['destroy'][0];
+            if (eventList && eventList['destroy'] && eventList['destroy'][0]) {
+                this.log('WARN: Лютый хак. Вместо него должен быть сохраненный объект из on (но on ничего не возвращает)');
+                listener = this._refUnit.eventList()['destroy'][0];
+                this._refUnit.off('destroy', listener);
+            }
 
-            this._refUnit.off('destroy', listener);
             this._createUnitInfo();
             this._refUnit.destroy();
             delete this._refUnit;

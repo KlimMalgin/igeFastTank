@@ -65,9 +65,9 @@ var UnitKeyboardControl = IgeClass.extend({
         this._entity.addBehaviour('playerComponent_behaviour', this._behaviour);
 
         if (ige.isServer) {
-            //if (!this._entity.clientId) {
-                //this.enableBotMode();
-            //}
+            if (!this._entity.clientId) {
+                this.enableBotMode();
+            }
         }
     },
 
@@ -89,7 +89,8 @@ var UnitKeyboardControl = IgeClass.extend({
                 ige.network.send('playerFired', {
                     direction: entity._lastDirection,
                     position: position,
-                    parentId: entity.id()
+                    parentId: entity.id(),
+                    teamId: entity._teamId
                 });
             }
         }
@@ -256,7 +257,8 @@ var UnitKeyboardControl = IgeClass.extend({
                 ServerTankNetworkEvents._onPlayerFired.call({}, {
                     direction: entity._lastDirection,
                     position: self._bulletStartPosition(entity),
-                    parentId: entity.id()
+                    parentId: entity.id(),
+                    teamId: entity._teamId
                 })
             },
             1000

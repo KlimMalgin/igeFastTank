@@ -21,6 +21,8 @@ var ServerTankNetworkEvents = {
             bulletId = bullet.id();
 
         bullet.setParentId(data.parentId);
+        bullet.setTeamId(data.teamId);
+
         ige.server.bullets[bulletId] = bullet;
 
         ige.server.bullets[bulletId].box2dNoDebug(true);

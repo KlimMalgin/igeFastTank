@@ -35,6 +35,10 @@ var Bullet = IgeEntityBox2d.extend({
 
     },
 
+    setTeamId: function (teamId) {
+        this._teamId = teamId;
+    },
+
     /**
      * Задает направление движения патрона
      * @param {String} direction Направление движения {'up'|'down'|'left'|'right'}

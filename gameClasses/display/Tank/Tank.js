@@ -96,7 +96,7 @@ var Tank = IgeEntityBox2d.extend({
             // Check if the server sent us data, if not we are supposed
             // to return the data instead of set it
             if (data) {
-                console.log('\nstreamSectionData: ', sectionId, ' / ', data);
+                //console.log('\nstreamSectionData: ', sectionId, ' / ', data);
                 // We have been given new data!
                 this._teamId = data;
 
