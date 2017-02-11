@@ -21,7 +21,10 @@ var level1Data = {
     map: [
         [
             {
-                surface: 'ground'
+                surface: 'ground',
+                respawn: {
+                    teamId: 0
+                }
             },
             {
                 surface: 'ground'
@@ -379,13 +382,31 @@ var level1Data = {
                 surface: 'ground'
             },
             {
-                surface: 'ground'
+                surface: 'ground',
+                respawn: {
+                    teamId: 1
+                }
             },
             {
                 surface: 'ground'
             },
             {
                 surface: 'ground'
+            },
+            {
+                surface: 'ground',
+                respawn: {
+                    teamId: 1
+                }
+            },
+            {
+                surface: 'ground'
+            },
+            {
+                surface: 'ground',
+                respawn: {
+                    teamId: 1
+                }
             },
         ]
     ]
