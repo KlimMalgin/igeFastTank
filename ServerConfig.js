@@ -14,6 +14,7 @@ var config = {
         {name: 'ServerTankNetworkEvents', path: './gameClasses/display/Tank/ServerTankNetworkEvents'},
 
         // Respawn
+        {name: 'RespawnHelpers', path: './gameClasses/utils/RespawnHelpers'},
         {name: 'Respawn', path: './gameClasses/display/Respawn/Respawn'},
         {name: 'ServerRespawnMethods', path: './gameClasses/display/Respawn/ServerRespawnMethods'},
 

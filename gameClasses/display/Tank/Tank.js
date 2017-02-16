@@ -52,7 +52,7 @@ var Tank = IgeEntityBox2d.extend({
 
         }
 
-        console.log('TANK: ', ( !this.clientId ? ' Я БОТ :: ' + this.clientId : ' Я ЭТО ТЫ ' + this.clientId ));
+        //console.log('TANK: ', ( !this.clientId ? ' Я БОТ :: ' + this.clientId : ' Я ЭТО ТЫ ' + this.clientId ));
 
         // Load the character texture file
         if (ige.isClient) {
@@ -120,7 +120,7 @@ var Tank = IgeEntityBox2d.extend({
      * @server
      */
     setTeamId: function (teamId) {
-        console.log('setTeamId :: entityId: ' + this.id() + ' :: teamId: ' + teamId);
+        //console.log('setTeamId :: entityId: ' + this.id() + ' :: teamId: ' + teamId);
         this._teamId = teamId;
 
         return this;

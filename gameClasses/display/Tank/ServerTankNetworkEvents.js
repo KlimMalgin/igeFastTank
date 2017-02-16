@@ -67,12 +67,9 @@ var ServerTankNetworkEvents = {
             clientId = data.clientId,
             entity = ige.$(entityId);
 
+        // Возможно этот destroy не актуален, т.к. уничтожение происходит на респауне
         if (entity && entity.id() == entityId) {
-            console.log('>>>> Уничтожаем танк ', clientId, ige.$(entityId).id(), entityId);
             entity.destroy();
-            // TODO: Ранее player удалялся, т/к/ хранился в искуственном хранилище.
-            // Теперь entity не удаляю, т.к. за это должен отвечать движок
-            // delete entity;
         }
     },
 

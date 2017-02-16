@@ -12,6 +12,11 @@ var Server = IgeClass.extend({
 		// Define an object to hold references to our player entities
 		this.players = {};
 
+		// TODO: Частично дублирует объект players, но хранит объекты сокетов, а не игровых сущностей
+		this.connections = {};
+		// Счетчик соединений
+		this.connectionsCount = 0;
+
 		// Объект со ссылками на сущности снарядов
 		this.bullets = {};
 

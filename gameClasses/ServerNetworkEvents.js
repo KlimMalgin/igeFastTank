@@ -9,31 +9,24 @@ var ServerNetworkEvents = {
      * @private
      */
     _onPlayerConnect: function (socket) {
+        ige.server.connections[socket.id] = socket;
+        ige.server.connectionsCount++;
+
+        console.log("Подключился клиент ", socket.id, " соединений: ", ige.server.connectionsCount);
+
         // Don't reject the client connection
         return false;
     },
 
     _onPlayerDisconnect: function (clientId) {
-        var respawns = ige.server.respawns;
+        RespawnHelpers.releaseRespawn(clientId);
 
-        if (ige.server.players[clientId]) {
-            // Remove the player from the game
-            ige.server.players[clientId].destroy();
-
-            // Обходим респауны в поисках свободного и на свободном размещаем клиента
-            for (var key in respawns) {
-                if (!respawns.hasOwnProperty(key)) continue;
-
-                if (respawns[key].getClientId() == clientId) {
-                    respawns[key].removeClient();
-                    break;
-                }
-            }
-
-            // Remove the reference to the player entity
-            // so that we don't leak memory
-            delete ige.server.players[clientId];
+        if (ige.server.connections[clientId]) {
+            delete ige.server.connections[clientId];
+            ige.server.connectionsCount--;
+            console.log("Отключился клиент ", clientId, " соединений: ", ige.server.connectionsCount);
         }
+
     },
 
 };

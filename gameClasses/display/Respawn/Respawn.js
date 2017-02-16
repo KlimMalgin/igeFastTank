@@ -48,7 +48,7 @@ var Respawn = IgeEntity.extend({
                 .mount(ige.server.renderer.gameScene)
                 .translateTo(data.x, data.y, 0);
 
-            this._respawnUnit(data);
+            this._respawnUnit(data, null);
         }
 
         // Load the character texture file
@@ -103,7 +103,6 @@ var Respawn = IgeEntity.extend({
                 createdUnit = self._createUnit(data, clientId);
                 createdUnit.on('destroy', function () {
                         self.unitInfo.killed++;
-                        console.log('Respawn ' + self.id() + ' DESTROY EVENT ', self.unitInfo.killed);
                         self._respawnUnit(data, clientId);
                     });
             };
@@ -123,29 +122,24 @@ var Respawn = IgeEntity.extend({
 
             // Если танк создается для игрока
             if (clientId) {
-                //if (!ige.server.players[clientId]) {
-                    data = data || {};
-                    data.clientId = clientId;
+                data = data || {};
+                data.clientId = clientId;
 
-                    this._refUnit = new Tank(data);
+                this._refUnit = new Tank(data);
 
-                    ige.server.players[clientId] = this._refUnit;
+                ige.server.players[clientId] = this._refUnit;
 
-                    //console.log('CREATE PLAYER ', clientId, ige.server.players[clientId].id());
-
-                    // Tell the client to track their player entity
-                    ige.network.send('playerEntity', {
-                        entityId: ige.server.players[clientId].id(),
-                        clientId: clientId
-                    }, clientId);
-                //}
+                // Tell the client to track their player entity
+                ige.network.send('playerEntity', {
+                    entityId: ige.server.players[clientId].id(),
+                    clientId: clientId
+                }, clientId);
 
             } else {
                 this._refUnit = new Tank(data);
             }
 
             this._refUnit.setTeamId(data.respawnData.teamId);
-
         }
 
         if (ige.isClient) {}
@@ -173,8 +167,8 @@ var Respawn = IgeEntity.extend({
     },
 
     removeClient: function () {
+        this.destroyClientOnRespawn(this._clientId);
         this._clientId = null;
-        this.destroyClientOnRespawn();
     },
 
     /**
@@ -185,7 +179,7 @@ var Respawn = IgeEntity.extend({
         return this._clientId;
     },
 
-    destroyClientOnRespawn: function () {
+    destroyClientOnRespawn: function (clientId) {
         var listener = null,
             eventList = null;
 
@@ -202,6 +196,7 @@ var Respawn = IgeEntity.extend({
             this._createUnitInfo();
             this._refUnit.destroy();
             delete this._refUnit;
+            delete ige.server.players[clientId];
         }
     }
 
