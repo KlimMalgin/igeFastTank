@@ -48,7 +48,7 @@ var Respawn = IgeEntity.extend({
                 .mount(ige.server.renderer.gameScene)
                 .translateTo(data.x, data.y, 0);
 
-            this._respawnUnit(data, null);
+            //this._respawnUnit(data);
         }
 
         // Load the character texture file
@@ -69,6 +69,10 @@ var Respawn = IgeEntity.extend({
             }, false, true);
         }
 
+    },
+
+    startRespawn: function () {
+        this._respawnUnit(this._respawnInitData);
     },
 
     setSprite: function () {
@@ -102,9 +106,9 @@ var Respawn = IgeEntity.extend({
             creator = function () {
                 createdUnit = self._createUnit(data, clientId);
                 createdUnit.on('destroy', function () {
-                        self.unitInfo.killed++;
-                        self._respawnUnit(data, clientId);
-                    });
+                    self.unitInfo.killed++;
+                    self._respawnUnit(data, clientId);
+                });
             };
 
             setTimeout(creator, createTimeout);

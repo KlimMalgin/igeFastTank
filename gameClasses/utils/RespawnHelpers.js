@@ -37,6 +37,20 @@ var RespawnHelpers = {
             // so that we don't leak memory
             delete ige.server.players[clientId];
         }
+    },
+
+    startAllRespawns: function () {
+        RespawnHelpers.each(function (respawn) {
+            respawn.startRespawn();
+            return true;
+        });
+    },
+
+    stopAllRespawns: function () {
+        RespawnHelpers.each(function (respawn) {
+            respawn.destroyClientOnRespawn('');
+            return true;
+        });
     }
 
 };

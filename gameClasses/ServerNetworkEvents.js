@@ -14,6 +14,10 @@ var ServerNetworkEvents = {
 
         console.log("Подключился клиент ", socket.id, " соединений: ", ige.server.connectionsCount);
 
+        if (ige.server.connectionsCount == 1) {
+            RespawnHelpers.startAllRespawns();
+        }
+
         // Don't reject the client connection
         return false;
     },
@@ -27,6 +31,9 @@ var ServerNetworkEvents = {
             console.log("Отключился клиент ", clientId, " соединений: ", ige.server.connectionsCount);
         }
 
+        if (ige.server.connectionsCount == 0) {
+            RespawnHelpers.stopAllRespawns();
+        }
     },
 
 };
