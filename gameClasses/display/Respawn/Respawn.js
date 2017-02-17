@@ -37,6 +37,18 @@ var Respawn = IgeEntity.extend({
          */
         this._clientId = null;
 
+        /**
+         * Объект с информацией о destroy-обработчике
+         * @type {Object}
+         */
+        this._destroyListenerData = null;
+
+        /**
+         * Идентификатор последнего таймаута на создание юнита
+         * @type {Number}
+         */
+        this._respawnTimeoutId = null;
+
 
         if (ige.isServer) {
             console.log('Данные для респауна: ', data);
@@ -105,13 +117,13 @@ var Respawn = IgeEntity.extend({
             createTimeout = 3000,
             creator = function () {
                 createdUnit = self._createUnit(data, clientId);
-                createdUnit.on('destroy', function () {
+                self._destroyListenerData = createdUnit.on('destroy', function () {
                     self.unitInfo.killed++;
                     self._respawnUnit(data, clientId);
                 });
             };
 
-            setTimeout(creator, createTimeout);
+            this._respawnTimeoutId = setTimeout(creator, createTimeout);
     },
 
     /**
@@ -156,18 +168,13 @@ var Respawn = IgeEntity.extend({
      * @param {String} clientId Идентификатор
      */
     setClient: function (clientId) {
-        var data = this._respawnInitData,
-            listener = null;
-
-        this._clientId = clientId;
+        var data = this._respawnInitData;
 
         console.log('\nsetClientId: ', clientId);
 
+        this._clientId = clientId;
         this.destroyClientOnRespawn();
-
         this._respawnUnit(data, clientId);
-
-        // После связывания клиента с респауном - нужно переродить танк с возможностью управления для игрока
     },
 
     removeClient: function () {
@@ -184,18 +191,10 @@ var Respawn = IgeEntity.extend({
     },
 
     destroyClientOnRespawn: function (clientId) {
-        var listener = null,
-            eventList = null;
+        clearTimeout(this._respawnTimeoutId);
 
         if (this._refUnit) {
-            eventList = this._refUnit.eventList();
-
-            // WARN: Лютый хак. Вместо него должен быть сохраненный объект из on (но on ничего не возвращает)
-            if (eventList && eventList['destroy'] && eventList['destroy'][0]) {
-                this.log('WARN: Лютый хак. Вместо него должен быть сохраненный объект из on (но on ничего не возвращает)');
-                listener = this._refUnit.eventList()['destroy'][0];
-                this._refUnit.off('destroy', listener);
-            }
+            this._refUnit.off('destroy', this._destroyListenerData);
 
             this._createUnitInfo();
             this._refUnit.destroy();
