@@ -19,7 +19,7 @@ var config = {
         {name: 'ServerRespawnMethods', path: './gameClasses/display/Respawn/ServerRespawnMethods'},
 
         // --
-        {name: 'level1Data', path: './levels/level1/data'},
+        {name: 'level1Data', path: './levels/level1/generate'},
         {name: 'Builder', path: './gameClasses/map/Builder'},
         {name: 'MapRenderer', path: './gameClasses/map/MapRenderer'}
     ]
