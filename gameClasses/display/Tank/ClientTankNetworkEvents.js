@@ -10,19 +10,23 @@ var ClientTankNetworkEvents = {
      */
     _onPlayerEntity: function (data) {
         var entityId = data.entityId,
-            clientId = data.clientId;
+            clientId = data.clientId,
+            login = 'Bot';
+
+        if (localStorage) {
+            login = localStorage.getItem('tankigo::login') || login;
+        }
 
         if (ige.$(entityId)) {
             // Add the player control component
             ige.$(entityId)
+                .setUnitName(login)
                 .addComponent(UnitKeyboardControl)
                 .drawBounds(false);
 
             ige.$(entityId).clientId = clientId;
 
             console.log('CREATE PLAYER %o %o', entityId, ige.$(entityId));
-
-            //console.log('Сущность с id %o СУЩЕСТВУЕТ // Направление %o', entityId, ige.$(entityId)._lastDirection);
 
             // Track our player with the camera
             ige.client.renderer.viewport.camera.trackTranslate(ige.$(entityId), 30);
@@ -36,14 +40,13 @@ var ClientTankNetworkEvents = {
                 if (entity.id() === entityId) {
                     // Add the player control component
                     ige.$(entityId)
+                        .setUnitName(login)
                         .addComponent(UnitKeyboardControl)
                         .drawBounds(false);
 
                     ige.$(entityId).clientId = clientId;
 
                     console.log('CREATE PLAYER %o %o', entityId, ige.$(entityId));
-
-                    //console.log('Сущность с id %o СОЗДАНА // Направление %o', entityId, ige.$(entityId)._lastDirection);
 
                     // Tell the camera to track out player entity
                     ige.client.renderer.viewport.camera.trackTranslate(ige.$(entityId), 30);
@@ -61,13 +64,12 @@ var ClientTankNetworkEvents = {
     },
 
     _onPlayerFired: function (data, clientId) {
-        //console.log('>>>> Создаем патрон!!! <<<< %o %o', data, clientId);
         if (ige.$(data)) {
 
-            //console.log('>>>> Сущность получена ige.$(data) IS TRUE');
             // Add the player control component
             //ige.$(data).addComponent(UnitKeyboardControl);
 
+            console.log('[Патрон существует] ', data);
             ige.$(data).drawBounds(false);
 
             // Track our player with the camera
@@ -79,15 +81,12 @@ var ClientTankNetworkEvents = {
             // should be tracking!
             var self = this;
 
-            ////console.log('>>>> Сущность НЕ получена. Создаем слушателя для отложенного создания');
 
             self._eventListener = ige.network.stream.on('entityCreated', function (entity) {
-                //console.log('>>>> Отработал слушатель отложенного создания');
                 if (entity.id() === data) {
-                    //console.log('>>>> Идентификаторы совпадают');
                     // Add the player control component
                     //ige.$(data).addComponent(UnitKeyboardControl);
-
+                    console.log('[Патрон создан] ', data);
                     ige.$(data).drawBounds(false);
 
                     // Tell the camera to track out player entity
@@ -126,6 +125,8 @@ var ClientTankNetworkEvents = {
         if (bullet) {
             bullet.velocityTo(0, 0, 0);
             bullet.runAnimation('bang');
+        } else {
+            ige.client.bulletsForDestroy[data] = data;
         }
     }
 

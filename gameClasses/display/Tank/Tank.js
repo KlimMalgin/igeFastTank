@@ -52,8 +52,6 @@ var Tank = IgeEntityBox2d.extend({
 
         }
 
-        //console.log('TANK: ', ( !this.clientId ? ' Я БОТ :: ' + this.clientId : ' Я ЭТО ТЫ ' + this.clientId ));
-
         // Load the character texture file
         if (ige.isClient) {
             this.addComponent(IgeAnimationComponent)
@@ -69,6 +67,8 @@ var Tank = IgeEntityBox2d.extend({
 
                 //self.setType(0);
             }, false, true);
+
+            this.setUnitName('Bot');
         }
 
         this.selectedAnimation = 'walkUp';
@@ -96,7 +96,6 @@ var Tank = IgeEntityBox2d.extend({
             // Check if the server sent us data, if not we are supposed
             // to return the data instead of set it
             if (data) {
-                //console.log('\nstreamSectionData: ', sectionId, ' / ', data);
                 // We have been given new data!
                 this._teamId = data;
 
@@ -116,11 +115,34 @@ var Tank = IgeEntityBox2d.extend({
         }
     },
 
+    setUnitName: function (text) {
+        if (this.name) {
+            this.name.destroy();
+        }
+
+        this.name = new IgeFontEntity()
+            .depth(10)
+            .width(85)
+            .height(25)
+            .textAlignX(1)
+            .textAlignY(1)
+            .colorOverlay('#ffffff')
+            .nativeFont('17px Arial')
+            .nativeStroke(6)
+            .nativeStrokeColor('#666666')
+            .textLineSpacing(0)
+            .drawBounds(false)
+            //.translateTo(0, 40, 0)
+            .text(text)
+            .mount(this);
+
+        return this;
+    },
+
     /**
      * @server
      */
     setTeamId: function (teamId) {
-        //console.log('setTeamId :: entityId: ' + this.id() + ' :: teamId: ' + teamId);
         this._teamId = teamId;
 
         return this;
@@ -284,19 +306,32 @@ var Tank = IgeEntityBox2d.extend({
         IgeEntityBox2d.prototype.update.call(this, ctx, tickDelta);
     },
 
-    customRotate: function function_name(direction) {
+    // Хак на время, пока спрайт юнита поворачивается вручную
+    rotateUserName: function (val, translate) {
+        if (ige.isClient) {
+            this.name.rotate().z(val);
+            this.name.translateTo.apply(this.name, translate);
+
+        }
+    },
+
+    customRotate: function (direction) {
         switch (direction) {
             case 'up':
                 this.rotate().z(0);
+                this.rotateUserName(0, [0, 50, 0]);
                 break;
             case 'down':
                 this.rotate().z((Math.PI / 2) * -2);
+                this.rotateUserName((Math.PI / 2) * -2, [0, -50, 0]);
                 break;
             case 'left':
                 this.rotate().z((Math.PI / 2) * -1);
+                this.rotateUserName((Math.PI / 2) * 1, [-50, 0, 0]);
                 break;
             case 'right':
                 this.rotate().z((Math.PI / 2) * 1);
+                this.rotateUserName((Math.PI / 2) * -1, [50, 0, 0]);
                 break;
         }
     },

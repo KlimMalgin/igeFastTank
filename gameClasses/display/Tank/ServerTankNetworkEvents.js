@@ -91,6 +91,7 @@ var ServerTankNetworkEvents = {
     },
 
     _onBulletDestroy: function (bulletId) {
+
         if (ige.server.bullets[bulletId]) {
             ige.server.bullets[bulletId].destroy();
             delete ige.server.bullets[bulletId];

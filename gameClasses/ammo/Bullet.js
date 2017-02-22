@@ -29,8 +29,18 @@ var Bullet = IgeEntityBox2d.extend({
                     .dimensionsFromCell();
 
                 self.defineAnimations();
-                //self.runAnimation();
             }, false, true);
+
+
+            this.on('mounted', function () {
+                var id = self.id();
+
+                // Уничтожить снаряд, если на клиенте он был создан позднее, чем уничтожен на сервере
+                if (ige.client.bulletsForDestroy[id] == id) {
+                    self.runAnimation('bang');
+                    delete ige.client.bulletsForDestroy[id];
+                }
+            });
         }
 
     },
@@ -79,7 +89,6 @@ var Bullet = IgeEntityBox2d.extend({
     },
 
     setParentId: function (parentId) {
-        //console.log('setParentId: ', parentId);
         this._parentId = parentId;
         return this;
     },
@@ -107,15 +116,19 @@ var Bullet = IgeEntityBox2d.extend({
     runAnimation: function (type) {
         var self = this;
 
+
         type = type ? type : 'default';
-        //this.animation.select(type);
-        this.animation.start(type, {
-            onLoop: function () {
-                this.stop();
-                ige.network.send('bulletDestroy', self.id());
-                //self.destroy();
-            }
-        });
+
+        if (this.animation.defined(type)) {
+            this.animation.start(type, {
+                onLoop: function () {
+                    this.stop();
+                    ige.network.send('bulletDestroy', self.id());
+                }
+            });
+        } else {
+            ige.network.send('bulletDestroy', self.id());
+        }
 
         return this;
     },
@@ -129,15 +142,6 @@ var Bullet = IgeEntityBox2d.extend({
             ige.network.send('bulletDestroyProcess', me.id());
         }
     },
-
-    /*update: function (ctx, tickDelta) {
-        IgeEntityBox2d.prototype.update.call(this, ctx, tickDelta);
-    },*/
-
-
-    /*tick: function (ctx) {
-        IgeEntityBox2d.prototype.tick.call(this, ctx);
-    },*/
 
     destroy: function () {
         // Destroy the texture object

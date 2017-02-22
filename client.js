@@ -8,8 +8,20 @@ var Client = IgeClass.extend({
 
 		//ige.debugEnabled(true);
 
+		localStorage.setItem('tankigo::login', 'klim');
+
 		// Load our textures
 		var self = this;
+
+		// TODO: Костыль. Был такой баг: когда юнит стоит вплотную к стене и
+		// стреляет - патрон останавливается на месте старта, не двигается и не уничтожается.
+		// Это происходит из-за того, что на сервере создан снаряд, сразу после создания происходит коллизия со стеной.
+		// Отправляется событие destroyProcess на клиент. Но на клиенте в момент прихода destroyProcess еще не создан
+		// снаряд, который нужно уничтожить. Он создается после прихода destroyProcess и подвисает.
+		// -----------------
+		// Этот объект хранит id сущностей, которые отсутствовали в момент прихода destroyProcess
+		// и при создании эти сущности сразу уничтожаются
+		this.bulletsForDestroy = {};
 
 		// Enable networking
 		ige.addComponent(IgeNetIoComponent);
