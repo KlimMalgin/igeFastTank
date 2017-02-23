@@ -108,44 +108,52 @@ var ServerTankNetworkEvents = {
         _allArrowsUp(clientId);
         ige.server.players[clientId].playerControl.controls.left = true;
         ige.server.players[clientId]._lastDirection = 'left';
+        ige.server.players[clientId]._run = 1;
     },
 
     _onPlayerLeftUp: function (data, clientId) {
         disableBotMode(clientId);
         ige.server.players[clientId].playerControl.controls.left = false;
+        ige.server.players[clientId]._run = 0;
     },
 
     _onPlayerRightDown: function (data, clientId) {
         _allArrowsUp(clientId);
         ige.server.players[clientId].playerControl.controls.right = true;
         ige.server.players[clientId]._lastDirection = 'right';
+        ige.server.players[clientId]._run = 1;
     },
 
     _onPlayerRightUp: function (data, clientId) {
         disableBotMode(clientId);
         ige.server.players[clientId].playerControl.controls.right = false;
+        ige.server.players[clientId]._run = 0;
     },
 
     _onPlayerUpDown: function (data, clientId) {
         _allArrowsUp(clientId);
         ige.server.players[clientId].playerControl.controls.up = true;
         ige.server.players[clientId]._lastDirection = 'up';
+        ige.server.players[clientId]._run = 1;
     },
 
     _onPlayerUpUp: function (data, clientId) {
         disableBotMode(clientId);
         ige.server.players[clientId].playerControl.controls.up = false;
+        ige.server.players[clientId]._run = 0;
     },
 
     _onPlayerDownDown: function (data, clientId) {
         _allArrowsUp(clientId);
         ige.server.players[clientId].playerControl.controls.down = true;
         ige.server.players[clientId]._lastDirection = 'down';
+        ige.server.players[clientId]._run = 1;
     },
 
     _onPlayerDownUp: function (data, clientId) {
         disableBotMode(clientId);
         ige.server.players[clientId].playerControl.controls.down = false;
+        ige.server.players[clientId]._run = 0;
     }
 
 };
@@ -155,6 +163,7 @@ var ServerTankNetworkEvents = {
         ige.server.players[clientId].playerControl.controls.right = false;
         ige.server.players[clientId].playerControl.controls.up = false;
         ige.server.players[clientId].playerControl.controls.down = false;
+        ige.server.players[clientId]._run = 0;
     }
 
     function disableBotMode (clientId) {

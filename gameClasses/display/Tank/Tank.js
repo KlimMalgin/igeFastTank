@@ -12,7 +12,10 @@ var Tank = IgeEntityBox2d.extend({
         IgeEntityBox2d.prototype.init.call(this);
 
         this.clientId = data.clientId || null;
+        this._run = 0;
         this._type = 'tank';
+
+        // @deprecated
         this._destroyed = false;
         this._lastDirection = 'up';
         this.__tempLastDirection = '';
@@ -77,7 +80,7 @@ var Tank = IgeEntityBox2d.extend({
 
         // Define the data sections that will be included in the stream
         // this.streamSections(['transform', 'score']);
-        this.streamSections(['transform', 'teamId']);
+        this.streamSections(['transform', 'teamId', 'lastDirection', 'run']);
     },
 
     /**
@@ -98,14 +101,24 @@ var Tank = IgeEntityBox2d.extend({
             if (data) {
                 // We have been given new data!
                 this._teamId = data;
-
                 if (ige.isClient) {
                     this.setType(this._teamId);
                 }
-
             } else {
                 // Return current data
                 return this._teamId;
+            }
+        } else if (sectionId === 'lastDirection') {
+            if (data) {
+                this._lastDirection = data;
+            } else {
+                return this._lastDirection;
+            }
+        } else if (sectionId === 'run') {
+            if (data) {
+                this._run = data;
+            } else {
+                return this._run;
             }
         } else {
             // The section was not one that we handle here, so pass this
@@ -116,10 +129,7 @@ var Tank = IgeEntityBox2d.extend({
     },
 
     setUnitName: function (text) {
-        if (this.name) {
-            this.name.destroy();
-        }
-
+        this.destroyUnitName();
         this.name = new IgeFontEntity()
             .depth(10)
             .width(85)
@@ -137,6 +147,12 @@ var Tank = IgeEntityBox2d.extend({
             .mount(this);
 
         return this;
+    },
+
+    destroyUnitName: function () {
+        if (this.name) {
+            this.name.destroy();
+        }
     },
 
     /**
@@ -187,14 +203,6 @@ var Tank = IgeEntityBox2d.extend({
                 //this._restCell = 17;
                 break;
 
-            /**
-             * Анимация взрыва для танка
-             */
-            /*case 2:
-                this.animation.define('bang', [18, 19, 20], 3, -1)
-                    .cell(18);
-
-                break;*/
         }
 
         this._characterType = type;
@@ -233,6 +241,9 @@ var Tank = IgeEntityBox2d.extend({
         var self = this;
 
         type = type ? type : 'default';
+        if (type == 'bang') {
+            this.destroyUnitName();
+        }
         this.animation.select(type, {
             onLoop: function () {
                 this.stop();
@@ -240,7 +251,6 @@ var Tank = IgeEntityBox2d.extend({
                     entityId: self.id(),
                     clientId: self.clientId
                 });
-                //self.destroy();
             }
         });
 
@@ -248,59 +258,36 @@ var Tank = IgeEntityBox2d.extend({
     },
 
     update: function (ctx, tickDelta) {
+
+        this.customRotate(this._lastDirection);
+
         if (ige.isClient) {
-            // Set the current animation based on direction
-            var self = this,
-                oldX = this._lastTranslate.x,
-                oldY = this._lastTranslate.y * 2,
-                currX = this.translate().x(),
-                currY = this.translate().y() * 2,
-                distX = currX - oldX,
-                distY = currY - oldY;
 
-            this._lastTranslate = this._translate.clone();
+            if (this._destroyed) {
+                this.selectedAnimation = 'bang';
+            } else if (this._run == 1) {
 
-            if (distX == 0 && distY == 0) {
-                if (!this._destroyed) {
-                    this.animation.stop();
+                if (this._lastDirection == 'up') {
+                    this.selectedAnimation = 'walkUp';
                 }
-            } else {
-
-                if (this._destroyed) {
-                    this.selectedAnimation = 'bang';
-                } else {
-
-                    // Set the animation based on direction
-                    if (Math.abs(distX) > Math.abs(distY)) {
-                        // Moving horizontal
-                        if (distX < 0) {
-                            // Moving left
-                            this.selectedAnimation = 'walkLeft';
-                            this._lastDirection = 'left';
-                        } else {
-                            // Moving right
-                            this.selectedAnimation = 'walkRight';
-                            this._lastDirection = 'right';
-                        }
-                    } else {
-                        // Moving vertical
-                        if (distY < 0) {
-                            // Moving up
-                            this.selectedAnimation = 'walkUp';
-                            this._lastDirection = 'up';
-                        } else {
-                            // Moving down
-                            this.selectedAnimation = 'walkDown';
-                            this._lastDirection = 'down';
-                        }
-                    }
-
+                else if (this._lastDirection == 'down') {
+                    this.selectedAnimation = 'walkDown';
+                }
+                else if (this._lastDirection == 'left') {
+                    this.selectedAnimation = 'walkLeft';
+                }
+                else if (this._lastDirection == 'right') {
+                    this.selectedAnimation = 'walkRight';
                 }
 
                 if (this.animation.defined(this.selectedAnimation)) {
                     this.animation.select(this.selectedAnimation);
                 }
+
+            } else if (this._run == 0) {
+                this.animation.stop();
             }
+
         }
 
         IgeEntityBox2d.prototype.update.call(this, ctx, tickDelta);
@@ -334,16 +321,6 @@ var Tank = IgeEntityBox2d.extend({
                 this.rotateUserName((Math.PI / 2) * -1, [50, 0, 0]);
                 break;
         }
-    },
-
-    tick: function (ctx) {
-        this.customRotate(this._lastDirection);
-
-        if (this._lastDirection != this.__tempLastDirection) {
-            this.__tempLastDirection = this._lastDirection;
-        }
-
-        IgeEntityBox2d.prototype.tick.call(this, ctx);
     },
 
     destroy: function () {

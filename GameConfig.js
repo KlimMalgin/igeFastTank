@@ -1,6 +1,6 @@
 var GameConfig = {
     tileSize: 84,
-    scaleRate: 0.6,
+    scaleRate: 0.5,
 
     setting: {
 

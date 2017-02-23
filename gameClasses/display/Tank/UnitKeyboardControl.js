@@ -180,7 +180,7 @@ var UnitKeyboardControl = IgeClass.extend({
      * @param  {String} direction Обозначение действия
      */
     _checkInputAction: function (direction) {
-        if (ige.input.actionState(direction)) {
+        if (ige.input.actionState(direction) && !this._destroyed) {
             if (!this.controls[direction]) {
                 this._go(direction);
             }
