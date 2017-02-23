@@ -14,8 +14,6 @@ var Tank = IgeEntityBox2d.extend({
         this.clientId = data.clientId || null;
         this._run = 0;
         this._type = 'tank';
-
-        // @deprecated
         this._destroyed = false;
         this._lastDirection = 'up';
         this.__tempLastDirection = '';
@@ -75,8 +73,6 @@ var Tank = IgeEntityBox2d.extend({
         }
 
         this.selectedAnimation = 'walkUp';
-
-        this._lastTranslate = this._translate.clone();
 
         // Define the data sections that will be included in the stream
         // this.streamSections(['transform', 'score']);
@@ -210,6 +206,11 @@ var Tank = IgeEntityBox2d.extend({
         return this;
     },
 
+    defineBangAnimation: function () {
+        this.animation.define('bang', [18, 19, 20], 12, 1)
+            .cell(18);
+    },
+
     onCollision: function (me, subject) {
         var self = this;
 
@@ -264,28 +265,31 @@ var Tank = IgeEntityBox2d.extend({
         if (ige.isClient) {
 
             if (this._destroyed) {
+                this.defineBangAnimation();
                 this.selectedAnimation = 'bang';
-            } else if (this._run == 1) {
+            } else {
+                if (this._run == 1) {
 
-                if (this._lastDirection == 'up') {
-                    this.selectedAnimation = 'walkUp';
-                }
-                else if (this._lastDirection == 'down') {
-                    this.selectedAnimation = 'walkDown';
-                }
-                else if (this._lastDirection == 'left') {
-                    this.selectedAnimation = 'walkLeft';
-                }
-                else if (this._lastDirection == 'right') {
-                    this.selectedAnimation = 'walkRight';
-                }
+                    if (this._lastDirection == 'up') {
+                        this.selectedAnimation = 'walkUp';
+                    }
+                    else if (this._lastDirection == 'down') {
+                        this.selectedAnimation = 'walkDown';
+                    }
+                    else if (this._lastDirection == 'left') {
+                        this.selectedAnimation = 'walkLeft';
+                    }
+                    else if (this._lastDirection == 'right') {
+                        this.selectedAnimation = 'walkRight';
+                    }
 
-                if (this.animation.defined(this.selectedAnimation)) {
-                    this.animation.select(this.selectedAnimation);
-                }
+                    if (this.animation.defined(this.selectedAnimation)) {
+                        this.animation.select(this.selectedAnimation);
+                    }
 
-            } else if (this._run == 0) {
-                this.animation.stop();
+                } else if (this._run == 0) {
+                    this.animation.stop();
+                }
             }
 
         }
