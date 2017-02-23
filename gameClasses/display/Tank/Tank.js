@@ -211,10 +211,22 @@ var Tank = IgeEntityBox2d.extend({
             .cell(18);
     },
 
-    onCollision: function (me, subject) {
+    onCollision: function (me, subject, contact) {
         var self = this;
 
         if (ige.isServer) {
+            /*if (this.clientId) {
+                console.log(
+                    '\n\nonCollision \nA-lower: ',
+                    contact.m_fixtureA.m_aabb.lowerBound,
+                    '\nA-upper: ',
+                    contact.m_fixtureA.m_aabb.upperBound,
+                    '\nB-lower: ',
+                    contact.m_fixtureB.m_aabb.lowerBound,
+                    '\nB-upper: ',
+                    contact.m_fixtureB.m_aabb.upperBound
+                );
+            }*/
             if (subject._type == 'bullet') {
                 this._destroyed = true;
                 ige.network.send('playerDestroyProcess', {

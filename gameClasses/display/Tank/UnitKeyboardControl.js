@@ -41,7 +41,7 @@ var UnitKeyboardControl = IgeClass.extend({
             }
         };
 
-        this._speed = 6;
+        this._speed = 4;
 
         this.keyboard = new Keyboard();
 
@@ -172,6 +172,9 @@ var UnitKeyboardControl = IgeClass.extend({
     _move: function (x, y) {
         this._entity._box2dBody.SetLinearVelocity(new IgePoint3d(x, y, 0));
         this._entity._box2dBody.SetAwake(true);
+        // --
+        // this._entity.velocity.x(x*0.01);
+        // this._entity.velocity.y(y*0.01);
     },
 
     /**

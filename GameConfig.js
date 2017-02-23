@@ -1,5 +1,5 @@
 var GameConfig = {
-    tileSize: 84,
+    tileSize: 90,
     scaleRate: 0.5,
 
     setting: {
